@@ -1,6 +1,5 @@
 'use client';
-
-import Footer from './Footer';
+ 
 import Hero from './sections/Hero';
 import Mission from './sections/Mission';
 import Services from './sections/Services';
@@ -30,8 +29,7 @@ export default function HomePage({ onNavigate }: HomePageProps) {
       <Values />
       <Geography />
       <Approach />
-      <CTA onNavigate={onNavigate} />
-      <Footer onNavigate={onNavigate} />
+      <CTA onNavigate={onNavigate} /> 
     </div>
   );
 }

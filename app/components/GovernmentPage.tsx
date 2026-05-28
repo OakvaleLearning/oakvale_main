@@ -1,6 +1,5 @@
 'use client';
-
-import Footer from './Footer';
+ 
 
 type Page = 'home' | 'about' | 'services' | 'corporates' | 'academic' | 'donors' | 'government' | 'contact';
 
@@ -114,8 +113,7 @@ export default function GovernmentPage({ onNavigate }: GovernmentPageProps) {
           </div>
         </div>
       </div>
-
-      <Footer onNavigate={onNavigate} />
+ 
     </div>
   );
 }

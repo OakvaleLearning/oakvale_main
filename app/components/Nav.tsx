@@ -77,7 +77,7 @@ export default function Nav() {
   return (
     <nav ref={navRef}>
       <a className="nav-logo" onClick={() => navigate('home')} role="button" tabIndex={0}>
-        <Image src="/oakvale-white.svg" width={120} height={32} style={{ height: '2rem', width: 'auto' }} alt="Oakvale Learning Logo" priority />
+        <Image src="/oakvale-white.svg" width={0} height={0} style={{ height: '2rem', width: 'auto' }} alt="Oakvale Learning Logo" priority />
       </a>
       
       {/* Hamburger Menu Button - Mobile Only */}
@@ -110,6 +110,7 @@ export default function Nav() {
             ))}
           </div>
         </li>
+        <li><a className={isActive('summer-intensive') ? 'active' : ''} onClick={() => router.push('/summer-intensive')} role="button" tabIndex={0}>Summer Intensive</a></li>
         <li><a className={`nav-cta ${isActive('contact') ? 'active' : ''}`} onClick={() => navigate('contact')} role="button" tabIndex={0}>Contact Us</a></li>
       </ul>
     </nav>

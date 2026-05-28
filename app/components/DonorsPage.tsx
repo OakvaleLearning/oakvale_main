@@ -1,7 +1,6 @@
 'use client';
 
-import Link from 'next/link';
-import Footer from './Footer';
+import Link from 'next/link'; 
 
 type Page = 'home' | 'about' | 'services' | 'corporates' | 'academic' | 'donors' | 'government' | 'contact';
 
@@ -132,8 +131,7 @@ export default function DonorsPage({ onNavigate }: DonorsPageProps) {
           </div>
         </div>
       </div>
-
-      <Footer onNavigate={onNavigate} />
+ 
     </div>
   );
 }

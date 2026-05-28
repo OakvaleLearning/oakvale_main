@@ -1,7 +1,6 @@
 "use client";
 
-import Link from "next/link";
-import Footer from "./Footer";
+import Link from "next/link"; 
 
 type Page =
   | "home"
@@ -197,8 +196,7 @@ export default function CorporatesPage({ onNavigate }: CorporatesPageProps) {
           </div>
         </div>
       </div>
-
-      <Footer onNavigate={onNavigate} />
+ 
     </div>
   );
 }

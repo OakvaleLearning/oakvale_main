@@ -1,6 +1,5 @@
 "use client";
-
-import Footer from "./Footer";
+ 
 import {
   Building,
   GraduationCap,
@@ -246,8 +245,7 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
           </div>
         </div>
       </div>
-
-      <Footer onNavigate={onNavigate} />
+ 
     </div>
   );
 }

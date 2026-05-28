@@ -1,6 +1,5 @@
 "use client";
-
-import Footer from "./Footer";
+ 
 import Image from "next/image";
 
 type Page =
@@ -266,8 +265,7 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
           </div>
         </div>
       </div>
-
-      <Footer onNavigate={onNavigate} />
+ 
     </div>
   );
 }

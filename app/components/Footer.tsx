@@ -2,22 +2,11 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
-type Page =
-  | "home"
-  | "about"
-  | "services"
-  | "corporates"
-  | "academic"
-  | "donors"
-  | "government"
-  | "contact";
-
-interface FooterProps {
-  onNavigate: (page: Page) => void;
-}
-
-export default function Footer({ onNavigate }: FooterProps) {
+export default function Footer() {
+  const router = useRouter();
+  const onNavigate = (page: string) => router.push(page === "home" ? "/" : `/${page}`);
   return (
     <footer>
       <div className="footer-top">

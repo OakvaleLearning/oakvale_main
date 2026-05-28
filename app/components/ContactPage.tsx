@@ -1,17 +1,12 @@
 'use client';
  
 import { useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
-import Footer from './Footer';
+import toast, { Toaster } from 'react-hot-toast'; 
 import { Mail, MapPin, Globe } from 'lucide-react';
   
 type Page = 'home' | 'about' | 'services' | 'corporates' | 'academic' | 'donors' | 'government' | 'contact';
-
-interface ContactPageProps {
-  onNavigate: (page: Page) => void;
-}
-
-export default function ContactPage({ onNavigate }: ContactPageProps) {
+ 
+export default function ContactPage() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -125,8 +120,7 @@ export default function ContactPage({ onNavigate }: ContactPageProps) {
           </form>
         </div>
       </div>
-
-      <Footer onNavigate={onNavigate} />
+ 
     </div>
   );
   }

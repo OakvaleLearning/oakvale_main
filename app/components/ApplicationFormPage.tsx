@@ -150,6 +150,7 @@ export default function ApplicationFormPage() {
   const [stepError, setStepError] = useState('');
   const [consents, setConsents] = useState([false, false, false]);
   const [submitError, setSubmitError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -212,13 +213,30 @@ export default function ApplicationFormPage() {
     setFiles(next);
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     if (!consents[0] || !consents[1] || !consents[2]) {
       setSubmitError('Please confirm all three statements before submitting.');
       return;
     }
     setSubmitError('');
-    setSubmitted(true);
+    setSubmitting(true);
+    try {
+      const res = await fetch('/api/apply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, fileCount: files.length }),
+      });
+      const json = await res.json();
+      if (!res.ok || !json.success) {
+        setSubmitError(json.error ?? 'Something went wrong. Please try again.');
+        setSubmitting(false);
+        return;
+      }
+      setSubmitted(true);
+    } catch {
+      setSubmitError('Could not reach the server. Please check your connection and try again.');
+      setSubmitting(false);
+    }
   }
 
   // ─── Success ───────────────────────────────────────────────────────────────
@@ -693,9 +711,10 @@ export default function ApplicationFormPage() {
 
             <button
               onClick={handleSubmit}
-              style={{ width: '100%', background: C.forest, border: 'none', borderRadius: 4, padding: '13px 0', fontSize: 15, fontWeight: 500, cursor: 'pointer', color: '#fff', marginTop: '0.5rem', fontFamily: 'DM Sans, sans-serif', letterSpacing: '0.02em' }}
+              disabled={submitting}
+              style={{ width: '100%', background: submitting ? C.forestMid : C.forest, border: 'none', borderRadius: 4, padding: '13px 0', fontSize: 15, fontWeight: 500, cursor: submitting ? 'not-allowed' : 'pointer', color: '#fff', marginTop: '0.5rem', fontFamily: 'DM Sans, sans-serif', letterSpacing: '0.02em', opacity: submitting ? 0.8 : 1 }}
             >
-              Submit my application
+              {submitting ? 'Sending your application…' : 'Submit my application'}
             </button>
 
             <div style={{ marginTop: '0.75rem' }}>

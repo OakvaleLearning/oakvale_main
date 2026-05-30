@@ -1,0 +1,558 @@
+
+<h2 class="sr-only">Oakvale Summer Intensive 2026 application form. Six sections: personal details, academic information, track selection, motivation statement, financial aid, and review and submit.</h2>
+
+<style>
+:root {
+  --oak-green: #0a3d2b;
+  --oak-ind: #3530C4;
+  --oak-blue: #0099FF;
+  --oak-mid: #3A3670;
+  --oak-muted: #7A78AA;
+}
+.app-wrap { padding: 1.5rem 0 2rem; }
+.app-header { margin-bottom: 1.5rem; }
+.app-header .prog-label { font-size: 11px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--oak-muted); margin-bottom: 6px; }
+.app-header h1 { font-size: 22px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 6px; }
+.app-header .sub { font-size: 14px; color: var(--color-text-secondary); line-height: 1.5; }
+
+.step-bar { display: flex; gap: 0; margin-bottom: 1.5rem; border-radius: var(--border-radius-md); overflow: hidden; border: 0.5px solid var(--color-border-tertiary); }
+.step-item { flex: 1; padding: 8px 4px; text-align: center; font-size: 11px; font-weight: 500; color: var(--color-text-secondary); background: var(--color-background-primary); cursor: pointer; border-right: 0.5px solid var(--color-border-tertiary); transition: background .15s; }
+.step-item:last-child { border-right: none; }
+.step-item.active { background: var(--color-background-secondary); color: var(--color-text-primary); }
+.step-item.done { color: var(--color-text-success); }
+.step-item .sn { display: block; font-size: 13px; font-weight: 500; margin-bottom: 2px; }
+.step-item .sl { display: none; }
+@media (min-width: 500px) { .step-item .sl { display: block; } }
+
+.section { display: none; }
+.section.visible { display: block; }
+
+.section-title { font-size: 16px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 4px; }
+.section-desc { font-size: 13px; color: var(--color-text-secondary); margin: 0 0 1.25rem; line-height: 1.5; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.form-row.full { grid-template-columns: 1fr; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-group label { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+.form-group .hint { font-size: 12px; color: var(--color-text-secondary); margin: 0; }
+.form-group input, .form-group select, .form-group textarea { width: 100%; }
+.required { color: var(--color-text-danger); margin-left: 2px; }
+
+.track-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 1rem; }
+.track-option { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 14px 16px; cursor: pointer; transition: border-color .15s, background .15s; }
+.track-option:hover { border-color: var(--color-border-secondary); background: var(--color-background-secondary); }
+.track-option.selected { border: 1.5px solid var(--oak-ind); background: var(--color-background-secondary); }
+.track-option input[type=radio] { display: none; }
+.track-top { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.track-badge { font-size: 10px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; padding: 3px 8px; border-radius: 20px; }
+.badge-a { background: var(--color-background-success); color: var(--color-text-success); }
+.badge-b { background: var(--color-background-info); color: var(--color-text-info); }
+.badge-c { background: var(--color-background-warning); color: var(--color-text-warning); }
+.track-name { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
+.track-desc { font-size: 13px; color: var(--color-text-secondary); line-height: 1.45; }
+
+.char-count { font-size: 12px; color: var(--color-text-secondary); text-align: right; margin-top: 4px; }
+.char-count.over { color: var(--color-text-danger); }
+
+.aid-toggle { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); cursor: pointer; margin-bottom: 1rem; transition: border-color .15s; }
+.aid-toggle:hover { border-color: var(--color-border-secondary); }
+.aid-toggle input[type=checkbox] { margin-top: 2px; flex-shrink: 0; }
+.aid-toggle-label { font-size: 14px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 3px; }
+.aid-toggle-desc { font-size: 13px; color: var(--color-text-secondary); line-height: 1.45; }
+
+.aid-details { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 16px; margin-bottom: 1rem; display: none; }
+.aid-details.visible { display: block; }
+
+.aid-level { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.aid-level-opt { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 10px 12px; cursor: pointer; text-align: center; transition: border-color .15s, background .15s; }
+.aid-level-opt:hover { border-color: var(--color-border-secondary); background: var(--color-background-secondary); }
+.aid-level-opt.selected { border: 1.5px solid var(--oak-ind); background: var(--color-background-secondary); }
+.aid-level-opt input[type=radio] { display: none; }
+.aid-level-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 2px; }
+.aid-level-desc { font-size: 11px; color: var(--color-text-secondary); }
+
+.upload-zone { border: 1.5px dashed var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 20px; text-align: center; cursor: pointer; transition: border-color .15s, background .15s; margin-bottom: 8px; }
+.upload-zone:hover, .upload-zone.dragover { border-color: var(--oak-blue); background: var(--color-background-secondary); }
+.upload-zone i { font-size: 24px; color: var(--color-text-secondary); margin-bottom: 8px; display: block; }
+.upload-zone .uz-title { font-size: 14px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 3px; }
+.upload-zone .uz-sub { font-size: 12px; color: var(--color-text-secondary); }
+.upload-zone input[type=file] { display: none; }
+.file-list { display: flex; flex-direction: column; gap: 6px; }
+.file-item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); font-size: 13px; }
+.file-item i { color: var(--color-text-secondary); font-size: 16px; }
+.file-name { flex: 1; color: var(--color-text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.file-size { color: var(--color-text-secondary); font-size: 12px; flex-shrink: 0; }
+.file-remove { cursor: pointer; color: var(--color-text-secondary); font-size: 16px; flex-shrink: 0; border: none; background: none; padding: 0; }
+.file-remove:hover { color: var(--color-text-danger); }
+
+.info-box { background: var(--color-background-info); border-radius: var(--border-radius-md); padding: 12px 14px; font-size: 13px; color: var(--color-text-info); line-height: 1.5; margin-bottom: 1rem; }
+.info-box i { font-size: 15px; vertical-align: -2px; margin-right: 5px; }
+
+.warn-box { background: var(--color-background-warning); border-radius: var(--border-radius-md); padding: 12px 14px; font-size: 13px; color: var(--color-text-warning); line-height: 1.5; margin-bottom: 1rem; }
+
+.review-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 1rem; }
+.review-table td { padding: 8px 10px; border-bottom: 0.5px solid var(--color-border-tertiary); vertical-align: top; }
+.review-table td:first-child { color: var(--color-text-secondary); width: 38%; }
+.review-table td:last-child { color: var(--color-text-primary); font-weight: 500; }
+.review-section-head { font-size: 12px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--color-text-secondary); padding: 12px 10px 4px; }
+
+.consent-row { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--color-text-secondary); margin-bottom: 10px; line-height: 1.5; }
+.consent-row input { margin-top: 2px; flex-shrink: 0; }
+.consent-row a { color: var(--oak-ind); text-decoration: none; }
+
+.nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; padding-top: 1rem; border-top: 0.5px solid var(--color-border-tertiary); }
+.nav-row .back-btn { background: none; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 8px 18px; font-size: 14px; cursor: pointer; color: var(--color-text-primary); }
+.nav-row .next-btn { background: var(--oak-ind); border: none; border-radius: var(--border-radius-md); padding: 9px 22px; font-size: 14px; font-weight: 500; cursor: pointer; color: #fff; transition: opacity .15s; }
+.nav-row .next-btn:hover { opacity: .88; }
+.nav-row .next-btn:disabled { opacity: .45; cursor: not-allowed; }
+.submit-btn { width: 100%; background: var(--oak-green); border: none; border-radius: var(--border-radius-md); padding: 12px; font-size: 15px; font-weight: 500; cursor: pointer; color: #fff; margin-top: 1rem; transition: opacity .15s; }
+.submit-btn:hover { opacity: .88; }
+
+.success-state { text-align: center; padding: 2rem 1rem; }
+.success-icon { font-size: 40px; color: var(--color-text-success); margin-bottom: 1rem; display: block; }
+.success-state h2 { font-size: 20px; font-weight: 500; margin-bottom: 8px; color: var(--color-text-primary); }
+.success-state p { font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; max-width: 400px; margin: 0 auto; }
+</style>
+
+<div class="app-wrap">
+  <div class="app-header">
+    <div class="prog-label">Oakvale Learning · Summer Intensive 2026</div>
+    <h1>Student Application Form</h1>
+    <div class="sub">Applications close 2 July 2026. All fields marked <span style="color:var(--color-text-danger)">*</span> are required.</div>
+  </div>
+
+  <div class="step-bar" id="stepBar">
+    <div class="step-item active" onclick="goTo(0)"><span class="sn">1</span><span class="sl">Personal</span></div>
+    <div class="step-item" onclick="goTo(1)"><span class="sn">2</span><span class="sl">Academic</span></div>
+    <div class="step-item" onclick="goTo(2)"><span class="sn">3</span><span class="sl">Track</span></div>
+    <div class="step-item" onclick="goTo(3)"><span class="sn">4</span><span class="sl">Statement</span></div>
+    <div class="step-item" onclick="goTo(4)"><span class="sn">5</span><span class="sl">Financial aid</span></div>
+    <div class="step-item" onclick="goTo(5)"><span class="sn">6</span><span class="sl">Review</span></div>
+  </div>
+
+  <!-- SECTION 1: PERSONAL -->
+  <div class="section visible" id="sec0">
+    <div class="section-title">Personal details</div>
+    <div class="section-desc">Enter your details exactly as they appear on your student ID.</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>First name <span class="required">*</span></label>
+        <input type="text" id="firstName" placeholder="e.g. Adaeze">
+      </div>
+      <div class="form-group">
+        <label>Last name <span class="required">*</span></label>
+        <input type="text" id="lastName" placeholder="e.g. Okafor">
+      </div>
+    </div>
+    <div class="form-row full">
+      <div class="form-group">
+        <label>Email address <span class="required">*</span></label>
+        <input type="email" id="email" placeholder="your.name@email.com">
+        <p class="hint">We will send your offer and all communications to this address.</p>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Phone number (WhatsApp) <span class="required">*</span></label>
+        <input type="tel" id="phone" placeholder="+234 800 000 0000">
+        <p class="hint">We will send updates via WhatsApp.</p>
+      </div>
+      <div class="form-group">
+        <label>State of residence <span class="required">*</span></label>
+        <input type="text" id="state" placeholder="e.g. Lagos">
+      </div>
+    </div>
+    <div class="nav-row">
+      <div></div>
+      <button class="next-btn" onclick="next(0)">Next: Academic details</button>
+    </div>
+  </div>
+
+  <!-- SECTION 2: ACADEMIC -->
+  <div class="section" id="sec1">
+    <div class="section-title">Academic information</div>
+    <div class="section-desc">Tell us about your current studies.</div>
+    <div class="form-row full">
+      <div class="form-group">
+        <label>Institution <span class="required">*</span></label>
+        <select id="institution">
+          <option value="">Select your institution</option>
+          <option>CMUL (College of Medicine, University of Lagos)</option>
+          <option>LASUCOM (Lagos State University College of Medicine)</option>
+          <option>EkoUnimed (Ekiti State University College of Medicine)</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Discipline / Faculty <span class="required">*</span></label>
+        <select id="discipline">
+          <option value="">Select your discipline</option>
+          <option>Medicine and Surgery</option>
+          <option>Pharmacy</option>
+          <option>Dentistry</option>
+          <option>Nursing</option>
+          <option>Medical Laboratory Sciences</option>
+          <option>Physiotherapy</option>
+          <option>Other health sciences</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Current year of study <span class="required">*</span></label>
+        <select id="yearOfStudy">
+          <option value="">Select year</option>
+          <option>400 level (penultimate year)</option>
+          <option>500 level (final year)</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row full">
+      <div class="form-group">
+        <label>Student ID number <span class="required">*</span></label>
+        <input type="text" id="studentId" placeholder="e.g. 190501001">
+        <p class="hint">Used for verification only. Not shared with third parties.</p>
+      </div>
+    </div>
+    <div class="nav-row">
+      <button class="back-btn" onclick="back(1)">Back</button>
+      <button class="next-btn" onclick="next(1)">Next: Choose your track</button>
+    </div>
+  </div>
+
+  <!-- SECTION 3: TRACK -->
+  <div class="section" id="sec2">
+    <div class="section-title">Choose your track <span class="required">*</span></div>
+    <div class="section-desc">You will stay in this track for the full four weeks. Choose the one that best fits where you want to grow.</div>
+    <div class="track-grid" id="trackGrid">
+      <label class="track-option" id="track_a">
+        <input type="radio" name="track" value="A">
+        <div class="track-top">
+          <span class="track-badge badge-a">Track A</span>
+          <span class="track-name">Clinical Enterprise</span>
+        </div>
+        <div class="track-desc">Design, run, and lead a sustainable healthcare service. Covers business of healthcare, clinical operations, quality management, and MDCN regulations. Capstone: designing a fertility clinic in Lagos.</div>
+      </label>
+      <label class="track-option" id="track_b">
+        <input type="radio" name="track" value="B">
+        <div class="track-top">
+          <span class="track-badge badge-b">Track B</span>
+          <span class="track-name">Health Systems Leadership</span>
+        </div>
+        <div class="track-desc">Lead within and improve complex public health systems. Covers Nigerian public health architecture, WHO frameworks, health financing, and evidence-based policy. Capstone: strengthening maternal health services in a Nigerian state.</div>
+      </label>
+      <label class="track-option" id="track_c">
+        <input type="radio" name="track" value="C">
+        <div class="track-top">
+          <span class="track-badge badge-c">Track C</span>
+          <span class="track-name">Digital Health Innovation</span>
+        </div>
+        <div class="track-desc">Lead digital transformation in healthcare. Covers the Nigerian digital health landscape, telemedicine design, data governance, and global standards. Capstone: building a telemedicine service for a Nigerian context.</div>
+      </label>
+    </div>
+    <div class="form-row full" style="margin-top:6px">
+      <div class="form-group">
+        <label>Second track preference</label>
+        <select id="trackSecond">
+          <option value="">No second preference</option>
+          <option value="A">Track A: Clinical Enterprise</option>
+          <option value="B">Track B: Health Systems Leadership</option>
+          <option value="C">Track C: Digital Health Innovation</option>
+        </select>
+        <p class="hint">If your first choice is full, we will try to place you in your second preference.</p>
+      </div>
+    </div>
+    <div class="nav-row">
+      <button class="back-btn" onclick="back(2)">Back</button>
+      <button class="next-btn" onclick="next(2)">Next: Motivation statement</button>
+    </div>
+  </div>
+
+  <!-- SECTION 4: MOTIVATION -->
+  <div class="section" id="sec3">
+    <div class="section-title">Motivation statement</div>
+    <div class="section-desc">Answer both questions below in your own words. We are looking for genuine curiosity and commitment, not perfect writing. There is no minimum word count, but we recommend at least 80 words per question.</div>
+    <div class="form-row full" style="margin-bottom:14px">
+      <div class="form-group">
+        <label>Why have you chosen your track, and what draws you to it? <span class="required">*</span></label>
+        <textarea id="mot1" rows="5" placeholder="Tell us what interests you about this track and what specific aspects you are most curious about." oninput="countWords('mot1','wc1')"></textarea>
+        <div class="char-count" id="wc1">0 words</div>
+      </div>
+    </div>
+    <div class="form-row full">
+      <div class="form-group">
+        <label>What do you want to do differently as a health professional because of this programme? <span class="required">*</span></label>
+        <textarea id="mot2" rows="5" placeholder="Be specific. What problem do you want to solve? What kind of work do you want to do? How does this programme connect to that?" oninput="countWords('mot2','wc2')"></textarea>
+        <div class="char-count" id="wc2">0 words</div>
+      </div>
+    </div>
+    <div class="info-box">
+      <i class="ti ti-info-circle" aria-hidden="true"></i>
+      We read every statement. Students who show real, specific reasons for applying are the ones we select. You do not need to sound impressive. You need to be honest.
+    </div>
+    <div class="nav-row">
+      <button class="back-btn" onclick="back(3)">Back</button>
+      <button class="next-btn" onclick="next(3)">Next: Financial aid</button>
+    </div>
+  </div>
+
+  <!-- SECTION 5: FINANCIAL AID -->
+  <div class="section" id="sec4">
+    <div class="section-title">Financial aid</div>
+    <div class="section-desc">The application fee is ₦10,000. Fifteen scholarship places are available across all three institutions. If the fee presents a genuine difficulty, we encourage you to apply for support.</div>
+
+    <label class="aid-toggle" id="aidToggle">
+      <input type="checkbox" id="needsAid" onchange="toggleAid()">
+      <div>
+        <div class="aid-toggle-label">I would like to apply for financial aid</div>
+        <div class="aid-toggle-desc">Scholarship places are awarded based on the strength of your statement and level of financial need. Applying for aid does not affect how your application is assessed.</div>
+      </div>
+    </label>
+
+    <div class="aid-details" id="aidDetails">
+      <div class="form-group" style="margin-bottom:14px">
+        <label>Level of support needed <span class="required">*</span></label>
+        <div class="aid-level" id="aidLevel">
+          <label class="aid-level-opt" id="aid_full">
+            <input type="radio" name="aidLevel" value="full">
+            <div class="aid-level-name">Full scholarship</div>
+            <div class="aid-level-desc">₦10,000 fee fully waived</div>
+          </label>
+          <label class="aid-level-opt" id="aid_partial">
+            <input type="radio" name="aidLevel" value="partial">
+            <div class="aid-level-name">Partial support</div>
+            <div class="aid-level-desc">Fee partially reduced</div>
+          </label>
+          <label class="aid-level-opt" id="aid_flexible">
+            <input type="radio" name="aidLevel" value="flexible">
+            <div class="aid-level-name">Flexible payment</div>
+            <div class="aid-level-desc">Pay in two instalments</div>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom:14px">
+        <label>Why are you applying for financial aid? <span class="required">*</span></label>
+        <textarea id="aidStatement" rows="4" placeholder="Tell us honestly about your situation. You do not need to share anything you are not comfortable with. We are looking for genuine need, not a perfect explanation." oninput="countWords('aidStatement','wcAid')"></textarea>
+        <div class="char-count" id="wcAid">0 words</div>
+      </div>
+
+      <div class="form-group">
+        <label>Supporting documents</label>
+        <p class="hint" style="margin-bottom:8px">Optional but helpful. Acceptable documents include a letter from your institution, a letter from a parent or guardian explaining the household situation, or any other document that helps us understand your circumstances. All documents are treated with strict confidentiality.</p>
+        <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)">
+          <i class="ti ti-upload" aria-hidden="true"></i>
+          <div class="uz-title">Click to upload or drag and drop</div>
+          <div class="uz-sub">PDF, JPG, or PNG · Maximum 5MB per file · Up to 3 files</div>
+          <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png" multiple onchange="handleFiles(this.files)">
+        </div>
+        <div class="file-list" id="fileList"></div>
+      </div>
+    </div>
+
+    <div id="noAidSection">
+      <div class="info-box" style="margin-top:.5rem">
+        <i class="ti ti-info-circle" aria-hidden="true"></i>
+        If you do not need financial aid, you will be asked to pay the ₦10,000 application fee within 10 working days of receiving your offer. Payment instructions will be included in your offer message.
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="back-btn" onclick="back(4)">Back</button>
+      <button class="next-btn" onclick="next(4)">Review my application</button>
+    </div>
+  </div>
+
+  <!-- SECTION 6: REVIEW -->
+  <div class="section" id="sec5">
+    <div class="section-title">Review and submit</div>
+    <div class="section-desc">Please check your details below before submitting. Once submitted, you will receive a confirmation by email and WhatsApp.</div>
+
+    <table class="review-table" id="reviewTable">
+      <tr><td colspan="2" class="review-section-head">Personal details</td></tr>
+      <tr><td>Full name</td><td id="rv_name">-</td></tr>
+      <tr><td>Email</td><td id="rv_email">-</td></tr>
+      <tr><td>Phone</td><td id="rv_phone">-</td></tr>
+      <tr><td>State</td><td id="rv_state">-</td></tr>
+      <tr><td colspan="2" class="review-section-head">Academic details</td></tr>
+      <tr><td>Institution</td><td id="rv_inst">-</td></tr>
+      <tr><td>Discipline</td><td id="rv_disc">-</td></tr>
+      <tr><td>Year of study</td><td id="rv_year">-</td></tr>
+      <tr><td colspan="2" class="review-section-head">Track selection</td></tr>
+      <tr><td>First preference</td><td id="rv_track">-</td></tr>
+      <tr><td>Second preference</td><td id="rv_track2">-</td></tr>
+      <tr><td colspan="2" class="review-section-head">Financial aid</td></tr>
+      <tr><td>Applying for aid</td><td id="rv_aid">-</td></tr>
+      <tr id="rv_aid_row" style="display:none"><td>Level of support</td><td id="rv_aidLevel">-</td></tr>
+    </table>
+
+    <div class="consent-row">
+      <input type="checkbox" id="consent1">
+      <div>The information I have provided in this form is accurate and true to the best of my knowledge.</div>
+    </div>
+    <div class="consent-row">
+      <input type="checkbox" id="consent2">
+      <div>I understand that my application will be assessed by the Oakvale team, and that being offered a place is subject to the programme terms. I have read the <a href="#">Student FAQ</a>.</div>
+    </div>
+    <div class="consent-row">
+      <input type="checkbox" id="consent3">
+      <div>I agree to Oakvale Learning contacting me by email and WhatsApp with information about my application and the programme.</div>
+    </div>
+
+    <div id="submitError" style="display:none" class="warn-box" style="margin-top:8px">Please confirm all three statements above before submitting.</div>
+
+    <button class="submit-btn" onclick="submitForm()">Submit my application</button>
+
+    <div class="nav-row" style="border:none;padding-top:.5rem">
+      <button class="back-btn" onclick="back(5)">Back to edit</button>
+      <div></div>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="section" id="secSuccess">
+    <div class="success-state">
+      <i class="ti ti-circle-check success-icon" aria-hidden="true"></i>
+      <h2>Application submitted</h2>
+      <p>Thank you for applying to the Oakvale Summer Intensive 2026. We have received your application and will be in touch by email and WhatsApp.</p>
+      <p style="margin-top:12px">Applications are reviewed on a rolling basis. If you are selected, you will receive an offer within five working days of your application date.</p>
+      <p style="margin-top:12px;font-weight:500;color:var(--color-text-primary)">hello@oakvaleltd.com · www.oakvaleltd.com</p>
+    </div>
+  </div>
+</div>
+
+<script>
+var current = 0;
+var uploadedFiles = [];
+var trackLabels = {A:'Track A: Clinical Enterprise',B:'Track B: Health Systems Leadership',C:'Track C: Digital Health Innovation'};
+
+function goTo(n){
+  if(n > current) return;
+  showSection(n);
+}
+
+function showSection(n){
+  for(var i=0;i<6;i++){
+    var s=document.getElementById('sec'+i);
+    if(s) s.classList.remove('visible');
+    var step=document.querySelectorAll('.step-item')[i];
+    if(step){
+      step.classList.remove('active','done');
+      if(i<n) step.classList.add('done');
+      if(i===n) step.classList.add('active');
+    }
+  }
+  document.getElementById('secSuccess').classList.remove('visible');
+  var target=document.getElementById('sec'+n);
+  if(target) target.classList.add('visible');
+  current=n;
+}
+
+function next(from){
+  if(from===3) buildReview();
+  if(from===4) buildReview();
+  showSection(from+1);
+}
+function back(from){ showSection(from-1); }
+
+function countWords(id,outId){
+  var v=document.getElementById(id).value.trim();
+  var words = v==='' ? 0 : v.split(/\s+/).length;
+  var el=document.getElementById(outId);
+  el.textContent=words+' word'+(words===1?'':'s');
+}
+
+document.querySelectorAll('input[name="track"]').forEach(function(r){
+  r.addEventListener('change',function(){
+    ['a','b','c'].forEach(function(t){
+      document.getElementById('track_'+t).classList.remove('selected');
+    });
+    var map={A:'a',B:'b',C:'c'};
+    document.getElementById('track_'+map[r.value]).classList.add('selected');
+    var s=document.getElementById('trackSecond');
+    Array.from(s.options).forEach(function(o){ o.disabled = o.value===r.value; });
+  });
+});
+
+document.querySelectorAll('input[name="aidLevel"]').forEach(function(r){
+  r.addEventListener('change',function(){
+    ['full','partial','flexible'].forEach(function(t){
+      document.getElementById('aid_'+t).classList.remove('selected');
+    });
+    document.getElementById('aid_'+r.value).classList.add('selected');
+  });
+});
+
+function toggleAid(){
+  var checked=document.getElementById('needsAid').checked;
+  document.getElementById('aidDetails').classList.toggle('visible',checked);
+  document.getElementById('noAidSection').style.display=checked?'none':'block';
+}
+
+function dragOver(e){ e.preventDefault(); document.getElementById('uploadZone').classList.add('dragover'); }
+function dragLeave(){ document.getElementById('uploadZone').classList.remove('dragover'); }
+function dropFile(e){ e.preventDefault(); dragLeave(); handleFiles(e.dataTransfer.files); }
+
+function handleFiles(files){
+  for(var i=0;i<files.length;i++){
+    if(uploadedFiles.length>=3) break;
+    if(files[i].size>5*1024*1024) continue;
+    uploadedFiles.push(files[i]);
+  }
+  renderFileList();
+}
+
+function renderFileList(){
+  var list=document.getElementById('fileList');
+  list.innerHTML='';
+  uploadedFiles.forEach(function(f,i){
+    var size=f.size<1024?f.size+' B':f.size<1024*1024?Math.round(f.size/1024)+' KB':Math.round(f.size/1024/1024*10)/10+' MB';
+    var div=document.createElement('div');
+    div.className='file-item';
+    div.innerHTML='<i class="ti ti-file-text" aria-hidden="true"></i><span class="file-name">'+escHtml(f.name)+'</span><span class="file-size">'+size+'</span><button class="file-remove" onclick="removeFile('+i+')" aria-label="Remove file"><i class="ti ti-x" aria-hidden="true"></i></button>';
+    list.appendChild(div);
+  });
+}
+
+function removeFile(i){ uploadedFiles.splice(i,1); renderFileList(); }
+function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function v(id){ return (document.getElementById(id)||{}).value||''; }
+
+function buildReview(){
+  var fn=v('firstName'), ln=v('lastName');
+  document.getElementById('rv_name').textContent=(fn+' '+ln).trim()||'-';
+  document.getElementById('rv_email').textContent=v('email')||'-';
+  document.getElementById('rv_phone').textContent=v('phone')||'-';
+  document.getElementById('rv_state').textContent=v('state')||'-';
+  document.getElementById('rv_inst').textContent=v('institution')||'-';
+  document.getElementById('rv_disc').textContent=v('discipline')||'-';
+  document.getElementById('rv_year').textContent=v('yearOfStudy')||'-';
+  var track=document.querySelector('input[name="track"]:checked');
+  document.getElementById('rv_track').textContent=track?trackLabels[track.value]:'-';
+  var t2=v('trackSecond');
+  document.getElementById('rv_track2').textContent=t2?trackLabels[t2]:'None';
+  var aid=document.getElementById('needsAid').checked;
+  document.getElementById('rv_aid').textContent=aid?'Yes':'No';
+  var aidRow=document.getElementById('rv_aid_row');
+  if(aid){
+    aidRow.style.display='';
+    var lvl=document.querySelector('input[name="aidLevel"]:checked');
+    var lvlLabels={full:'Full scholarship',partial:'Partial support',flexible:'Flexible payment'};
+    document.getElementById('rv_aidLevel').textContent=lvl?lvlLabels[lvl.value]:'-';
+  } else {
+    aidRow.style.display='none';
+  }
+}
+
+function submitForm(){
+  var c1=document.getElementById('consent1').checked;
+  var c2=document.getElementById('consent2').checked;
+  var c3=document.getElementById('consent3').checked;
+  var errEl=document.getElementById('submitError');
+  if(!c1||!c2||!c3){ errEl.style.display='block'; return; }
+  errEl.style.display='none';
+  document.getElementById('sec5').classList.remove('visible');
+  document.getElementById('secSuccess').classList.add('visible');
+  document.querySelectorAll('.step-item').forEach(function(s){ s.classList.remove('active','done'); s.classList.add('done'); });
+}
+</script>

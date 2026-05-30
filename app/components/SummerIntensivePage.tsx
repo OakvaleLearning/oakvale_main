@@ -82,7 +82,7 @@ const FAQS = [
     a: 'Plan for around five to seven hours per week, i.e. one hour daily. This includes the self-study module, the live session, and the weekly reflection activity.',
   },
   {
-    q: 'What is the Innovata-thon?',
+    q: 'What is the Oakvale Health Innovation Challenge?',
     a: 'It is a team competition built into the programme. In Week 3, your team receives a real healthcare challenge. You develop a solution and pitch it live to judges on 5 September. There is a total prize pool of ₦4,000,000.',
   },
 ];
@@ -171,27 +171,46 @@ export default function SummerIntensivePage() {
 
         {/* Desktop links */}
         <div style={{ display: 'flex', gap: 28, alignItems: 'center' }} className="si-desktop-nav">
-          {NAV_LINKS.map(link => (
-            <button
-              key={link.id}
-              onClick={() => scrollTo(link.id)}
-              className="si-nav-link"
-              style={{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: '0.78rem',
-                fontWeight: link.label === 'Apply' ? 700 : 400,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                color: link.label === 'Apply' ? C.gold : C.cream,
-                transition: 'opacity 0.2s',
-                padding: 0,
-              }}
-            >
-              {link.label}
-            </button>
-          ))}
+          {NAV_LINKS.map(link =>
+            link.label === 'Apply' ? (
+              <a
+                key={link.id}
+                href="/apply"
+                className="si-nav-link"
+                style={{
+                  fontSize: '0.78rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: C.gold,
+                  textDecoration: 'none',
+                  transition: 'opacity 0.2s',
+                }}
+              >
+                {link.label}
+              </a>
+            ) : (
+              <button
+                key={link.id}
+                onClick={() => scrollTo(link.id)}
+                className="si-nav-link"
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: '0.78rem',
+                  fontWeight: 400,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: C.cream,
+                  transition: 'opacity 0.2s',
+                  padding: 0,
+                }}
+              >
+                {link.label}
+              </button>
+            )
+          )}
         </div>
 
         {/* Mobile hamburger */}
@@ -227,28 +246,49 @@ export default function SummerIntensivePage() {
             boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
           }}
         >
-          {NAV_LINKS.map(link => (
-            <button
-              key={link.id}
-              onClick={() => scrollTo(link.id)}
-              style={{
-                display: 'block',
-                width: '100%',
-                textAlign: 'left',
-                padding: '14px 24px',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: '0.9rem',
-                letterSpacing: '0.06em',
-                textTransform: 'uppercase',
-                color: link.label === 'Apply' ? C.gold : C.cream,
-                borderBottom: `1px solid rgba(247,243,236,0.07)`,
-              }}
-            >
-              {link.label}
-            </button>
-          ))}
+          {NAV_LINKS.map(link =>
+            link.label === 'Apply' ? (
+              <a
+                key={link.id}
+                href="/apply"
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  textAlign: 'left',
+                  padding: '14px 24px',
+                  fontSize: '0.9rem',
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase',
+                  color: C.gold,
+                  borderBottom: `1px solid rgba(247,243,236,0.07)`,
+                  textDecoration: 'none',
+                }}
+              >
+                {link.label}
+              </a>
+            ) : (
+              <button
+                key={link.id}
+                onClick={() => scrollTo(link.id)}
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  textAlign: 'left',
+                  padding: '14px 24px',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: '0.9rem',
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase',
+                  color: C.cream,
+                  borderBottom: `1px solid rgba(247,243,236,0.07)`,
+                }}
+              >
+                {link.label}
+              </button>
+            )
+          )}
         </div>
       )}
 
@@ -329,7 +369,7 @@ export default function SummerIntensivePage() {
                 maxWidth: 620,
               }}
             >
-              Four weeks. Three tracks. One programme that will change how you think about your career in healthcare.
+              Four weeks. Three tracks. One programme for the next generation of Nigerian Health Leaders.
             </p>
 
             <p
@@ -343,11 +383,12 @@ export default function SummerIntensivePage() {
                 maxWidth: 560,
               }}
             >
-              The Oakvale Healthcare Leadership and Innovation Summer Intensive 2026 is a four-week blended-learning programme for penultimate and final-year health sciences students at CMUL, LASUCOM, and EkoUnimed. Applications open 9 June 2026.
+             Why It Works: Direct upgrade on the original. "Health systems" 
+             signal scopes. The contrast lands cleanly.
             </p>
 
             <a
-              href="mailto:hello@oakvaleltd.com"
+              href="/apply"
               className="si-fadeup si-btn"
               style={{
                 animationDelay: '0.7s',
@@ -377,7 +418,7 @@ export default function SummerIntensivePage() {
               The Programme
             </p>
             <h2 style={{ fontFamily: 'var(--font-cormorant)', fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 600, color: C.forest, lineHeight: 1.2, marginBottom: '2rem' }}>
-              What is this programme?
+              What is this programme about?
             </h2>
 
             <p style={{ fontSize: '1.05rem', color: C.charcoal, lineHeight: 1.82, marginBottom: '1.5rem' }}>
@@ -463,13 +504,24 @@ export default function SummerIntensivePage() {
           id="innovathon"
           style={{ backgroundColor: C.forestMid, padding: '88px 24px', position: 'relative', overflow: 'hidden' }}
         >
+           <Image
+            src="/summer/summer-intensive-hero00.png"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            style={{ objectFit: 'cover', objectPosition: 'center' }}
+          />
+          {/* Dark overlay */}
+          <div className="absolute inset-0 bg-[#071f16]/60 pointer-events-none" />
+
           {/* Diagonal stripe pattern */}
-          <div style={{
+          {/* <div style={{
             position: 'absolute', inset: 0, opacity: 0.05,
             backgroundImage: `repeating-linear-gradient(45deg, ${C.gold} 0, ${C.gold} 1px, transparent 0, transparent 50%)`,
             backgroundSize: '20px 20px',
             pointerEvents: 'none',
-          }} />
+          }} /> */}
 
           <div style={{ position: 'relative', zIndex: 1, maxWidth: 800, margin: '0 auto' }}>
             <p style={{ color: C.goldLight, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.78rem', fontWeight: 600, marginBottom: '0.6rem' }}>
@@ -606,7 +658,7 @@ export default function SummerIntensivePage() {
               Questions
             </p>
             <h2 style={{ fontFamily: 'var(--font-cormorant)', fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 600, color: C.forest, lineHeight: 1.2, marginBottom: '2rem' }}>
-              Common questions
+              Frequently asked questions (FAQs)
             </h2>
 
             <div>
@@ -685,7 +737,7 @@ export default function SummerIntensivePage() {
               lineHeight: 1.25,
               marginBottom: '1.5rem',
             }}>
-              Applications close 2 July 2026. Sixty places per institution across three tracks.
+              Applications close 2 July 2026. <br /> Sixty places per institution across three tracks.
             </h2>
 
             <p style={{ fontSize: '1.05rem', color: 'rgba(247,243,236,0.78)', lineHeight: 1.78, maxWidth: 580, margin: '0 auto 2.5rem' }}>
@@ -693,7 +745,7 @@ export default function SummerIntensivePage() {
             </p>
 
             <a
-              href="mailto:hello@oakvaleltd.com"
+              href="/apply"
               className="si-btn"
               style={{
                 display: 'inline-block',

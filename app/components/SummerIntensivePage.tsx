@@ -355,6 +355,7 @@ export default function SummerIntensivePage() {
               }}
             >
               Learn to lead health systems.{' '}
+              <br/>
               <em style={{ color: C.gold }}>Not just to manage patients.</em>
             </h1>
 
@@ -372,20 +373,7 @@ export default function SummerIntensivePage() {
               Four weeks. Three tracks. One programme for the next generation of Nigerian Health Leaders.
             </p>
 
-            <p
-              className="si-fadeup"
-              style={{
-                animationDelay: '0.55s',
-                fontSize: '0.95rem',
-                color: 'rgba(247,243,236,0.6)',
-                lineHeight: 1.75,
-                marginBottom: '2.5rem',
-                maxWidth: 560,
-              }}
-            >
-             Why It Works: Direct upgrade on the original. "Health systems" 
-             signal scopes. The contrast lands cleanly.
-            </p>
+           
 
             <a
               href="/apply"

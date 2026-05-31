@@ -346,17 +346,17 @@ export default function SummerIntensivePage() {
               style={{
                 animationDelay: '0.25s',
                 fontFamily: 'var(--font-cormorant)',
-                fontSize: 'clamp(2.4rem, 6vw, 4.8rem)',
+                fontSize: 'clamp(1.9rem, 4.6vw, 3.8rem)',
                 fontWeight: 600,
                 color: C.cream,
-                lineHeight: 1.12,
+                lineHeight: 1.15,
                 marginBottom: '1.5rem',
                 maxWidth: 820,
               }}
             >
-              Learn to lead health systems.{' '}
+              Lead the future of healthcare.
               <br/>
-              <em style={{ color: C.gold }}>Not just to manage patients.</em>
+              <em style={{ color: C.gold }}>Shape Systems.</em> Drive Innovation. Create Impact.
             </h1>
 
             <p

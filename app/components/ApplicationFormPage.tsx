@@ -277,9 +277,24 @@ export default function ApplicationFormPage() {
           <h1 style={{ fontFamily: 'var(--font-cormorant)', fontSize: 28, fontWeight: 400, color: C.forest, margin: '0 0 6px', lineHeight: 1.2 }}>
             Student Application Form
           </h1>
-          <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.5, margin: 0, fontFamily: 'DM Sans, sans-serif' }}>
-            Applications close 2 July 2026. All fields marked <span style={{ color: '#c0392b' }}>*</span> are required.
-          </p>
+        
+          <p className='py-2'>All fields marked <span style={{ color: '#c0392b' }}>*</span> are required.</p>
+          <span className="text-slate-500 font-medium font-sans border-b border-slate-300 pb-0.5" style={{ display: 'inline-block', marginTop: 6, fontSize: 13, fontFamily: 'DM Sans, sans-serif' }}> 
+           Want to learn more? {" "}
+          <a
+            href="/apply/faq"
+            style={{
+              display: 'inline-block', 
+              fontWeight: 500,
+              color: C.gold,
+              textDecoration: 'none',
+              fontFamily: 'DM Sans, sans-serif', 
+              paddingBottom: 1,
+            }}
+          >
+           Read the FAQs before you apply →
+          </a>
+          </span>
         </div>
 
         {/* Step bar */}
@@ -724,6 +739,9 @@ export default function ApplicationFormPage() {
             </div>
           </div>
         )}
+          <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.5, margin: 0, fontFamily: 'DM Sans, sans-serif' }}>
+            Applications close 2 July 2026. 
+          </p>
 
       </div>
     </div>

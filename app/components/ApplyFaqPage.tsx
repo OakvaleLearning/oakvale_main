@@ -160,7 +160,7 @@ export default function ApplyFaqPage() {
             Applications close <strong style={{ color: C.charcoal }}>2 July 2026</strong>. We review on a rolling basis — applying early improves your chance of securing your first track preference.
           </p>
           <a
-            href="/apply/form"
+            href="/apply"
             style={{
               display: 'inline-flex', alignItems: 'center', gap: 8,
               background: C.forest, color: '#fff',

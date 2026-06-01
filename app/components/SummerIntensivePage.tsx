@@ -16,17 +16,17 @@ const TRACKS = [
   {
     Icon: Briefcase,
     title: 'Track A: Clinical Enterprise',
-    body: 'This track is for students who want to understand the business of healthcare. You will learn what it takes to design and run a sustainable clinical service, from MDCN regulations and financing models to quality management and operational design. You will finish with a service design capstone based on a real scenario: running a fertility clinic in Lagos.',
+    body: 'This track is for students who want to understand the business of healthcare. You will learn what it takes to design and run a sustainable clinical service, from MDCN regulations and financing models to quality management and operational design.',
   },
   {
     Icon: Globe,
     title: 'Track B: Health Systems Leadership',
-    body: 'This track is for students who want to influence the systems that determine health outcomes for entire communities. You will study the Nigerian public health architecture, WHO frameworks, health financing, and evidence-based policy design. You will finish with a systems change proposal based on a real maternal health challenge in Nigeria.',
+    body: 'This track is for students who want to influence the systems that determine health outcomes for entire communities. ic health architecture, WHO frameworks, health financing, and evidence-based policy design.',
   },
   {
     Icon: Laptop,
     title: 'Track C: Digital Innovation',
-    body: "This track is for students who are curious about technology and want to lead digital transformation in healthcare. You will study Nigeria's digital health landscape, global standards, telemedicine design, and data governance. You will finish with a digital health solution concept based on building a telemedicine service for a Nigerian context.",
+    body: "This track is for students who are curious about technology and want to lead digital transformation in healthcare. You will study Nigeria's digital health landscape, global standards, telemedicine design, and data governance.",
   },
 ];
 
@@ -313,6 +313,10 @@ export default function SummerIntensivePage() {
             alignItems: 'center',
             position: 'relative',
             overflow: 'hidden',
+            width: '100%',
+            maxWidth: 'none',
+            padding: 0,
+            margin: 0,
           }}
         >
           {/* Background image */}
@@ -322,7 +326,7 @@ export default function SummerIntensivePage() {
             fill
             priority
             sizes="100vw"
-            style={{ objectFit: 'cover', objectPosition: 'center' }}
+            style={{ objectFit: 'cover', objectPosition: 'bottom' }}
           />
           {/* Dark overlay */}
           <div className="absolute inset-0 bg-[#071f16]/70 pointer-events-none" />
@@ -356,24 +360,8 @@ export default function SummerIntensivePage() {
             >
               Lead the future of healthcare.
               <br/>
-              <em style={{ color: C.gold }}>Shape Systems.</em> Drive Innovation. Create Impact.
+              <em style={{ color: C.gold }}>Shape Systems.Drive Innovation. Create Impact.</em> 
             </h1>
-
-            <p
-              className="si-fadeup"
-              style={{
-                animationDelay: '0.4s',
-                fontSize: 'clamp(1rem, 2.5vw, 1.3rem)',
-                color: 'rgba(247,243,236,0.85)',
-                lineHeight: 1.65,
-                marginBottom: '1.25rem',
-                maxWidth: 620,
-              }}
-            >
-              Four weeks. Three tracks. One programme for the next generation of Nigerian Health Leaders.
-            </p>
-
-           
 
             <a
               href="/apply"
@@ -515,7 +503,7 @@ export default function SummerIntensivePage() {
             <p style={{ color: C.goldLight, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.78rem', fontWeight: 600, marginBottom: '0.6rem' }}>
               The Capstone Competition
             </p>
-            <h2 style={{ fontFamily: 'var(--font-cormorant)', fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 600, color: C.cream, lineHeight: 1.2, marginBottom: '2rem' }}>
+            <h2 style={{ fontFamily: 'var(--font-cormorant)', fontSize: 'clamp(1.5rem, 3vw, 2.4rem)', fontWeight: 600, color: C.cream, lineHeight: 1.2, marginBottom: '2rem' }}>
               The Oakvale Health Innovation Challenge
             </h2>
 
@@ -601,7 +589,7 @@ export default function SummerIntensivePage() {
               Essentials
             </p>
             <h2 style={{ fontFamily: 'var(--font-cormorant)', fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 600, color: C.forest, lineHeight: 1.2, marginBottom: '2rem' }}>
-              The details
+              The Details
             </h2>
 
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -646,7 +634,7 @@ export default function SummerIntensivePage() {
               Questions
             </p>
             <h2 style={{ fontFamily: 'var(--font-cormorant)', fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 600, color: C.forest, lineHeight: 1.2, marginBottom: '2rem' }}>
-              Frequently asked questions (FAQs)
+              Frequently Asked Questions (FAQs)
             </h2>
 
             <div>

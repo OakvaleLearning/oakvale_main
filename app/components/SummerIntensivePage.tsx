@@ -426,7 +426,7 @@ export default function SummerIntensivePage() {
             pointerEvents: 'none',
           }} />
 
-          <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: 960, margin: '0 auto', padding: '24px 24px 64px' }}>
+          <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: 960, margin: '0 auto', padding: '24px 24px 10rem 24px' }}>
             <p
               className="si-fadeup"
               style={{ animationDelay: '0.1s', color: C.gold, textTransform: 'uppercase', letterSpacing: '0.12em', fontSize: '0.78rem', fontWeight: 600, marginBottom: '1.5rem' }}

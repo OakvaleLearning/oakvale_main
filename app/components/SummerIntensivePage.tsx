@@ -426,7 +426,7 @@ export default function SummerIntensivePage() {
             pointerEvents: 'none',
           }} />
 
-          <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: 960, margin: '0 auto', padding: '24px 24px 10rem 24px' }}>
+          <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: 1260, margin: '0 auto', padding: '24px 24px 10rem 24px' }}>
             <p
               className="si-fadeup"
               style={{ animationDelay: '0.1s', color: C.gold, textTransform: 'uppercase', letterSpacing: '0.12em', fontSize: '0.78rem', fontWeight: 600, marginBottom: '1.5rem' }}
@@ -443,8 +443,7 @@ export default function SummerIntensivePage() {
                 fontWeight: 600,
                 color: C.cream,
                 lineHeight: 1.15,
-                marginBottom: '1.5rem',
-                maxWidth: 820,
+                marginBottom: '1.5rem', 
               }}
             >
               Lead the future of healthcare.
@@ -494,18 +493,37 @@ export default function SummerIntensivePage() {
             </p>
 
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginBottom: '1.5rem' }}>
-              {['Clinical Enterprise', 'Health Systems Leadership', 'Digital Innovation'].map(t => (
-                <span key={t} style={{
-                  border: `1.5px solid ${C.gold}`,
-                  color: C.forest,
-                  padding: '6px 18px',
-                  borderRadius: 20,
-                  fontSize: '0.88rem',
-                  fontWeight: 500,
-                  letterSpacing: '0.02em',
-                }}>
+              {['Clinical Enterprise', 'Health Systems Leadership', 'Digital Innovation'].map((t, idx) => (
+                <button
+                  key={t}
+                  onClick={() => {
+                    setTrackOpen(idx);
+                    setTimeout(() => scrollTo('tracks'), 50);
+                  }}
+                  style={{
+                    border: `1.5px solid ${C.gold}`,
+                    backgroundColor: 'transparent',
+                    color: C.forest,
+                    padding: '6px 18px',
+                    borderRadius: 20,
+                    fontSize: '0.88rem',
+                    fontWeight: 500,
+                    letterSpacing: '0.02em',
+                    cursor: 'pointer',
+                    fontFamily: 'inherit',
+                    transition: 'background-color 0.2s ease, color 0.2s ease',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.backgroundColor = C.gold;
+                    e.currentTarget.style.color = '#fff';
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                    e.currentTarget.style.color = C.forest;
+                  }}
+                >
                   {t}
-                </span>
+                </button>
               ))}
             </div>
 

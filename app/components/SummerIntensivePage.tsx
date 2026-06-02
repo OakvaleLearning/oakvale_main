@@ -410,7 +410,7 @@ export default function SummerIntensivePage() {
         >
           {/* Background image */}
           <Image
-            src="/summer/summer-intensive-hero1.png"
+            src="/summer/summer-intensive-hero1.jpeg"
             alt=""
             fill
             priority

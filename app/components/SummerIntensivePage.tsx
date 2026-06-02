@@ -16,17 +16,95 @@ const TRACKS = [
   {
     Icon: Briefcase,
     title: 'Track A: Clinical Enterprise',
-    body: 'This track is for students who want to understand the business of healthcare. You will learn what it takes to design and run a sustainable clinical service, from MDCN regulations and financing models to quality management and operational design.',
+    tagline: 'For health professionals who want to understand the business of healthcare. Design, run, and lead a sustainable clinical service — from regulations and financing to quality management and operational design.',
+    weeks: [
+      {
+        n: 1,
+        title: 'Who You Are as a Clinician-Entrepreneur',
+        body: 'Build your professional identity as someone who combines clinical skill with enterprise thinking. You will map the clinical services landscape in Nigeria, understand how private facilities are regulated and funded, and start to see your future practice as an enterprise that must be well managed and financially sound.',
+        outcome: 'You can describe what a clinician-entrepreneur is, explain the professional and ethical standards that apply, and identify your own starting point as a leader.',
+      },
+      {
+        n: 2,
+        title: 'How Clinical Services Work as Systems',
+        body: 'Learn how a clinical service is designed, managed, and measured. You will study service design, supply chain management, cost structures, and performance frameworks, and connect these to real examples of clinical operations in Nigeria.',
+        outcome: 'You can explain how a clinical service is designed, managed, and measured, and connect this to real conditions in Nigeria.',
+      },
+      {
+        n: 3,
+        title: 'Global Standards and How to Apply Them',
+        body: 'Study international best practices in clinical service design, including quality frameworks used by leading health systems worldwide. You will learn how to adapt these standards for resource-constrained environments and build quality improvement protocols that are practical and sustainable in a Nigerian context.',
+        outcome: 'You can describe international best practices in clinical service design and explain how to adapt them for resource-constrained environments.',
+      },
+      {
+        n: 4,
+        title: 'Applied Scenario and Health Innovation Challenge',
+        body: 'Apply everything from the previous three weeks to a structured real-world scenario: running a fertility clinic in Lagos. You will diagnose operational and financial challenges, propose practical solutions, and complete your Health Innovation Challenge capstone project for the live pitch on 5 September.',
+        outcome: 'You have applied all four weeks of learning to a real-world scenario and completed a Service Design Roadmap ready for the Health Innovation Challenge Showcase.',
+      },
+    ],
   },
   {
     Icon: Globe,
     title: 'Track B: Health Systems Leadership',
-    body: 'This track is for students who want to influence the systems that determine health outcomes for entire communities. ic health architecture, WHO frameworks, health financing, and evidence-based policy design.',
+    tagline: 'For health professionals who want to influence the systems that determine health outcomes for entire communities. Think beyond the individual patient to the policies and structures that shape care at scale.',
+    weeks: [
+      {
+        n: 1,
+        title: 'Who You Are as a Clinician-Systems Leader',
+        body: 'Build your professional identity as a clinician who leads within health systems, not just practises within them. You will map the structure, funding, and key performance gaps of the Nigerian public health system, and start to identify where your leadership can make a difference.',
+        outcome: 'You can describe the identity of a clinician-systems leader, explain how the Nigerian public health system is structured and financed, and map the key performance gaps.',
+      },
+      {
+        n: 2,
+        title: 'How Health Systems Work as Managed Entities',
+        body: 'Learn how health systems are governed, financed, and managed. Using the WHO health system building block framework, you will study how governance, workforce management, and health financing interact in practice, and connect these to specific challenges in Nigerian public health delivery.',
+        outcome: 'You can apply the WHO building block framework to diagnose a Nigerian health system problem and explain the governance, financing, and workforce dimensions that drive it.',
+      },
+      {
+        n: 3,
+        title: 'Global Standards and How to Apply Them Here',
+        body: 'Study international frameworks for health systems strengthening, including lessons from health reforms in Rwanda, Ghana, and Ethiopia. You will learn how to translate global evidence into context-specific policy recommendations and how to advocate for systems change from within the system.',
+        outcome: 'You can describe international frameworks for health systems strengthening and explain how to adapt them to the specific conditions of Nigerian healthcare.',
+      },
+      {
+        n: 4,
+        title: 'Applied Scenario and Health Innovation Challenge',
+        body: 'Apply everything from the previous three weeks to a real-world systems challenge: strengthening maternal health services in a Nigerian state. You will design a multi-component intervention, develop a stakeholder engagement strategy, and complete your Health Innovation Challenge capstone for the live pitch on 5 September.',
+        outcome: 'You have completed a structured Systems Change Proposal demonstrating competence across all four weeks and delivered a live pitch at the Health Innovation Challenge Showcase.',
+      },
+    ],
   },
   {
     Icon: Laptop,
-    title: 'Track C: Digital Innovation',
-    body: "This track is for students who are curious about technology and want to lead digital transformation in healthcare. You will study Nigeria's digital health landscape, global standards, telemedicine design, and data governance.",
+    title: 'Track C: Digital Health Innovation',
+    tagline: 'For health professionals who are curious about technology and want to lead digital transformation in healthcare. You do not need to be a software engineer — you need to understand the problems and champion solutions that make care better.',
+    weeks: [
+      {
+        n: 1,
+        title: 'Who You Are as a Clinician-Innovator',
+        body: 'Build your professional identity as a clinician who leads digital change. You will map the Nigerian digital health landscape, study your regulatory responsibilities under the NDPR and FMOH guidelines, and develop the user-centred mindset that separates effective digital health leaders from passive technology users.',
+        outcome: 'You can describe what a clinician-innovator is, explain your ethical and regulatory responsibilities in digital health, and articulate the user-centred approach needed to lead transformation effectively.',
+      },
+      {
+        n: 2,
+        title: 'How Digital Health Systems Work',
+        body: 'Learn the core components of a digital health system: electronic health records, telemedicine platforms, mHealth tools, and health data governance. You will connect these concepts to the practical constraints of Nigerian digital health delivery and study what makes digital health products succeed or fail in the Nigerian market.',
+        outcome: 'You can explain the core components of a digital health system and connect these to the practical constraints and opportunities of the Nigerian market.',
+      },
+      {
+        n: 3,
+        title: 'Global Standards and How to Apply Them Here',
+        body: 'Study international frameworks for digital health design, including FHIR interoperability standards, WHO digital health guidelines, and the emerging evidence on AI in clinical workflows. You will learn how to adapt these frameworks for low-bandwidth, low-resource, and shared-device contexts specific to Nigeria.',
+        outcome: 'You can describe international best practices in digital health design and explain how to adapt global frameworks for Nigerian infrastructure and users.',
+      },
+      {
+        n: 4,
+        title: 'Applied Scenario and Health Innovation Challenge',
+        body: 'Apply everything from the previous three weeks to a structured real-world scenario: building a telemedicine service in Nigeria. You will diagnose clinical, technical, and adoption failures in an existing digital health service, redesign it using the frameworks from earlier weeks, and complete your Health Innovation Challenge capstone for the live pitch on 5 September.',
+        outcome: 'You have completed a structured Digital Health Solution Concept demonstrating competence across all four weeks and delivered a live pitch at the Health Innovation Challenge Showcase.',
+      },
+    ],
   },
 ];
 
@@ -103,6 +181,7 @@ const C = {
 
 export default function SummerIntensivePage() {
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
+  const [trackOpen, setTrackOpen] = useState<number | null>(null);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const scrollTo = (id: string) => {
@@ -131,9 +210,19 @@ export default function SummerIntensivePage() {
           overflow: hidden;
           transition: max-height 0.35s ease, opacity 0.3s ease;
         }
+        .si-track-card {
+          transition: box-shadow 0.22s ease, border-color 0.22s ease;
+        }
         .si-track-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 10px 36px rgba(10,61,43,0.13);
+          box-shadow: 0 8px 28px rgba(10,61,43,0.10);
+        }
+        .si-track-body {
+          overflow: hidden;
+          transition: max-height 0.45s ease, opacity 0.35s ease;
+        }
+        @media (max-width: 640px) {
+          .si-track-header { padding: 18px 18px !important; gap: 14px !important; }
+          .si-week-row { grid-template-columns: 1fr !important; gap: 8px !important; }
         }
         .si-btn:hover { background-color: ${C.goldLight} !important; }
         .si-nav-link:hover { opacity: 0.75; }
@@ -360,7 +449,7 @@ export default function SummerIntensivePage() {
             >
               Lead the future of healthcare.
               <br/>
-              <em style={{ color: C.gold }}>Shape Systems.Drive Innovation. Create Impact.</em> 
+              <em style={{ color: C.gold }}>Shape Systems. Drive Innovation. Create Impact.</em> 
             </h1>
 
             <a
@@ -436,41 +525,140 @@ export default function SummerIntensivePage() {
               Your Specialisation
             </p>
             <h2 style={{ fontFamily: 'var(--font-cormorant)', fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 600, color: C.forest, lineHeight: 1.2, marginBottom: '0.75rem', textAlign: 'center' }}>
-              Choose your track
+              Choose Your Track
             </h2>
             <p style={{ fontSize: '1rem', color: C.muted, maxWidth: 620, margin: '0 auto 3.5rem', textAlign: 'center', lineHeight: 1.72 }}>
               You choose one track when you apply. You stay in that track for the full four weeks. Your track shapes the modules you study, the live sessions you attend, and the team you compete with in the Innovata-thon.
             </p>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24 }}>
-              {TRACKS.map(({ Icon, title, body }, i) => (
-                <div
-                  key={i}
-                  className="si-track-card"
-                  style={{
-                    backgroundColor: C.cream,
-                    borderLeft: `4px solid ${C.gold}`,
-                    borderRadius: 4,
-                    padding: '32px 28px',
-                    transition: 'transform 0.22s ease, box-shadow 0.22s ease',
-                  }}
-                >
-                  <div style={{
-                    width: 46, height: 46, borderRadius: '50%',
-                    backgroundColor: `rgba(200,136,26,0.1)`,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    marginBottom: 18,
-                  }}>
-                    <Icon size={22} color={C.gold} />
+            <div style={{ maxWidth: 880, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {TRACKS.map(({ Icon, title, tagline, weeks }, i) => {
+                const open = trackOpen === i;
+                return (
+                  <div
+                    key={i}
+                    className="si-track-card"
+                    style={{
+                      backgroundColor: C.cream,
+                      border: `1px solid rgba(10,61,43,0.10)`,
+                      borderLeft: `4px solid ${C.gold}`,
+                      borderRadius: 4,
+                      overflow: 'hidden',
+                    }}
+                  >
+                    <button
+                      aria-expanded={open}
+                      onClick={() => setTrackOpen(prev => prev === i ? null : i)}
+                      className="si-track-header"
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 20,
+                        width: '100%',
+                        textAlign: 'left',
+                        padding: '22px 26px',
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        fontFamily: 'inherit',
+                      }}
+                    >
+                      <div style={{
+                        width: 46, height: 46, borderRadius: '50%', flexShrink: 0,
+                        backgroundColor: `rgba(200,136,26,0.12)`,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      }}>
+                        <Icon size={22} color={C.gold} />
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <h3 style={{ fontFamily: 'var(--font-cormorant)', fontSize: '1.3rem', fontWeight: 600, color: C.forest, lineHeight: 1.3, margin: 0, marginBottom: open ? 0 : 6 }}>
+                          {title}
+                        </h3>
+                        {!open && (
+                          <p style={{ fontSize: '0.95rem', color: C.muted, lineHeight: 1.6, margin: 0 }}>
+                            {tagline}
+                          </p>
+                        )}
+                      </div>
+                      <ChevronDown
+                        size={22}
+                        color={C.gold}
+                        style={{ flexShrink: 0, transition: 'transform 0.3s ease', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                      />
+                    </button>
+
+                    <div
+                      className="si-track-body"
+                      style={{ maxHeight: open ? 2400 : 0, opacity: open ? 1 : 0 }}
+                    >
+                      <div style={{ padding: '4px 26px 28px' }}>
+                        <p style={{ fontSize: '0.97rem', color: C.dark, lineHeight: 1.78, marginBottom: 24 }}>
+                          {tagline}
+                        </p>
+
+                        {weeks.map((wk, wi) => (
+                          <div
+                            key={wk.n}
+                            className="si-week-row"
+                            style={{
+                              display: 'grid',
+                              gridTemplateColumns: '88px 1fr',
+                              gap: 20,
+                              paddingBottom: 20,
+                              marginBottom: 20,
+                              borderBottom: wi < weeks.length - 1 ? `1px solid rgba(10,61,43,0.08)` : 'none',
+                            }}
+                          >
+                            <div>
+                              <span style={{
+                                display: 'inline-block',
+                                fontFamily: 'DM Sans, sans-serif',
+                                fontSize: '0.72rem',
+                                fontWeight: 700,
+                                letterSpacing: '0.12em',
+                                textTransform: 'uppercase',
+                                color: C.gold,
+                                backgroundColor: 'rgba(200,136,26,0.10)',
+                                padding: '5px 10px',
+                                borderRadius: 3,
+                              }}>
+                                Week {wk.n}
+                              </span>
+                            </div>
+                            <div>
+                              <h4 style={{ fontFamily: 'var(--font-cormorant)', fontSize: '1.1rem', fontWeight: 600, color: C.forest, lineHeight: 1.3, margin: '0 0 8px' }}>
+                                {wk.title}
+                              </h4>
+                              <p style={{ fontSize: '0.95rem', color: C.dark, lineHeight: 1.75, margin: '0 0 12px' }}>
+                                {wk.body}
+                              </p>
+                              <div style={{
+                                backgroundColor: 'rgba(200,136,26,0.08)',
+                                borderLeft: `3px solid ${C.gold}`,
+                                padding: '12px 14px',
+                                borderRadius: 2,
+                              }}>
+                                <span style={{
+                                  fontFamily: 'DM Sans, sans-serif',
+                                  fontSize: '0.8rem',
+                                  fontWeight: 700,
+                                  color: C.forest,
+                                  letterSpacing: '0.02em',
+                                }}>
+                                  By the end of this week:
+                                </span>{' '}
+                                <span style={{ fontSize: '0.93rem', color: C.dark, lineHeight: 1.7 }}>
+                                  {wk.outcome}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                  <h3 style={{ fontFamily: 'var(--font-cormorant)', fontSize: '1.4rem', fontWeight: 600, color: C.forest, lineHeight: 1.3, marginBottom: 12 }}>
-                    {title}
-                  </h3>
-                  <p style={{ fontSize: '0.95rem', color: C.dark, lineHeight: 1.78 }}>
-                    {body}
-                  </p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>

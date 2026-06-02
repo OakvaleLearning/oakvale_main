@@ -278,7 +278,7 @@ export default function ApplicationFormPage() {
             Student Application Form
           </h1>
         
-          <p className='py-2'>All fields marked <span style={{ color: '#c0392b' }}>*</span> are required.</p>
+          <p className='py-2what'>All fields marked <span style={{ color: '#c0392b' }}>*</span> are required.</p>
           <span className="text-slate-500 font-medium font-sans border-b border-slate-300 pb-0.5" style={{ display: 'inline-block', marginTop: 6, fontSize: 13, fontFamily: 'DM Sans, sans-serif' }}> 
            Want to learn more? {" "}
           <a

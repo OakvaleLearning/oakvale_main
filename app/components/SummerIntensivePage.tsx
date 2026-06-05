@@ -249,7 +249,7 @@ export default function SummerIntensivePage() {
       >
         <p
               className="si-fadeup"
-              style={{ animationDelay: '0.1s', color: "#fff", textTransform: 'uppercase', letterSpacing: '0.12em', fontSize: '0.78rem', fontWeight: 500 }}
+              style={{ animationDelay: '0.1s', color: "#fff", textTransform: 'capitalize', letterSpacing: '0.12em', fontSize: '0.78rem', fontWeight: 500 }}
             >
               Healthcare Leadership and Innovation 
             </p>
@@ -492,11 +492,15 @@ export default function SummerIntensivePage() {
             </h2>
 
             <p style={{ fontSize: '1.05rem', color: C.charcoal, lineHeight: 1.82, marginBottom: '1.5rem' }}>
-              Your degree teaches you how to diagnose, treat, and care for patients. But healthcare today is more than clinical work. Someone has to run the clinic. Someone has to design the policy. Someone has to build the technology. Nigerian health professionals are stepping into those roles, and most of them had no training for it.
+            A healthcare degree equips you to serve patients. But some of the biggest opportunities in health lie beyond the consulting room, laboratory, or ward. 
             </p>
             <p style={{ fontSize: '1.05rem', color: C.charcoal, lineHeight: 1.82, marginBottom: '1.25rem' }}>
-              This programme gives you that training. In four weeks, you will study one specialist track:
+             Healthcare needs more than clinicians. It needs innovators, entrepreneurs, policymakers, managers, and leaders who can solve complex challenges and create lasting impact. 
+               </p>
+            <p style={{ fontSize: '1.05rem', color: C.charcoal, lineHeight: 1.82, marginBottom: '1.25rem' }}>
+              Yet most health sciences students graduate without exposure to these pathways.
             </p>
+            <p style={{ fontSize: '1.05rem', color: C.charcoal, lineHeight: 1.82, marginBottom: '1.25rem' }}>The Oakvale Health Leadership & Innovation Summer Intensive bridges that gap.</p>
 
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginBottom: '1.5rem' }}>
               {['Clinical Enterprise', 'Health Systems Leadership', 'Digital Innovation'].map((t, idx) => (

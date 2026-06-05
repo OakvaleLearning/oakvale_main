@@ -249,7 +249,7 @@ export default function SummerIntensivePage() {
       >
         <p
               className="si-fadeup"
-              style={{ animationDelay: '0.1s', color: "#fff", textTransform: 'capitalize', letterSpacing: '0.12em', fontSize: '0.78rem', fontWeight: 500 }}
+              style={{ animationDelay: '0.1s', color: "#fff", textTransform: 'uppercase', letterSpacing: '0.12em', fontSize: '0.78rem', fontWeight: 500 }}
             >
               Healthcare Leadership and Innovation 
             </p>

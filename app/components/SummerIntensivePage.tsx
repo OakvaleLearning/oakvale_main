@@ -496,11 +496,12 @@ export default function SummerIntensivePage() {
             </p>
             <p style={{ fontSize: '1.05rem', color: C.charcoal, lineHeight: 1.82, marginBottom: '1.25rem' }}>
              Healthcare needs more than clinicians. It needs innovators, entrepreneurs, policymakers, managers, and leaders who can solve complex challenges and create lasting impact. 
+               Yet most health sciences students graduate without exposure to these pathways.
                </p>
             <p style={{ fontSize: '1.05rem', color: C.charcoal, lineHeight: 1.82, marginBottom: '1.25rem' }}>
-              Yet most health sciences students graduate without exposure to these pathways.
+            The Oakvale Health Leadership & Innovation Summer Intensive bridges that gap.
             </p>
-            <p style={{ fontSize: '1.05rem', color: C.charcoal, lineHeight: 1.82, marginBottom: '1.25rem' }}>The Oakvale Health Leadership & Innovation Summer Intensive bridges that gap.</p>
+            <p style={{ fontSize: '1.05rem', color: C.charcoal, lineHeight: 1.82, marginBottom: '1.25rem' }}> In four weeks, you will study one specialist track:</p>
 
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginBottom: '1.5rem' }}>
               {['Clinical Enterprise', 'Health Systems Leadership', 'Digital Innovation'].map((t, idx) => (

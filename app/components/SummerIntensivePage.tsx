@@ -157,7 +157,7 @@ const FAQS = [
   },
   {
     q: 'How much time does it take each week?',
-    a: 'Plan for around five to seven hours per week, i.e. one hour daily. This includes the self-study module, the live session, and the weekly reflection activity.',
+    a: 'Plan for around three to five hours per week. This includes the self-study module, the live session, and the weekly reflection activity.',
   },
   {
     q: 'What is the Oakvale Health Innovation Challenge?',

@@ -18,7 +18,7 @@ const C = {
 };
 
 type TrackKey = 'A' | 'B' | 'C';
-type AidKey = 'full' | 'partial' | 'flexible';
+type AidKey = 'full' | 'flexible';
 
 interface FormData {
   firstName: string; lastName: string; email: string; phone: string; state: string;
@@ -70,7 +70,6 @@ const TRACK_LABELS: Record<TrackKey, string> = {
 
 const AID_LEVELS: { key: AidKey; name: string; desc: string }[] = [
   { key: 'full',     name: 'Full scholarship',  desc: '₦10,000 fee fully waived' },
-  { key: 'partial',  name: 'Partial support',   desc: 'Fee partially reduced' },
   { key: 'flexible', name: 'Flexible payment',  desc: 'Pay in two instalments' },
 ];
 
@@ -679,7 +678,7 @@ export default function ApplicationFormPage() {
                     rows: [
                       ['Applying for aid', form.needsAid ? 'Yes' : 'No'],
                       ...(form.needsAid
-                        ? [['Level of support', form.aidLevel === 'full' ? 'Full scholarship' : form.aidLevel === 'partial' ? 'Partial support' : form.aidLevel === 'flexible' ? 'Flexible payment' : '—']]
+                        ? [['Level of support', form.aidLevel === 'full' ? 'Full scholarship' : form.aidLevel === 'flexible' ? 'Flexible payment' : '—']]
                         : []),
                     ],
                   },

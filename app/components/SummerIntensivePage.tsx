@@ -247,16 +247,13 @@ export default function SummerIntensivePage() {
           boxShadow: '0 2px 12px rgba(0,0,0,0.18)',
         }}
       >
-        <span style={{
-          fontFamily: 'var(--font-cormorant)',
-          fontSize: '0.95rem',
-          fontWeight: 600,
-          color: C.cream,
-          letterSpacing: '0.03em',
-          whiteSpace: 'nowrap',
-        }}>
-          Summer Intensive 2026
-        </span>
+        <p
+              className="si-fadeup"
+              style={{ animationDelay: '0.1s', color: "#fff", textTransform: 'uppercase', letterSpacing: '0.12em', fontSize: '0.78rem', fontWeight: 500 }}
+            >
+              Healthcare Leadership and Innovation 
+            </p>
+
 
         {/* Desktop links */}
         <div style={{ display: 'flex', gap: 28, alignItems: 'center' }} className="si-desktop-nav">
@@ -439,11 +436,10 @@ export default function SummerIntensivePage() {
           <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: 1260, margin: '0 auto', padding: '24px 24px 10rem 24px' }}>
             <p
               className="si-fadeup"
-              style={{ animationDelay: '0.1s', color: C.gold, textTransform: 'uppercase', letterSpacing: '0.12em', fontSize: '0.78rem', fontWeight: 600, marginBottom: '1.5rem' }}
+              style={{ animationDelay: '0.1s', color: C.gold, textTransform: 'uppercase', letterSpacing: '0.12em', fontSize: '0.78rem', fontWeight: 600 }}
             >
-              Oakvale Learning · Healthcare Leadership and Innovation · Summer Intensive 2026
+             Summer Intensive 2026
             </p>
-
             <h1
               className="si-fadeup"
               style={{

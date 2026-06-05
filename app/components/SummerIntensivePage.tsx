@@ -408,14 +408,24 @@ export default function SummerIntensivePage() {
             margin: 0,
           }}
         >
-          {/* Background image */}
-          <Image
-            src="/summer/summer-intensive-hero1.jpeg"
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            style={{ objectFit: 'cover', objectPosition: 'bottom' }}
+          {/* Background video */}
+          <video
+            src="/summer/video/hero.mp4"
+            poster="/summer/summer-intensive-hero1.jpeg"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'bottom',
+            }}
           />
           {/* Dark overlay */}
           <div className="absolute inset-0 bg-[#071f16]/70 pointer-events-none" />

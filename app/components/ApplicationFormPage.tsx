@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   ChevronRight, ChevronLeft, Check,
   Upload, FileText, X, Info, CheckCircle2,
@@ -151,6 +151,8 @@ export default function ApplicationFormPage() {
   const [submitError, setSubmitError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
+  const [requiresPayment, setRequiresPayment] = useState(true);
   const fileRef = useRef<HTMLInputElement>(null);
 
   function set<K extends keyof FormData>(k: K, v: FormData[K]) {
@@ -220,17 +222,23 @@ export default function ApplicationFormPage() {
     setSubmitError('');
     setSubmitting(true);
     try {
-      const res = await fetch('/api/apply', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, fileCount: files.length }),
-      });
+      const fd = new FormData();
+      for (const [k, v] of Object.entries(form)) {
+        fd.append(k, typeof v === 'boolean' ? String(v) : (v ?? '') as string);
+      }
+      fd.append('consentTruth', String(consents[0]));
+      fd.append('consentContact', String(consents[1]));
+      fd.append('consentTerms', String(consents[2]));
+      for (const file of files) fd.append('aidFiles', file);
+      const res = await fetch('/api/apply', { method: 'POST', body: fd });
       const json = await res.json();
       if (!res.ok || !json.success) {
         setSubmitError(json.error ?? 'Something went wrong. Please try again.');
         setSubmitting(false);
         return;
       }
+      setPaymentUrl(json.paymentUrl ?? null);
+      setRequiresPayment(json.requiresPayment !== false);
       setSubmitted(true);
     } catch {
       setSubmitError('Could not reach the server. Please check your connection and try again.');
@@ -241,25 +249,7 @@ export default function ApplicationFormPage() {
   // ─── Success ───────────────────────────────────────────────────────────────
 
   if (submitted) {
-    return (
-      <div style={{ minHeight: '100vh', background: C.cream, paddingTop: 80 }}>
-        <div style={{ maxWidth: 620, margin: '0 auto', padding: '4rem 1.5rem', textAlign: 'center' }}>
-          <CheckCircle2 size={52} color={C.forestMid} strokeWidth={1.5} style={{ display: 'block', margin: '0 auto 1rem' }} />
-          <h2 style={{ fontFamily: 'var(--font-cormorant)', fontSize: 30, fontWeight: 500, color: C.forest, margin: '0 0 0.5rem' }}>
-            Application submitted
-          </h2>
-          <p style={{ fontSize: 15, color: C.muted, lineHeight: 1.7, marginBottom: 12, fontFamily: 'DM Sans, sans-serif' }}>
-            Thank you for applying to the Oakvale Summer Intensive 2026. We have received your application and will be in touch by email and WhatsApp.
-          </p>
-          <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.7, fontFamily: 'DM Sans, sans-serif' }}>
-            Applications are reviewed on a rolling basis. If you are selected, you will receive an offer within five working days of your application date.
-          </p>
-          <p style={{ marginTop: 24, fontWeight: 500, fontSize: 14, color: C.forest, fontFamily: 'DM Sans, sans-serif' }}>
-            hello@oakvaleltd.com · www.oakvaleltd.com
-          </p>
-        </div>
-      </div>
-    );
+    return <SuccessScreen paymentUrl={paymentUrl} requiresPayment={requiresPayment} />;
   }
 
   // ─── Wrapper ───────────────────────────────────────────────────────────────
@@ -742,6 +732,78 @@ export default function ApplicationFormPage() {
             Applications close 2 July 2026. 
           </p>
 
+      </div>
+    </div>
+  );
+}
+
+function SuccessScreen({ paymentUrl, requiresPayment }: { paymentUrl: string | null; requiresPayment: boolean }) {
+  const [redirecting, setRedirecting] = useState(!!paymentUrl);
+
+  useEffect(() => {
+    if (!paymentUrl) return;
+    const t = window.setTimeout(() => {
+      window.location.assign(paymentUrl);
+    }, 800);
+    return () => window.clearTimeout(t);
+  }, [paymentUrl]);
+
+  return (
+    <div style={{ minHeight: '100vh', background: C.cream, paddingTop: 80 }}>
+      <div style={{ maxWidth: 620, margin: '0 auto', padding: '4rem 1.5rem', textAlign: 'center' }}>
+        <CheckCircle2 size={52} color={C.forestMid} strokeWidth={1.5} style={{ display: 'block', margin: '0 auto 1rem' }} />
+        <h2 style={{ fontFamily: 'var(--font-cormorant)', fontSize: 30, fontWeight: 500, color: C.forest, margin: '0 0 0.5rem' }}>
+          Application received
+        </h2>
+        <p style={{ fontSize: 15, color: C.muted, lineHeight: 1.7, marginBottom: 16, fontFamily: 'DM Sans, sans-serif' }}>
+          Thank you for applying to the Oakvale Summer Intensive 2026. A confirmation email is on its way to your inbox.
+        </p>
+
+        {paymentUrl ? (
+          <div style={{ background: '#fff', border: `1px solid ${C.border}`, borderRadius: 6, padding: '22px 24px', marginTop: 18 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: C.gold, marginBottom: 6, fontFamily: 'DM Sans, sans-serif' }}>
+              Final step · Application fee
+            </div>
+            <div style={{ fontFamily: 'var(--font-cormorant)', fontSize: 22, color: C.forest, marginBottom: 10 }}>
+              ₦10,000 — payable now
+            </div>
+            <p style={{ fontSize: 13, color: C.muted, lineHeight: 1.6, marginBottom: 18, fontFamily: 'DM Sans, sans-serif' }}>
+              {redirecting
+                ? 'Redirecting you to our secure Paystack checkout…'
+                : 'Click below to complete your application via Paystack.'}
+            </p>
+            <a
+              href={paymentUrl}
+              onClick={() => setRedirecting(false)}
+              style={{
+                display: 'inline-block',
+                background: C.forest,
+                color: '#fff',
+                padding: '11px 28px',
+                borderRadius: 4,
+                textDecoration: 'none',
+                fontWeight: 500,
+                fontSize: 14,
+                fontFamily: 'DM Sans, sans-serif',
+              }}
+            >
+              Pay ₦10,000 application fee
+            </a>
+            <div style={{ marginTop: 14, fontSize: 12, color: C.muted, fontFamily: 'DM Sans, sans-serif' }}>
+              If you are not redirected automatically, click the button above. The same link is also in your email.
+            </div>
+          </div>
+        ) : (
+          <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.7, fontFamily: 'DM Sans, sans-serif' }}>
+            {requiresPayment
+              ? 'We could not start a payment session right now. Our team will contact you with payment instructions shortly.'
+              : 'You have requested a full scholarship. Our team will review your supporting documents and contact you about the scholarship decision separately — no payment is required at this stage.'}
+          </p>
+        )}
+
+        <p style={{ marginTop: 24, fontWeight: 500, fontSize: 14, color: C.forest, fontFamily: 'DM Sans, sans-serif' }}>
+          hello@oakvaleltd.com · www.oakvaleltd.com
+        </p>
       </div>
     </div>
   );

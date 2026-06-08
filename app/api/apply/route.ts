@@ -1,4 +1,14 @@
 import { Resend } from 'resend';
+import { put } from '@vercel/blob';
+import { Prisma } from '@prisma/client';
+import { prisma } from '@/lib/prisma';
+import {
+  APPLICATION_FEE_KOBO,
+  APPLICATION_FEE_NAIRA,
+  buildReference,
+  initializeTransaction,
+  siteUrl,
+} from '@/lib/paystack';
 
 const TRACK_NAMES: Record<string, string> = {
   A: 'Track A — Clinical Enterprise',
@@ -29,14 +39,24 @@ function sectionHead(title: string) {
     </tr>`;
 }
 
-function buildHtml(data: Record<string, string | boolean>) {
+type EmailData = {
+  firstName: string; lastName: string; email: string; phone: string; state: string;
+  institution: string; discipline: string; yearOfStudy: string; studentId: string;
+  trackFirst: string; trackSecond: string;
+  mot1: string; mot2: string;
+  needsAid: boolean; aidLevel: string; aidStatement: string;
+  fileCount: number;
+  applicationId: string;
+};
+
+function buildHtml(data: EmailData) {
   const {
     firstName, lastName, email, phone, state,
     institution, discipline, yearOfStudy, studentId,
     trackFirst, trackSecond,
     mot1, mot2,
     needsAid, aidLevel, aidStatement,
-    fileCount,
+    fileCount, applicationId,
   } = data;
 
   const submitted = new Date().toLocaleString('en-GB', {
@@ -48,12 +68,9 @@ function buildHtml(data: Record<string, string | boolean>) {
 <html lang="en">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
 <body style="margin:0;padding:0;background:#F7F3EC;font-family:Arial,sans-serif;">
-
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#F7F3EC;padding:32px 0;">
     <tr><td align="center">
       <table width="620" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:6px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
-
-        <!-- Header -->
         <tr>
           <td style="background:#0A3D2B;padding:28px 32px;">
             <div style="font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#C8881A;margin-bottom:6px;font-family:Arial,sans-serif;">
@@ -63,89 +80,53 @@ function buildHtml(data: Record<string, string | boolean>) {
               New Application Received
             </div>
             <div style="margin-top:8px;font-size:13px;color:rgba(255,255,255,0.65);font-family:Arial,sans-serif;">
-              Submitted ${submitted} (Lagos time)
+              Submitted ${submitted} (Lagos time) · ID ${applicationId}
             </div>
           </td>
         </tr>
-
-        <!-- Body -->
         <tr>
           <td style="padding:24px 32px 0;">
             <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e8e2da;border-radius:4px;border-collapse:collapse;">
-
               ${sectionHead('Personal Details')}
               ${row('Full name', `${firstName} ${lastName}`)}
-              ${row('Email address', String(email))}
-              ${row('Phone (WhatsApp)', String(phone))}
-              ${row('State of residence', String(state))}
-
+              ${row('Email address', email)}
+              ${row('Phone (WhatsApp)', phone)}
+              ${row('State of residence', state)}
               ${sectionHead('Academic Information')}
-              ${row('Institution', String(institution))}
-              ${row('Discipline', String(discipline))}
-              ${row('Year of study', String(yearOfStudy))}
-              ${row('Student ID', String(studentId))}
-
+              ${row('Institution', institution)}
+              ${row('Discipline', discipline)}
+              ${row('Year of study', yearOfStudy)}
+              ${row('Student ID', studentId)}
               ${sectionHead('Track Selection')}
-              ${row('First preference', trackFirst ? TRACK_NAMES[String(trackFirst)] : '—')}
-              ${row('Second preference', trackSecond ? TRACK_NAMES[String(trackSecond)] : 'None')}
-
+              ${row('First preference', trackFirst ? TRACK_NAMES[trackFirst] : '—')}
+              ${row('Second preference', trackSecond ? TRACK_NAMES[trackSecond] : 'None')}
             </table>
           </td>
         </tr>
-
-        <!-- Motivation -->
         <tr>
           <td style="padding:20px 32px 0;">
             <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e8e2da;border-radius:4px;border-collapse:collapse;">
               ${sectionHead('Motivation Statement')}
-              <tr>
-                <td colspan="2" style="padding:12px 16px 4px;font-size:11px;font-weight:700;color:#5A5A5A;text-transform:uppercase;letter-spacing:0.1em;font-family:Arial,sans-serif;">
-                  Why have you chosen your track?
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2" style="padding:4px 16px 14px;font-size:13px;color:#1C1C1C;line-height:1.7;border-bottom:1px solid #e8e2da;font-family:Arial,sans-serif;white-space:pre-wrap;">
-                  ${String(mot1)}
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2" style="padding:12px 16px 4px;font-size:11px;font-weight:700;color:#5A5A5A;text-transform:uppercase;letter-spacing:0.1em;font-family:Arial,sans-serif;">
-                  What will you do differently as a health professional?
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2" style="padding:4px 16px 14px;font-size:13px;color:#1C1C1C;line-height:1.7;font-family:Arial,sans-serif;white-space:pre-wrap;">
-                  ${String(mot2)}
-                </td>
-              </tr>
+              <tr><td colspan="2" style="padding:12px 16px 4px;font-size:11px;font-weight:700;color:#5A5A5A;text-transform:uppercase;letter-spacing:0.1em;font-family:Arial,sans-serif;">Why have you chosen your track?</td></tr>
+              <tr><td colspan="2" style="padding:4px 16px 14px;font-size:13px;color:#1C1C1C;line-height:1.7;border-bottom:1px solid #e8e2da;font-family:Arial,sans-serif;white-space:pre-wrap;">${mot1}</td></tr>
+              <tr><td colspan="2" style="padding:12px 16px 4px;font-size:11px;font-weight:700;color:#5A5A5A;text-transform:uppercase;letter-spacing:0.1em;font-family:Arial,sans-serif;">What will you do differently as a health professional?</td></tr>
+              <tr><td colspan="2" style="padding:4px 16px 14px;font-size:13px;color:#1C1C1C;line-height:1.7;font-family:Arial,sans-serif;white-space:pre-wrap;">${mot2}</td></tr>
             </table>
           </td>
         </tr>
-
-        <!-- Financial Aid -->
         <tr>
           <td style="padding:20px 32px 0;">
             <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e8e2da;border-radius:4px;border-collapse:collapse;">
               ${sectionHead('Financial Aid')}
               ${row('Applying for aid', needsAid ? 'Yes' : 'No')}
-              ${needsAid ? row('Level of support', AID_NAMES[String(aidLevel)] || '—') : ''}
+              ${needsAid ? row('Level of support', AID_NAMES[aidLevel] || '—') : ''}
               ${needsAid && aidStatement ? `
-              <tr>
-                <td colspan="2" style="padding:12px 16px 4px;font-size:11px;font-weight:700;color:#5A5A5A;text-transform:uppercase;letter-spacing:0.1em;font-family:Arial,sans-serif;">
-                  Aid statement
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2" style="padding:4px 16px 14px;font-size:13px;color:#1C1C1C;line-height:1.7;border-bottom:1px solid #e8e2da;font-family:Arial,sans-serif;white-space:pre-wrap;">
-                  ${String(aidStatement)}
-                </td>
-              </tr>` : ''}
-              ${needsAid ? row('Supporting documents uploaded', fileCount ? `${fileCount} file${Number(fileCount) !== 1 ? 's' : ''} (submitted separately)` : 'None') : ''}
+              <tr><td colspan="2" style="padding:12px 16px 4px;font-size:11px;font-weight:700;color:#5A5A5A;text-transform:uppercase;letter-spacing:0.1em;font-family:Arial,sans-serif;">Aid statement</td></tr>
+              <tr><td colspan="2" style="padding:4px 16px 14px;font-size:13px;color:#1C1C1C;line-height:1.7;border-bottom:1px solid #e8e2da;font-family:Arial,sans-serif;white-space:pre-wrap;">${aidStatement}</td></tr>` : ''}
+              ${needsAid ? row('Supporting documents', fileCount ? `${fileCount} file${fileCount !== 1 ? 's' : ''} uploaded` : 'None') : ''}
             </table>
           </td>
         </tr>
-
-        <!-- Footer -->
         <tr>
           <td style="padding:24px 32px 32px;">
             <div style="background:#F7F3EC;border-radius:4px;padding:14px 16px;font-size:12px;color:#5A5A5A;line-height:1.6;font-family:Arial,sans-serif;">
@@ -153,8 +134,6 @@ function buildHtml(data: Record<string, string | boolean>) {
             </div>
           </td>
         </tr>
-
-        <!-- Footer brand -->
         <tr>
           <td style="background:#0A3D2B;padding:16px 32px;text-align:center;">
             <div style="font-size:11px;color:rgba(255,255,255,0.55);font-family:Arial,sans-serif;">
@@ -162,40 +141,441 @@ function buildHtml(data: Record<string, string | boolean>) {
             </div>
           </td>
         </tr>
-
       </table>
     </td></tr>
   </table>
-
 </body>
 </html>`;
 }
 
+function buildApplicantHtml(data: {
+  firstName: string;
+  applicationId: string;
+  trackFirst: string;
+  requiresPayment: boolean;
+  paymentUrl: string | null;
+  feeNaira: number;
+  fullScholarship: boolean;
+}) {
+  const { firstName, applicationId, trackFirst, requiresPayment, paymentUrl, feeNaira, fullScholarship } = data;
+  const trackLabel = trackFirst ? TRACK_NAMES[trackFirst] || `Track ${trackFirst}` : '';
+  const feeFormatted = `₦${feeNaira.toLocaleString('en-NG')}`;
+
+  const payBlock = requiresPayment && paymentUrl ? `
+        <tr>
+          <td style="padding:8px 32px 0;">
+            <div style="background:#F7F3EC;border:1px solid #e8e2da;border-radius:6px;padding:22px 24px;text-align:center;">
+              <div style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#C8881A;margin-bottom:8px;font-family:Arial,sans-serif;">
+                Application fee
+              </div>
+              <div style="font-size:20px;font-weight:500;color:#0A3D2B;font-family:Georgia,serif;margin-bottom:6px;">
+                ${feeFormatted} — payable now
+              </div>
+              <div style="font-size:13px;color:#5A5A5A;line-height:1.6;font-family:Arial,sans-serif;margin-bottom:18px;">
+                Complete your application by paying the non-refundable application fee through our secure Paystack checkout.
+              </div>
+              <a href="${paymentUrl}" style="display:inline-block;background:#0A3D2B;color:#ffffff;text-decoration:none;font-weight:500;font-size:14px;font-family:Arial,sans-serif;padding:12px 28px;border-radius:4px;">
+                Pay ${feeFormatted}
+              </a>
+              <div style="margin-top:14px;font-size:12px;color:#5A5A5A;font-family:Arial,sans-serif;word-break:break-all;">
+                Or paste this link into your browser:<br>
+                <a href="${paymentUrl}" style="color:#0A3D2B;">${paymentUrl}</a>
+              </div>
+            </div>
+          </td>
+        </tr>` : '';
+
+  const scholarshipBlock = fullScholarship ? `
+        <tr>
+          <td style="padding:8px 32px 0;">
+            <div style="background:#F7F3EC;border:1px solid #e8e2da;border-radius:6px;padding:18px 22px;font-size:13px;color:#1C1C1C;line-height:1.7;font-family:Arial,sans-serif;">
+              You have requested a <strong>Full Scholarship</strong>. Our team will review your supporting documents and contact you separately about the scholarship decision — no payment is required at this stage.
+            </div>
+          </td>
+        </tr>` : '';
+
+  return `<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background:#F7F3EC;font-family:Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#F7F3EC;padding:32px 0;">
+    <tr><td align="center">
+      <table width="620" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:6px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+        <tr>
+          <td style="background:#0A3D2B;padding:28px 32px;">
+            <div style="font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#C8881A;margin-bottom:6px;">Oakvale Learning · Summer Intensive 2026</div>
+            <div style="font-size:22px;color:#ffffff;font-family:Georgia,serif;line-height:1.3;">Application received</div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:26px 32px 4px;font-size:14px;color:#1C1C1C;line-height:1.7;">
+            Dear ${firstName},<br><br>
+            Thank you for applying to the <strong>Oakvale Summer Intensive 2026</strong>. We have received your application${trackLabel ? ` for <strong>${trackLabel}</strong>` : ''}.
+            <br><br>
+            Your application reference is <strong>${applicationId}</strong>. Please keep this for your records.
+          </td>
+        </tr>
+        ${payBlock}
+        ${scholarshipBlock}
+        <tr>
+          <td style="padding:20px 32px 0;font-size:13px;color:#5A5A5A;line-height:1.7;">
+            Applications are reviewed on a rolling basis. If you are selected, you will hear from us within five working days of completing your application. If you have any questions, simply reply to this email.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:24px 32px 32px;font-size:14px;color:#1C1C1C;line-height:1.7;">
+            Warm regards,<br>
+            <strong>The Oakvale Learning Team</strong>
+          </td>
+        </tr>
+        <tr>
+          <td style="background:#0A3D2B;padding:16px 32px;text-align:center;font-size:11px;color:rgba(255,255,255,0.55);">
+            OAKVALE LEARNING · hello@oakvaleltd.com · www.oakvaleltd.com
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+  </table>
+</body></html>`;
+}
+
+type ParsedPayload = {
+  fields: Record<string, string>;
+  consents: { truth: boolean; contact: boolean; terms: boolean };
+  files: File[];
+};
+
+async function parseRequest(request: Request): Promise<ParsedPayload> {
+  const contentType = request.headers.get('content-type') ?? '';
+
+  if (contentType.includes('multipart/form-data')) {
+    const fd = await request.formData();
+    const fields: Record<string, string> = {};
+    const files: File[] = [];
+    for (const [key, value] of fd.entries()) {
+      if (value instanceof File) {
+        if (value.size > 0) files.push(value);
+      } else {
+        fields[key] = String(value);
+      }
+    }
+    return {
+      fields,
+      consents: {
+        truth: fields.consentTruth === 'true',
+        contact: fields.consentContact === 'true',
+        terms: fields.consentTerms === 'true',
+      },
+      files,
+    };
+  }
+
+  const body = await request.json();
+  const fields: Record<string, string> = {};
+  for (const [k, v] of Object.entries(body)) {
+    if (typeof v === 'boolean') fields[k] = v ? 'true' : 'false';
+    else fields[k] = v == null ? '' : String(v);
+  }
+  return {
+    fields,
+    consents: {
+      truth: !!body.consentTruth,
+      contact: !!body.consentContact,
+      terms: !!body.consentTerms,
+    },
+    files: [],
+  };
+}
+
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
+    const { fields, consents, files } = await parseRequest(request);
 
-    const {
-      firstName, lastName, email,
-    } = body;
-
-    if (!firstName || !lastName || !email) {
-      return Response.json({ success: false, error: 'Missing required fields.' }, { status: 400 });
+    const required = ['firstName', 'lastName', 'email', 'phone', 'state',
+      'institution', 'discipline', 'yearOfStudy', 'studentId',
+      'trackFirst', 'mot1', 'mot2'];
+    for (const key of required) {
+      if (!fields[key]) {
+        return Response.json({ success: false, error: `Missing required field: ${key}` }, { status: 400 });
+      }
     }
 
-    const resend = new Resend(process.env.RESEND_KEY!);
+    fields.email = fields.email.trim().toLowerCase();
+    fields.studentId = fields.studentId.trim();
 
-    await resend.emails.send({
-      from: process.env.EMAIL_FROM!,
-      to: process.env.EMAIL_TO!,
-      replyTo: String(email),
-      subject: `Application: ${firstName} ${lastName} — Oakvale Summer Intensive 2026`,
-      html: buildHtml(body),
+    const needsAid = fields.needsAid === 'true';
+    const requiresPayment = !(needsAid && fields.aidLevel === 'full');
+
+    // ─── Duplicate check (email OR studentId)
+    const existing = await prisma.application.findFirst({
+      where: {
+        OR: [{ email: fields.email }, { studentId: fields.studentId }],
+      },
+      include: { payments: { orderBy: { createdAt: 'desc' }, take: 1 } },
     });
 
-    return Response.json({ success: true }, { status: 200 });
+    if (existing) {
+      if (existing.paymentStatus === 'Paid' || existing.paymentStatus === 'Waived') {
+        return Response.json(
+          {
+            success: false,
+            error: 'An application with this email or student ID has already been submitted and the fee is settled. Please contact hello@oakvaleltd.com if this looks wrong.',
+          },
+          { status: 409 }
+        );
+      }
+      if (existing.paymentStatus === 'Rejected') {
+        return Response.json(
+          {
+            success: false,
+            error: 'A previous application with this email or student ID was rejected. Please contact hello@oakvaleltd.com before re-applying.',
+          },
+          { status: 403 }
+        );
+      }
+
+      // Pending — give them a fresh pay link (or reuse a recent one)
+      const latest = existing.payments[0];
+      const reusable =
+        latest &&
+        latest.status === 'Initialized' &&
+        latest.authorizationUrl &&
+        Date.now() - new Date(latest.createdAt).getTime() < 25 * 60 * 1000;
+
+      let retryUrl: string | null = null;
+      let retryRef: string | null = null;
+
+      if (reusable && latest.authorizationUrl) {
+        retryUrl = latest.authorizationUrl;
+        retryRef = latest.reference;
+      } else if (requiresPayment && process.env.PAYSTACK_SECRET_KEY) {
+        try {
+          const reference = buildReference(existing.id);
+          const init = await initializeTransaction({
+            email: existing.email,
+            amountKobo: APPLICATION_FEE_KOBO,
+            reference,
+            callbackUrl: `${siteUrl()}/apply/payment/success`,
+            metadata: {
+              applicationId: existing.id,
+              firstName: existing.firstName,
+              lastName: existing.lastName,
+              track: existing.trackFirst,
+              retry: true,
+            },
+          });
+          await prisma.payment.create({
+            data: {
+              applicationId: existing.id,
+              reference: init.reference,
+              amount: APPLICATION_FEE_KOBO,
+              authorizationUrl: init.authorization_url,
+              status: 'Initialized',
+            },
+          });
+          retryUrl = init.authorization_url;
+          retryRef = init.reference;
+        } catch (paystackErr) {
+          console.error('Paystack re-init failed:', paystackErr);
+        }
+      }
+
+      // Re-send the applicant acknowledgement so they have the fresh pay link
+      if (process.env.RESEND_KEY && process.env.EMAIL_FROM) {
+        try {
+          const resend = new Resend(process.env.RESEND_KEY);
+          await resend.emails.send({
+            from: process.env.EMAIL_FROM,
+            to: existing.email,
+            subject: 'Complete your Oakvale Summer Intensive 2026 application',
+            html: buildApplicantHtml({
+              firstName: existing.firstName,
+              applicationId: existing.id,
+              trackFirst: existing.trackFirst,
+              requiresPayment,
+              paymentUrl: retryUrl,
+              feeNaira: APPLICATION_FEE_NAIRA,
+              fullScholarship: existing.needsAid && existing.aidLevel === 'full',
+            }),
+          });
+        } catch (emailErr) {
+          console.error('Retry applicant email failed:', emailErr);
+        }
+      }
+
+      return Response.json(
+        {
+          success: true,
+          id: existing.id,
+          requiresPayment,
+          paymentUrl: retryUrl,
+          reference: retryRef,
+          reused: true,
+        },
+        { status: 200 }
+      );
+    }
+
+    let aidFiles: { url: string; name: string; size: number }[] = [];
+    if (needsAid && files.length > 0 && process.env.BLOB_READ_WRITE_TOKEN) {
+      for (const file of files.slice(0, 3)) {
+        if (file.size > 5 * 1024 * 1024) continue;
+        const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+        const blob = await put(`applications/${Date.now()}-${safeName}`, file, {
+          access: 'public',
+          addRandomSuffix: true,
+        });
+        aidFiles.push({ url: blob.url, name: file.name, size: file.size });
+      }
+    }
+
+    let application;
+    try {
+      application = await prisma.application.create({
+        data: {
+          firstName: fields.firstName,
+          lastName: fields.lastName,
+          email: fields.email,
+          phone: fields.phone,
+          state: fields.state,
+          institution: fields.institution,
+          discipline: fields.discipline,
+          yearOfStudy: fields.yearOfStudy,
+          studentId: fields.studentId,
+          trackFirst: fields.trackFirst,
+          trackSecond: fields.trackSecond || null,
+          mot1: fields.mot1,
+          mot2: fields.mot2,
+          needsAid,
+          aidLevel: needsAid ? fields.aidLevel || null : null,
+          aidStatement: needsAid ? fields.aidStatement || null : null,
+          aidFiles: aidFiles.length ? aidFiles : undefined,
+          fileCount: files.length,
+          consentTruth: consents.truth,
+          consentContact: consents.contact,
+          consentTerms: consents.terms,
+          paymentStatus: 'Pending',
+          status: 'Submitted',
+        },
+      });
+    } catch (err) {
+      if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002') {
+        return Response.json(
+          {
+            success: false,
+            error: 'An application with this email or student ID already exists. Please use the original link in your email to complete payment, or contact hello@oakvaleltd.com.',
+          },
+          { status: 409 }
+        );
+      }
+      throw err;
+    }
+
+    // ─── Initialize Paystack transaction (skip for full-scholarship applicants)
+    let paymentUrl: string | null = null;
+    let paymentReference: string | null = null;
+
+    if (requiresPayment && process.env.PAYSTACK_SECRET_KEY) {
+      try {
+        const reference = buildReference(application.id);
+        const init = await initializeTransaction({
+          email: fields.email,
+          amountKobo: APPLICATION_FEE_KOBO,
+          reference,
+          callbackUrl: `${siteUrl()}/apply/payment/success`,
+          metadata: {
+            applicationId: application.id,
+            firstName: fields.firstName,
+            lastName: fields.lastName,
+            track: fields.trackFirst,
+          },
+        });
+        await prisma.payment.create({
+          data: {
+            applicationId: application.id,
+            reference: init.reference,
+            amount: APPLICATION_FEE_KOBO,
+            authorizationUrl: init.authorization_url,
+            status: 'Initialized',
+          },
+        });
+        paymentUrl = init.authorization_url;
+        paymentReference = init.reference;
+      } catch (paystackErr) {
+        console.error('Paystack init failed (application saved without payment):', paystackErr);
+      }
+    }
+
+    // ─── Emails
+    if (process.env.RESEND_KEY && process.env.EMAIL_FROM) {
+      const resend = new Resend(process.env.RESEND_KEY);
+
+      // 1. Admin notification
+      if (process.env.EMAIL_TO) {
+        try {
+          await resend.emails.send({
+            from: process.env.EMAIL_FROM,
+            to: process.env.EMAIL_TO,
+            replyTo: fields.email,
+            subject: `Application: ${fields.firstName} ${fields.lastName} — Oakvale Summer Intensive 2026`,
+            html: buildHtml({
+              firstName: fields.firstName,
+              lastName: fields.lastName,
+              email: fields.email,
+              phone: fields.phone,
+              state: fields.state,
+              institution: fields.institution,
+              discipline: fields.discipline,
+              yearOfStudy: fields.yearOfStudy,
+              studentId: fields.studentId,
+              trackFirst: fields.trackFirst,
+              trackSecond: fields.trackSecond || '',
+              mot1: fields.mot1,
+              mot2: fields.mot2,
+              needsAid,
+              aidLevel: fields.aidLevel || '',
+              aidStatement: fields.aidStatement || '',
+              fileCount: files.length,
+              applicationId: application.id,
+            }),
+          });
+        } catch (emailErr) {
+          console.error('Admin email failed:', emailErr);
+        }
+      }
+
+      // 2. Applicant acknowledgement
+      try {
+        await resend.emails.send({
+          from: process.env.EMAIL_FROM,
+          to: fields.email,
+          subject: 'We have received your Oakvale Summer Intensive 2026 application',
+          html: buildApplicantHtml({
+            firstName: fields.firstName,
+            applicationId: application.id,
+            trackFirst: fields.trackFirst,
+            requiresPayment,
+            paymentUrl,
+            feeNaira: APPLICATION_FEE_NAIRA,
+            fullScholarship: needsAid && fields.aidLevel === 'full',
+          }),
+        });
+      } catch (emailErr) {
+        console.error('Applicant email failed:', emailErr);
+      }
+    }
+
+    return Response.json(
+      {
+        success: true,
+        id: application.id,
+        requiresPayment,
+        paymentUrl,
+        reference: paymentReference,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error('Apply route error:', error);
-    return Response.json({ success: false, error: 'Failed to send application. Please try again.' }, { status: 500 });
+    return Response.json({ success: false, error: 'Failed to submit application. Please try again.' }, { status: 500 });
   }
 }

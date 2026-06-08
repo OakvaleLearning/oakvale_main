@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PaymentStatus {
+  Pending
+  Paid
+  Waived
+  Rejected
+}
+
+enum ApplicationStatus {
+  Submitted
+  UnderReview
+  Accepted
+  Declined
+}
+
+enum PaystackPaymentStatus {
+  Initialized
+  Success
+  Failed
+  Abandoned
+}
+
+model Application {
+  id               String            @id @default(cuid())
+  firstName        String
+  lastName         String
+  email            String
+  phone            String
+  state            String
+  institution      String
+  discipline       String
+  yearOfStudy      String
+  studentId        String
+  trackFirst       String
+  trackSecond      String?
+  mot1             String
+  mot2             String
+  needsAid         Boolean           @default(false)
+  aidLevel         String?
+  aidStatement     String?
+  aidFiles         Json?
+  fileCount        Int               @default(0)
+  consentTruth     Boolean           @default(false)
+  consentContact   Boolean           @default(false)
+  consentTerms     Boolean           @default(false)
+  paymentStatus    PaymentStatus     @default(Pending)
+  status           ApplicationStatus @default(Submitted)
+  notes            String?
+  paystackCustomerCode String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  payments         Payment[]
+
+  @@unique([email])
+  @@unique([studentId])
+  @@index([createdAt])
+  @@index([paymentStatus])
+  @@index([status])
+}
+
+model Payment {
+  id              String                @id @default(cuid())
+  applicationId   String
+  application     Application           @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  reference       String                @unique
+  amount          Int
+  currency        String                @default("NGN")
+  status          PaystackPaymentStatus @default(Initialized)
+  authorizationUrl String?
+  paystackChannel String?
+  paystackRaw     Json?
+  paidAt          DateTime?
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+
+  @@index([applicationId])
+  @@index([status])
+}
+
+model Admin {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  createdAt    DateTime @default(now())
+}

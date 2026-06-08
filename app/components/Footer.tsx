@@ -77,7 +77,7 @@ export default function Footer() {
       <div className="footer-bottom">
         <span>&copy; 2026 Oakvale Learning Ltd. All rights reserved.</span>
         <span>
-          <a href="#">Privacy Policy</a> &middot; <a href="#">Terms</a>
+          <a href="#">Privacy Policy</a> &middot; <a href="#">Terms</a>  &middot; <Link href="/admin">Admin</Link>
         </span>
       </div>
     </footer>

@@ -373,7 +373,7 @@ export default function ApplicationFormPage() {
                 <option value="">Select your institution</option>
                 <option>CMUL (College of Medicine, University of Lagos)</option>
                 <option>LASUCOM (Lagos State University College of Medicine)</option>
-                <option>EkoUnimed (Ekiti State University College of Medicine)</option>
+                <option>EkoUnimed (Eko University of Medical and Health Sciences)</option>
               </select>
             </div>
 
@@ -395,8 +395,9 @@ export default function ApplicationFormPage() {
                 <label style={lbl}>Current year of study{req}</label>
                 <select value={form.yearOfStudy} onChange={e => set('yearOfStudy', e.target.value)} style={input}>
                   <option value="">Select year</option>
-                  <option>400 level (penultimate year)</option>
+                  <option>400 level</option>
                   <option>500 level (final year)</option>
+                  <option>600 level (final year)</option>
                 </select>
               </div>
             </div>

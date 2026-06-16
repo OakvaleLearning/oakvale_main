@@ -738,8 +738,72 @@ export default function SummerIntensivePage() {
               <span style={{ color: C.goldLight, fontSize: '1.4rem', fontWeight: 700, fontFamily: 'var(--font-cormorant)', letterSpacing: '0.02em' }}>
                 ₦4,000,000
               </span>
-              , distributed across the overall winner, three track winners, and one individual student award.
+              , distributed across 4 winning teams — one overall grand prize winner and three track winners — alongside one individual student award.
             </p>
+
+            {/* Prize breakdown */}
+            <div style={{ marginBottom: '2.5rem' }}>
+              {/* Grand prize callout */}
+              <div style={{
+                background: 'rgba(247,243,236,0.06)',
+                border: '1px solid rgba(232,168,50,0.4)',
+                borderRadius: 10,
+                padding: '1.5rem 1.75rem',
+                marginBottom: '1.5rem',
+              }}>
+                <p style={{ color: C.goldLight, textTransform: 'uppercase', letterSpacing: '0.12em', fontSize: '0.72rem', fontWeight: 700, marginBottom: '0.4rem' }}>
+                  Overall Winner
+                </p>
+                <p style={{ color: C.goldLight, fontSize: 'clamp(1.8rem, 4vw, 2.4rem)', fontWeight: 700, fontFamily: 'var(--font-cormorant)', lineHeight: 1.1, marginBottom: '0.4rem' }}>
+                  ₦1,500,000
+                </p>
+                <p style={{ color: 'rgba(247,243,236,0.78)', fontSize: '0.92rem', lineHeight: 1.6 }}>
+                  Awarded cumulatively to the school and the student.
+                </p>
+              </div>
+
+              {/* Track winners table */}
+              <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '1.25rem' }}>
+                <thead>
+                  <tr>
+                    <th style={{ textAlign: 'left', color: C.goldLight, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.7rem', fontWeight: 700, padding: '0 0 0.65rem' }}>
+                      Track
+                    </th>
+                    <th style={{ textAlign: 'right', color: C.goldLight, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.7rem', fontWeight: 700, padding: '0 0 0.65rem' }}>
+                      1st Place
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    ['Track A: Clinical Enterprise', '₦750,000'],
+                    ['Track B: Health Systems Leadership', '₦750,000'],
+                    ['Track C: Digital Health Innovation', '₦750,000'],
+                  ].map(([track, prize]) => (
+                    <tr key={track}>
+                      <td style={{ color: 'rgba(247,243,236,0.88)', fontSize: '0.97rem', lineHeight: 1.5, padding: '0.85rem 0', borderTop: '1px solid rgba(232,168,50,0.4)' }}>
+                        {track}
+                      </td>
+                      <td style={{ textAlign: 'right', color: C.goldLight, fontSize: '1rem', fontWeight: 700, whiteSpace: 'nowrap', padding: '0.85rem 0 0.85rem 1rem', borderTop: '1px solid rgba(232,168,50,0.4)' }}>
+                        {prize}
+                      </td>
+                    </tr>
+                  ))}
+                  <tr>
+                    <td style={{ color: 'rgba(247,243,236,0.88)', fontSize: '0.97rem', lineHeight: 1.5, padding: '0.85rem 0', borderTop: '1px solid rgba(232,168,50,0.4)' }}>
+                      Individual Student Award
+                    </td>
+                    <td style={{ textAlign: 'right', color: C.goldLight, fontSize: '1rem', fontWeight: 700, whiteSpace: 'nowrap', padding: '0.85rem 0 0.85rem 1rem', borderTop: '1px solid rgba(232,168,50,0.4)' }}>
+                      ₦250,000
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <p style={{ color: 'rgba(247,243,236,0.6)', fontSize: '0.86rem', fontStyle: 'italic', lineHeight: 1.6 }}>
+                Sponsors may elect to fund specific tracks, name prizes, or co-brand a winning category.
+              </p>
+            </div>
 
             <hr style={{ border: 'none', borderTop: `1px solid rgba(232,168,50,0.4)`, marginBottom: '1.75rem' }} />
 

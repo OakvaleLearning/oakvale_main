@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { auth, signIn, signOut } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { sendStatusEmail } from '@/lib/statusEmails';
 
 const PAYMENT_VALUES = ['Pending', 'Paid', 'Waived', 'Rejected'] as const;
 const STATUS_VALUES = ['Submitted', 'UnderReview', 'Accepted', 'Declined'] as const;
@@ -36,10 +37,26 @@ async function requireAdmin() {
 export async function updatePaymentStatus(id: string, value: string) {
   await requireAdmin();
   if (!PAYMENT_VALUES.includes(value as PaymentStatus)) return;
+
+  const current = await prisma.application.findUnique({
+    where: { id },
+    select: { paymentStatus: true, email: true, firstName: true, trackFirst: true },
+  });
+  if (!current) return;
+
   await prisma.application.update({
     where: { id },
     data: { paymentStatus: value as PaymentStatus },
   });
+
+  if (current.paymentStatus !== value) {
+    await sendStatusEmail({
+      field: 'payment',
+      value,
+      application: { id, email: current.email, firstName: current.firstName, trackFirst: current.trackFirst },
+    });
+  }
+
   revalidatePath(`/admin/applications/${id}`);
   revalidatePath('/admin/applications');
   revalidatePath('/admin');
@@ -48,10 +65,26 @@ export async function updatePaymentStatus(id: string, value: string) {
 export async function updateApplicationStatus(id: string, value: string) {
   await requireAdmin();
   if (!STATUS_VALUES.includes(value as ApplicationStatus)) return;
+
+  const current = await prisma.application.findUnique({
+    where: { id },
+    select: { status: true, email: true, firstName: true, trackFirst: true },
+  });
+  if (!current) return;
+
   await prisma.application.update({
     where: { id },
     data: { status: value as ApplicationStatus },
   });
+
+  if (current.status !== value) {
+    await sendStatusEmail({
+      field: 'application',
+      value,
+      application: { id, email: current.email, firstName: current.firstName, trackFirst: current.trackFirst },
+    });
+  }
+
   revalidatePath(`/admin/applications/${id}`);
   revalidatePath('/admin/applications');
   revalidatePath('/admin');

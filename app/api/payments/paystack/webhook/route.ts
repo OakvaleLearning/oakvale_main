@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { verifyWebhookSignature } from '@/lib/paystack';
+import { sendStatusEmail } from '@/lib/statusEmails';
 
 export const dynamic = 'force-dynamic';
 
@@ -62,6 +63,14 @@ export async function POST(request: Request) {
             },
           }),
         ]);
+
+        const application = await prisma.application.findUnique({
+          where: { id: payment.applicationId },
+          select: { id: true, email: true, firstName: true, trackFirst: true },
+        });
+        if (application) {
+          await sendStatusEmail({ field: 'payment', value: 'Paid', application });
+        }
       }
     } else if (event.event === 'charge.failed') {
       if (payment.status !== 'Failed') {

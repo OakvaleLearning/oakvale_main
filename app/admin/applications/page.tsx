@@ -2,7 +2,13 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import type { Prisma } from '@prisma/client';
+import {
+  PAYMENT_OPTS,
+  STATUS_OPTS,
+  buildApplicationWhere,
+  normalizePayment,
+  normalizeStatus,
+} from '@/lib/applicationFilters';
 
 const C = {
   forest: '#0A3D2B',
@@ -14,9 +20,6 @@ const C = {
 };
 
 const PAGE_SIZE = 25;
-
-const PAYMENT_OPTS = ['All', 'Pending', 'Paid', 'Waived', 'Rejected'] as const;
-const STATUS_OPTS = ['All', 'Submitted', 'UnderReview', 'Accepted', 'Declined'] as const;
 
 export const dynamic = 'force-dynamic';
 
@@ -41,22 +44,12 @@ export default async function ApplicationsPage({
   if (!session?.user) redirect('/admin/login');
 
   const params = await searchParams;
-  const payment = params.payment && PAYMENT_OPTS.includes(params.payment as typeof PAYMENT_OPTS[number]) ? params.payment : 'All';
-  const status = params.status && STATUS_OPTS.includes(params.status as typeof STATUS_OPTS[number]) ? params.status : 'All';
+  const payment = normalizePayment(params.payment);
+  const status = normalizeStatus(params.status);
   const q = (params.q ?? '').trim();
   const page = Math.max(1, Number(params.page ?? '1') || 1);
 
-  const where: Prisma.ApplicationWhereInput = {};
-  if (payment !== 'All') where.paymentStatus = payment as Prisma.ApplicationWhereInput['paymentStatus'];
-  if (status !== 'All') where.status = status as Prisma.ApplicationWhereInput['status'];
-  if (q) {
-    where.OR = [
-      { firstName: { contains: q, mode: 'insensitive' } },
-      { lastName: { contains: q, mode: 'insensitive' } },
-      { email: { contains: q, mode: 'insensitive' } },
-      { studentId: { contains: q, mode: 'insensitive' } },
-    ];
-  }
+  const where = buildApplicationWhere({ payment, status, q });
 
   const [total, rows] = await Promise.all([
     prisma.application.count({ where }),
@@ -87,10 +80,39 @@ export default async function ApplicationsPage({
     return s ? `?${s}` : '';
   }
 
+  function exportHref(format: 'csv' | 'xlsx') {
+    const sp = new URLSearchParams();
+    if (payment !== 'All') sp.set('payment', payment);
+    if (status !== 'All') sp.set('status', status);
+    if (q) sp.set('q', q);
+    sp.set('format', format);
+    return `/admin/applications/export?${sp.toString()}`;
+  }
+
+  const exportBtn: React.CSSProperties = {
+    display: 'inline-block',
+    padding: '8px 14px',
+    border: `1px solid ${C.border}`,
+    borderRadius: 4,
+    color: C.forest,
+    textDecoration: 'none',
+    background: '#fff',
+    fontSize: 13,
+    fontWeight: 500,
+  };
+
   return (
     <div style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 24px' }}>
-      <h1 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 30, fontWeight: 500, color: C.forest, margin: '0 0 4px' }}>Applications</h1>
-      <p style={{ fontSize: 13, color: C.muted, margin: '0 0 20px' }}>{total} total{q ? ` matching “${q}”` : ''}</p>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16, flexWrap: 'wrap' }}>
+        <div>
+          <h1 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 30, fontWeight: 500, color: C.forest, margin: '0 0 4px' }}>Applications</h1>
+          <p style={{ fontSize: 13, color: C.muted, margin: '0 0 20px' }}>{total} total{q ? ` matching “${q}”` : ''}</p>
+        </div>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <a download href={exportHref('csv')} style={exportBtn}>Export CSV</a>
+          <a download href={exportHref('xlsx')} style={exportBtn}>Export Excel</a>
+        </div>
+      </div>
 
       <form method="get" style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'flex-end', marginBottom: 18, background: '#fff', padding: 14, border: `1px solid ${C.border}`, borderRadius: 6 }}>
         <div>

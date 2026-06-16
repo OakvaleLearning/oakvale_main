@@ -1,6 +1,7 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 import { loginAction } from '../actions';
 
 const C = {
@@ -14,6 +15,10 @@ const C = {
 
 export default function AdminLoginPage() {
   const [state, formAction, pending] = useActionState(loginAction, {});
+
+  useEffect(() => {
+    if (state?.error) toast.error(state.error);
+  }, [state]);
 
   return (
     <div style={{ minHeight: '100vh', background: C.cream, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem 1rem', fontFamily: 'DM Sans, sans-serif' }}>
@@ -36,12 +41,6 @@ export default function AdminLoginPage() {
           <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: C.charcoal, marginBottom: 5 }}>Password</label>
           <input name="password" type="password" required autoComplete="current-password"
             style={{ width: '100%', padding: '10px 12px', border: `1px solid ${C.border}`, borderRadius: 4, fontSize: 14, marginBottom: 16, boxSizing: 'border-box', fontFamily: 'inherit' }} />
-
-          {state?.error && (
-            <div style={{ background: '#fdecec', color: '#9a1d1d', border: '1px solid #f3c0c0', borderRadius: 4, padding: '8px 12px', fontSize: 13, marginBottom: 14 }}>
-              {state.error}
-            </div>
-          )}
 
           <button type="submit" disabled={pending}
             style={{ width: '100%', background: C.forest, color: '#fff', border: 'none', borderRadius: 4, padding: '11px 16px', fontSize: 14, fontWeight: 500, cursor: pending ? 'not-allowed' : 'pointer', opacity: pending ? 0.7 : 1, fontFamily: 'inherit' }}>

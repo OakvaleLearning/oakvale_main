@@ -1,38 +1,146 @@
-import Link from 'next/link';
-import { auth } from '@/lib/auth';
-import { logoutAction } from './actions';
+import Link from "next/link";
+import { auth } from "@/lib/auth";
+import { logoutAction } from "./actions";
+import Image from "next/image";
 
 const C = {
-  forest: '#0A3D2B',
-  gold: '#C8881A',
-  cream: '#F7F3EC',
-  charcoal: '#1C1C1C',
-  muted: '#5A5A5A',
-  border: 'rgba(10,61,43,0.12)',
+  forest: "#0A3D2B",
+  gold: "#C8881A",
+  cream: "#F7F3EC",
+  charcoal: "#1C1C1C",
+  muted: "#5A5A5A",
+  border: "rgba(10,61,43,0.12)",
 };
 
-export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+const navLink: React.CSSProperties = {
+  color: "rgba(255,255,255,0.85)",
+  textDecoration: "none",
+  fontSize: 13,
+};
+
+const divider: React.CSSProperties = {
+  width: 1,
+  height: 20,
+  background: "rgba(255,255,255,0.18)",
+};
+
+export default async function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const session = await auth();
 
   return (
-    <div style={{ minHeight: '100vh', background: C.cream, fontFamily: 'DM Sans, sans-serif', color: C.charcoal }}>
+    <div
+      style={{
+        minHeight: "100vh",
+        background: C.cream,
+        fontFamily: "DM Sans, sans-serif",
+        color: C.charcoal,
+      }}
+    >
       {session?.user ? (
-        <header style={{ background: C.forest, color: '#fff', padding: '14px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
-            <Link href="/admin" style={{ color: '#fff', textDecoration: 'none', fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 20 }}>
-              Oakvale Admin
-            </Link>
-            <nav style={{ display: 'flex', gap: 18, fontSize: 13 }}>
-              <Link href="/admin" style={{ color: 'rgba(255,255,255,0.85)', textDecoration: 'none' }}>Overview</Link>
-              <Link href="/admin/applications" style={{ color: 'rgba(255,255,255,0.85)', textDecoration: 'none' }}>Applications</Link>
-            </nav>
+        <header
+          style={{
+            background: C.forest,
+            color: "#fff",
+          }}
+        >
+          <div
+            style={{
+              maxWidth: 1200,
+              margin: "0 auto",
+              padding: "14px 24px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              gap: 16,
+            }}
+          >
+            {/* Left — brand + admin nav */}
+            <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+              <Link
+                href="/"
+                className="nav-logo"
+                style={{ display: "inline-flex", alignItems: "center", gap: 10 }}
+              >
+                <Image
+                  src="/oakvale-white.svg"
+                  width={0}
+                  height={0}
+                  style={{ height: "1.9rem", width: "auto" }}
+                  alt="Oakvale Learning Logo"
+                  priority
+                />
+                <span
+                  style={{
+                    fontSize: 10,
+                    fontWeight: 700,
+                    letterSpacing: "0.14em",
+                    textTransform: "uppercase",
+                    color: C.gold,
+                    background: "rgba(200,136,26,0.14)",
+                    border: "1px solid rgba(200,136,26,0.4)",
+                    borderRadius: 4,
+                    padding: "3px 7px",
+                  }}
+                >
+                  Admin
+                </span>
+              </Link>
+              <span aria-hidden style={divider} />
+              <nav style={{ display: "flex", alignItems: "center", gap: 18 }}>
+                <Link href="/admin" style={navLink}>
+                  Overview
+                </Link>
+                <Link href="/admin/applications" style={navLink}>
+                  Applications
+                </Link>
+              </nav>
+            </div>
+
+            {/* Right — public links + account */}
+            <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+              <Link
+                href="/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={navLink}
+              >
+                Home
+              </Link>
+              <Link
+                href="/summer-intensive"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={navLink}
+              >
+                Summer Intensive
+              </Link>
+              <span aria-hidden style={divider} />
+              <span style={{ fontSize: 12, color: "rgba(255,255,255,0.6)" }}>
+                {session.user.email}
+              </span>
+              <form action={logoutAction}>
+                <button
+                  type="submit"
+                  style={{
+                    background: "transparent",
+                    color: "#fff",
+                    border: "1px solid rgba(255,255,255,0.3)",
+                    borderRadius: 4,
+                    padding: "5px 12px",
+                    fontSize: 12,
+                    cursor: "pointer",
+                    fontFamily: "inherit",
+                  }}
+                >
+                  Sign out
+                </button>
+              </form>
+            </div>
           </div>
-          <form action={logoutAction}>
-            <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', marginRight: 12 }}>{session.user.email}</span>
-            <button type="submit" style={{ background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.3)', borderRadius: 4, padding: '5px 12px', fontSize: 12, cursor: 'pointer', fontFamily: 'inherit' }}>
-              Sign out
-            </button>
-          </form>
         </header>
       ) : null}
       <main>{children}</main>

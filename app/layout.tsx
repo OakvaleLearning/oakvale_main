@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, EB_Garamond } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
@@ -42,6 +43,14 @@ export default function RootLayout({
         <Nav />
         {children}
         <Footer />
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            style: { fontFamily: 'DM Sans, sans-serif', fontSize: 13, color: '#1C1C1C' },
+            success: { iconTheme: { primary: '#0A3D2B', secondary: '#fff' } },
+            error: { iconTheme: { primary: '#9a1d1d', secondary: '#fff' } },
+          }}
+        />
       </body>
     </html>
   );

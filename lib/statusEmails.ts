@@ -130,7 +130,7 @@ function paymentRejected({ firstName, applicationId }: ApplicantContext): Built 
   const body =
     greeting(firstName) +
     paragraph(`We're writing about your application to the Oakvale Summer Intensive 2026. Unfortunately, there is currently an <strong>issue with your application fee</strong> and it has not been accepted.`) +
-    callout({ accent: 'red', html: `To keep your application active, please contact us so we can help you resolve this. Reply to this email or write to <a href="mailto:hello@oakvaleltd.com" style="color:${C.forest};">hello@oakvaleltd.com</a> and our team will assist you.` }) +
+    callout({ accent: 'gold', html: `To keep your application active, please contact us so we can help you resolve this. Reply to this email or write to <a href="mailto:hello@oakvaleltd.com" style="color:${C.forest};">hello@oakvaleltd.com</a> and our team will assist you.` }) +
     reference(applicationId) +
     signoff();
   return {

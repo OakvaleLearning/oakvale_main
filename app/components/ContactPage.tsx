@@ -1,7 +1,7 @@
 'use client';
  
 import { useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast'; 
+import toast from 'react-hot-toast';
 import { Mail, MapPin, Globe } from 'lucide-react';
   
 type Page = 'home' | 'about' | 'services' | 'corporates' | 'academic' | 'donors' | 'government' | 'contact';
@@ -57,7 +57,6 @@ export default function ContactPage() {
 
   return ( 
     <div className="pt-[2.5rem]">
-      <Toaster position="top-right" />
       <div className="contact-hero pt-10 relative w-full" style={{
       backgroundImage: 'url(/contact.png)',
 

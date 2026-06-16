@@ -179,6 +179,13 @@ const C = {
   muted: '#5A5A5A',
 };
 
+const PARTNER_LOGOS = [
+  { src: '/partners/CPD.png', alt: 'CPD' },
+  { src: '/partners/COMPSA.png', alt: 'COMPSA' },
+  { src: '/partners/EKOUMSA.png', alt: 'EKOUMSA' },
+  { src: '/partners/LASUMA.png', alt: 'LASUMA' },
+];
+
 export default function SummerIntensivePage() {
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
   const [trackOpen, setTrackOpen] = useState<number | null>(null);
@@ -961,6 +968,34 @@ export default function SummerIntensivePage() {
                       {faq.a}
                     </p>
                   </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── SECTION 7b: Partners ───────────────────────────────────────── */}
+        <section id="partners" style={{ backgroundColor: C.cream, padding: '72px 24px', overflow: 'hidden' }}>
+          <div style={{ maxWidth: 800, margin: '0 auto 2.75rem', textAlign: 'center' }}>
+            <p style={{ color: C.gold, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.78rem', fontWeight: 600, marginBottom: '0.6rem' }}>
+              Our Partners
+            </p>
+            <h2 style={{ fontFamily: 'var(--font-cormorant)', fontSize: 'clamp(1.8rem, 4vw, 2.6rem)', fontWeight: 600, color: C.forest, lineHeight: 1.2, margin: 0 }}>
+              Organisations supporting the programme
+            </h2>
+          </div>
+
+          <div className="reel-track-wrap">
+            <div className="reel-track">
+              {[...PARTNER_LOGOS, ...PARTNER_LOGOS, ...PARTNER_LOGOS, ...PARTNER_LOGOS, ...PARTNER_LOGOS, ...PARTNER_LOGOS].map((logo, i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 72, padding: '0 0.5rem', flexShrink: 0 }}>
+                  <Image
+                    src={logo.src}
+                    alt={logo.alt}
+                    width={180}
+                    height={72}
+                    style={{ height: 56, width: 'auto', objectFit: 'contain' }}
+                  />
                 </div>
               ))}
             </div>

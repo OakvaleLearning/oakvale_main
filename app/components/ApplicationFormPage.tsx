@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import toast from 'react-hot-toast';
 import {
   ChevronRight, ChevronLeft, Check,
   Upload, FileText, X, Info, CheckCircle2,
@@ -146,9 +147,7 @@ export default function ApplicationFormPage() {
   const [form, setForm] = useState<FormData>(BLANK);
   const [files, setFiles] = useState<File[]>([]);
   const [dragOver, setDragOver] = useState(false);
-  const [stepError, setStepError] = useState('');
   const [consents, setConsents] = useState([false, false, false]);
-  const [submitError, setSubmitError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
@@ -189,18 +188,16 @@ export default function ApplicationFormPage() {
 
   function goNext() {
     const err = validate(step);
-    if (err) { setStepError(err); return; }
-    setStepError('');
+    if (err) { toast.error(err); return; }
     setStep(s => s + 1);
   }
 
   function goBack() {
-    setStepError('');
     setStep(s => s - 1);
   }
 
   function goTo(n: number) {
-    if (n < step) { setStepError(''); setStep(n); }
+    if (n < step) setStep(n);
   }
 
   function addFiles(list: FileList | null) {
@@ -216,10 +213,9 @@ export default function ApplicationFormPage() {
 
   async function handleSubmit() {
     if (!consents[0] || !consents[1] || !consents[2]) {
-      setSubmitError('Please confirm all three statements before submitting.');
+      toast.error('Please confirm all three statements before submitting.');
       return;
     }
-    setSubmitError('');
     setSubmitting(true);
     try {
       const fd = new FormData();
@@ -233,7 +229,7 @@ export default function ApplicationFormPage() {
       const res = await fetch('/api/apply', { method: 'POST', body: fd });
       const json = await res.json();
       if (!res.ok || !json.success) {
-        setSubmitError(json.error ?? 'Something went wrong. Please try again.');
+        toast.error(json.error ?? 'Something went wrong. Please try again.');
         setSubmitting(false);
         return;
       }
@@ -241,7 +237,7 @@ export default function ApplicationFormPage() {
       setRequiresPayment(json.requiresPayment !== false);
       setSubmitted(true);
     } catch {
-      setSubmitError('Could not reach the server. Please check your connection and try again.');
+      toast.error('Could not reach the server. Please check your connection and try again.');
       setSubmitting(false);
     }
   }
@@ -316,13 +312,6 @@ export default function ApplicationFormPage() {
             );
           })}
         </div>
-
-        {/* Validation error */}
-        {stepError && (
-          <div style={{ background: '#fff3f3', border: '0.5px solid #f5c6c6', borderRadius: 4, padding: '10px 14px', fontSize: 13, color: '#b91c1c', marginBottom: '1rem', fontFamily: 'DM Sans, sans-serif' }}>
-            {stepError}
-          </div>
-        )}
 
         {/* ── STEP 0: Personal ─────────────────────────────────────────────── */}
         {step === 0 && (
@@ -707,12 +696,6 @@ export default function ApplicationFormPage() {
                 {text}
               </label>
             ))}
-
-            {submitError && (
-              <div style={{ background: '#fff9e6', border: '0.5px solid #f5d67a', borderRadius: 4, padding: '10px 14px', fontSize: 13, color: '#92620a', marginBottom: '0.75rem', fontFamily: 'DM Sans, sans-serif' }}>
-                {submitError}
-              </div>
-            )}
 
             <button
               onClick={handleSubmit}

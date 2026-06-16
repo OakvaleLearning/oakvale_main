@@ -2,7 +2,8 @@ import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import { updatePaymentStatus, updateApplicationStatus, updateNotes } from '../../actions';
+import { updateNotes } from '../../actions';
+import StatusControls from './StatusControls';
 
 const C = {
   forest: '#0A3D2B',
@@ -12,9 +13,6 @@ const C = {
   muted: '#5A5A5A',
   border: 'rgba(10,61,43,0.12)',
 };
-
-const PAYMENT_OPTS = ['Pending', 'Paid', 'Waived', 'Rejected'] as const;
-const STATUS_OPTS = ['Submitted', 'UnderReview', 'Accepted', 'Declined'] as const;
 
 export const dynamic = 'force-dynamic';
 
@@ -49,14 +47,6 @@ export default async function ApplicationDetail({ params }: { params: Promise<{ 
 
   const aidFiles = (a.aidFiles as { url: string; name: string; size: number }[] | null) ?? [];
 
-  const setPayment = async (formData: FormData) => {
-    'use server';
-    await updatePaymentStatus(id, String(formData.get('value') ?? ''));
-  };
-  const setStatus = async (formData: FormData) => {
-    'use server';
-    await updateApplicationStatus(id, String(formData.get('value') ?? ''));
-  };
   const setNotes = async (formData: FormData) => {
     'use server';
     await updateNotes(id, String(formData.get('notes') ?? ''));
@@ -73,23 +63,7 @@ export default async function ApplicationDetail({ params }: { params: Promise<{ 
       </p>
 
       <Section title="Manage">
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24 }}>
-          <form action={setPayment} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-            <label style={{ fontSize: 12, color: C.muted, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Payment</label>
-            <select name="value" defaultValue={a.paymentStatus} style={{ padding: '7px 10px', border: `1px solid ${C.border}`, borderRadius: 4, fontSize: 13 }}>
-              {PAYMENT_OPTS.map((p) => <option key={p} value={p}>{p}</option>)}
-            </select>
-            <button type="submit" style={{ background: C.forest, color: '#fff', border: 'none', borderRadius: 4, padding: '7px 12px', fontSize: 12, cursor: 'pointer' }}>Update</button>
-          </form>
-
-          <form action={setStatus} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-            <label style={{ fontSize: 12, color: C.muted, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Status</label>
-            <select name="value" defaultValue={a.status} style={{ padding: '7px 10px', border: `1px solid ${C.border}`, borderRadius: 4, fontSize: 13 }}>
-              {STATUS_OPTS.map((p) => <option key={p} value={p}>{p}</option>)}
-            </select>
-            <button type="submit" style={{ background: C.forest, color: '#fff', border: 'none', borderRadius: 4, padding: '7px 12px', fontSize: 12, cursor: 'pointer' }}>Update</button>
-          </form>
-        </div>
+        <StatusControls id={id} initialPayment={a.paymentStatus} initialStatus={a.status} />
       </Section>
 
       <Section title="Personal">

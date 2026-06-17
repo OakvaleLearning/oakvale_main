@@ -166,7 +166,7 @@ function paymentPartial({ firstName, lastName, trackFirst, amountPaidNaira, bala
     paragraph(`If you have any questions about your payment, simply reply to this email or write to us at <a href="mailto:hello@oakvaleltd.com" style="color:${C.forest};">hello@oakvaleltd.com</a>. We are happy to help.`) +
     signoff();
   return {
-    subject: 'Part Payment Received. One Step to Go...',
+    subject: 'Part Payment Received.',
     html: renderShell({ badge: 'Oakvale Learning · Summer Intensive 2026', heading: 'Part payment received — one step to go', accent: 'gold', bodyHtml: body }),
   };
 }

@@ -116,9 +116,8 @@ function paymentPaid({ firstName, lastName, trackFirst }: ApplicantContext): Bui
   </td></tr>`;
   const body =
     `<tr><td style="padding:26px 32px 16px;font-size:14px;color:${C.charcoal};line-height:1.7;font-family:Arial,sans-serif;">Dear ${fullName},</td></tr>` +
-    paragraph(`Your payment has been received in full, and your place on the <strong>Healthcare Leadership and Innovation Summer Intensive 2026</strong> is now confirmed.`) +
-    paragraph(`You have been enrolled on the following track: <strong>${track}</strong>`) +
-    paragraph(`Over the programme period, you will build real skills, work on real problems, and join a community of students from across Lagos who care about the future of healthcare. We are glad to have you with us.`) +
+    paragraph(`Wonderful news — your payment has come through, and your spot on the <strong>Healthcare Leadership and Innovation Summer Intensive 2026</strong> is officially secured. Welcome aboard.`) +
+    paragraph(`You are enrolled on <strong>${track}</strong>. Over the coming weeks you will learn by doing, tackle real healthcare challenges, and grow alongside a community of motivated students — we are genuinely delighted to have you with us.`) +
     callout({
       accent: 'gold',
       html: `<div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${C.gold};margin-bottom:10px;">Your Joining Instructions</div>
@@ -126,9 +125,9 @@ function paymentPaid({ firstName, lastName, trackFirst }: ApplicantContext): Bui
         <strong>Online learning.</strong> 10 August to 4 September 2026, delivered on our online learning platform.<br><br>
         <strong>Showcase and Health Innovation Challenge.</strong> 5 September 2026.`,
     }) +
-    paragraph(`<strong>Access your platform.</strong> Use the button below to join the online learning space. Sign in with the same email address you used to apply.`) +
+    paragraph(`Your first step is to join the online learning space. Tap the button below and sign in with the same email address you used to apply.`) +
     button +
-    paragraph(`Once you are in, take a few minutes to set up your profile and look around. Your course materials, schedule, and group spaces will all live there.`) +
+    paragraph(`Once you are in, set up your profile and have a look around — your course materials, schedule, and group spaces all live there, ready for you.`) +
     paragraph(`If you have any questions, simply reply to this email or write to us at <a href="mailto:hello@oakvaleltd.com" style="color:${C.forest};">hello@oakvaleltd.com</a>. We are happy to help.`) +
     signoff();
   return {
@@ -171,17 +170,25 @@ function paymentPartial({ firstName, lastName, trackFirst, amountPaidNaira, bala
   };
 }
 
-function paymentWaived({ firstName, applicationId }: ApplicantContext): Built {
+function paymentWaived({ firstName, lastName, trackFirst }: ApplicantContext): Built {
+  const fullName = `${firstName} ${lastName}`.trim();
+  const track = trackLabel(trackFirst);
   const body =
-    greeting(firstName) +
-    paragraph(`Good news — your <strong>application fee has been waived</strong> for the Healthcare Leadership and Innovation Summer Intensive 2026. No payment is required from you.`) +
-    callout({ accent: 'gold', html: `Your application is now complete and will be reviewed alongside all other completed applications. There is nothing further you need to do at this stage.` }) +
-    reference(applicationId) +
-    paragraph(`If you have any questions, simply reply to this email.`) +
+    `<tr><td style="padding:26px 32px 16px;font-size:14px;color:${C.charcoal};line-height:1.7;font-family:Arial,sans-serif;">Dear ${fullName},</td></tr>` +
+    paragraph(`Thank you for applying to the <strong>Healthcare Leadership and Innovation Summer Intensive 2026</strong>. Your application for <strong>${track}</strong> is now complete.`) +
+    paragraph(`As you have selected the scholarship option, your application has now been passed on to our scholarship review pool. There are a limited number of scholarship places, so each application is read carefully and fairly. You do not need to do anything else for now.`) +
+    callout({
+      accent: 'gold',
+      html: `<div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${C.gold};margin-bottom:10px;">What happens next</div>
+        <strong>2 July 2026</strong> — Registration closes. All scholarship applications will be reviewed together once the window has ended.<br><br>
+        <strong>On or before 9 July 2026</strong> — We will email you with the outcome of your scholarship application.`,
+    }) +
+    paragraph(`We know waiting is not easy, so we will keep this simple: watch your inbox in early July. Please check your spam or junk folder too, just in case our message lands there.`) +
+    paragraph(`If you have any questions in the meantime, simply reply to this email or write to us at <a href="mailto:hello@oakvaleltd.com" style="color:${C.forest};">hello@oakvaleltd.com</a>. We are happy to help.`) +
     signoff();
   return {
-    subject: 'Your application fee has been waived — Oakvale Summer Intensive 2026',
-    html: renderShell({ badge: 'Oakvale Learning · Summer Intensive 2026', heading: 'Your fee has been waived', accent: 'gold', bodyHtml: body }),
+    subject: 'Your scholarship application is complete — Summer Intensive 2026',
+    html: renderShell({ badge: 'Oakvale Learning · Summer Intensive 2026', heading: 'Your scholarship application is complete', accent: 'gold', bodyHtml: body }),
   };
 }
 

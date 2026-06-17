@@ -4,6 +4,7 @@ import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { updateNotes } from '../../actions';
 import StatusControls from './StatusControls';
+import { APPLICATION_FEE_NAIRA } from '@/lib/paystack';
 
 const C = {
   forest: '#0A3D2B',
@@ -47,6 +48,9 @@ export default async function ApplicationDetail({ params }: { params: Promise<{ 
 
   const aidFiles = (a.aidFiles as { url: string; name: string; size: number }[] | null) ?? [];
 
+  const paidSoFarKobo = a.payments.filter((p) => p.status === 'Success').reduce((sum, p) => sum + p.amount, 0);
+  const paidSoFarNaira = Math.round((a.amountPaidKobo ?? paidSoFarKobo) / 100);
+
   const setNotes = async (formData: FormData) => {
     'use server';
     await updateNotes(id, String(formData.get('notes') ?? ''));
@@ -63,7 +67,7 @@ export default async function ApplicationDetail({ params }: { params: Promise<{ 
       </p>
 
       <Section title="Manage">
-        <StatusControls id={id} initialPayment={a.paymentStatus} initialStatus={a.status} />
+        <StatusControls id={id} initialPayment={a.paymentStatus} initialStatus={a.status} paidSoFarNaira={paidSoFarNaira} feeNaira={APPLICATION_FEE_NAIRA} />
       </Section>
 
       <Section title="Personal">

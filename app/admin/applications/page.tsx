@@ -44,11 +44,13 @@ function badge(text: string, color: string) {
 function paymentColor(s: string) {
   return s === "Paid"
     ? "#145C3F"
-    : s === "Pending"
-      ? "#a06010"
-      : s === "Waived"
-        ? "#1a4bcc"
-        : "#9a1d1d";
+    : s === "Partial"
+      ? "#9a6510"
+      : s === "Pending"
+        ? "#a06010"
+        : s === "Waived"
+          ? "#1a4bcc"
+          : "#9a1d1d";
 }
 
 export default async function ApplicationsPage({

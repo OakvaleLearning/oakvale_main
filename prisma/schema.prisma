@@ -10,6 +10,7 @@ datasource db {
 enum PaymentStatus {
   Pending
   Paid
+  Partial
   Waived
   Rejected
 }
@@ -52,6 +53,7 @@ model Application {
   consentContact   Boolean           @default(false)
   consentTerms     Boolean           @default(false)
   paymentStatus    PaymentStatus     @default(Pending)
+  amountPaidKobo   Int?
   status           ApplicationStatus @default(Submitted)
   notes            String?
   paystackCustomerCode String?

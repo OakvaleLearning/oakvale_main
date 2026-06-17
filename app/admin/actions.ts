@@ -5,8 +5,14 @@ import { redirect } from 'next/navigation';
 import { auth, signIn, signOut } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { sendStatusEmail } from '@/lib/statusEmails';
+import {
+  APPLICATION_FEE_KOBO,
+  buildReference,
+  initializeTransaction,
+  siteUrl,
+} from '@/lib/paystack';
 
-const PAYMENT_VALUES = ['Pending', 'Paid', 'Waived', 'Rejected'] as const;
+const PAYMENT_VALUES = ['Pending', 'Paid', 'Partial', 'Waived', 'Rejected'] as const;
 const STATUS_VALUES = ['Submitted', 'UnderReview', 'Accepted', 'Declined'] as const;
 
 type PaymentStatus = (typeof PAYMENT_VALUES)[number];
@@ -34,27 +40,82 @@ async function requireAdmin() {
   if (!session?.user) redirect('/admin/login');
 }
 
-export async function updatePaymentStatus(id: string, value: string) {
+export async function updatePaymentStatus(id: string, value: string, amountPaidNaira?: number) {
   await requireAdmin();
   if (!PAYMENT_VALUES.includes(value as PaymentStatus)) return;
 
   const current = await prisma.application.findUnique({
     where: { id },
-    select: { paymentStatus: true, email: true, firstName: true, trackFirst: true },
+    select: {
+      paymentStatus: true, email: true, firstName: true, lastName: true, trackFirst: true,
+      payments: { where: { status: 'Success' }, select: { amount: true } },
+    },
   });
   if (!current) return;
 
-  await prisma.application.update({
-    where: { id },
-    data: { paymentStatus: value as PaymentStatus },
-  });
+  const application = { id, email: current.email, firstName: current.firstName, lastName: current.lastName, trackFirst: current.trackFirst };
 
-  if (current.paymentStatus !== value) {
+  if (value === 'Partial') {
+    // Amount paid so far: admin-entered value wins, else sum of successful payments.
+    const paidSoFarKobo = current.payments.reduce((sum, p) => sum + p.amount, 0);
+    const amountPaidKobo =
+      typeof amountPaidNaira === 'number' && amountPaidNaira > 0
+        ? Math.round(amountPaidNaira * 100)
+        : paidSoFarKobo;
+    const balanceKobo = Math.max(0, APPLICATION_FEE_KOBO - amountPaidKobo);
+
+    await prisma.application.update({
+      where: { id },
+      data: { paymentStatus: 'Partial', amountPaidKobo },
+    });
+
+    // Generate a fresh Paystack link for the remaining balance.
+    let completePaymentUrl: string | null = null;
+    if (balanceKobo > 0 && process.env.PAYSTACK_SECRET_KEY) {
+      try {
+        const reference = buildReference(id);
+        const init = await initializeTransaction({
+          email: current.email,
+          amountKobo: balanceKobo,
+          reference,
+          callbackUrl: `${siteUrl()}/apply/payment/success`,
+          metadata: { applicationId: id, kind: 'balance' },
+        });
+        await prisma.payment.create({
+          data: {
+            applicationId: id,
+            reference: init.reference,
+            amount: balanceKobo,
+            authorizationUrl: init.authorization_url,
+            status: 'Initialized',
+          },
+        });
+        completePaymentUrl = init.authorization_url;
+      } catch (err) {
+        console.error('Paystack balance init failed (status saved without link):', err);
+      }
+    }
+
     await sendStatusEmail({
       field: 'payment',
       value,
-      application: { id, email: current.email, firstName: current.firstName, trackFirst: current.trackFirst },
+      application,
+      extra: {
+        amountPaidNaira: amountPaidKobo / 100,
+        balanceDueNaira: balanceKobo / 100,
+        completePaymentUrl,
+      },
     });
+  } else {
+    const changed = current.paymentStatus !== value;
+    await prisma.application.update({
+      where: { id },
+      data: { paymentStatus: value as PaymentStatus },
+    });
+
+    if (changed) {
+      await sendStatusEmail({ field: 'payment', value, application });
+    }
   }
 
   revalidatePath(`/admin/applications/${id}`);
@@ -68,7 +129,7 @@ export async function updateApplicationStatus(id: string, value: string) {
 
   const current = await prisma.application.findUnique({
     where: { id },
-    select: { status: true, email: true, firstName: true, trackFirst: true },
+    select: { status: true, email: true, firstName: true, lastName: true, trackFirst: true },
   });
   if (!current) return;
 
@@ -81,7 +142,7 @@ export async function updateApplicationStatus(id: string, value: string) {
     await sendStatusEmail({
       field: 'application',
       value,
-      application: { id, email: current.email, firstName: current.firstName, trackFirst: current.trackFirst },
+      application: { id, email: current.email, firstName: current.firstName, lastName: current.lastName, trackFirst: current.trackFirst },
     });
   }
 

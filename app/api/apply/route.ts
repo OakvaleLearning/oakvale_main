@@ -150,6 +150,7 @@ function buildHtml(data: EmailData) {
 
 function buildApplicantHtml(data: {
   firstName: string;
+  lastName: string;
   applicationId: string;
   trackFirst: string;
   requiresPayment: boolean;
@@ -157,9 +158,67 @@ function buildApplicantHtml(data: {
   feeNaira: number;
   fullScholarship: boolean;
 }) {
-  const { firstName, applicationId, trackFirst, requiresPayment, paymentUrl, feeNaira, fullScholarship } = data;
+  const { firstName, lastName, applicationId, trackFirst, requiresPayment, paymentUrl, feeNaira, fullScholarship } = data;
+  const fullName = `${firstName} ${lastName}`.trim();
   const trackLabel = trackFirst ? TRACK_NAMES[trackFirst] || `Track ${trackFirst}` : '';
   const feeFormatted = `₦${feeNaira.toLocaleString('en-NG')}`;
+
+  // ─── Scholarship applicants get a dedicated email (no payment, review pool) ──
+  if (fullScholarship) {
+    return `<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background:#F7F3EC;font-family:Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#F7F3EC;padding:32px 0;">
+    <tr><td align="center">
+      <table width="620" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:6px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+        <tr>
+          <td style="background:#0A3D2B;padding:28px 32px;">
+            <div style="font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#C8881A;margin-bottom:6px;">Oakvale Learning · Summer Intensive 2026</div>
+            <div style="font-size:22px;color:#ffffff;font-family:Georgia,serif;line-height:1.3;">Your scholarship application is complete</div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:26px 32px 4px;font-size:14px;color:#1C1C1C;line-height:1.7;">
+            Dear ${fullName},<br><br>
+            Thank you for applying to the <strong>Healthcare Leadership and Innovation Summer Intensive 2026</strong>. Your application${trackLabel ? ` for <strong>${trackLabel}</strong>` : ''} is now complete.
+            <br><br>
+            As you have selected the scholarship option, your application has now been passed on to our scholarship review pool. There are a limited number of scholarship places, so each application is read carefully and fairly. You do not need to do anything else for now.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:14px 32px 0;">
+            <div style="background:#F7F3EC;border:1px solid #e8e2da;border-left:4px solid #C8881A;border-radius:6px;padding:18px 22px;font-size:13px;color:#1C1C1C;line-height:1.7;font-family:Arial,sans-serif;">
+              <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#C8881A;margin-bottom:10px;">What happens next</div>
+              <strong>2 July 2026</strong> — Registration closes. All scholarship applications will be reviewed together once the window has ended.<br><br>
+              <strong>On or before 9 July 2026</strong> — We will email you with the outcome of your scholarship application.
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:20px 32px 0;font-size:14px;color:#1C1C1C;line-height:1.7;">
+            We know waiting is not easy, so we will keep this simple: watch your inbox in early July. Please check your spam or junk folder too, just in case our message lands there.
+            <br><br>
+            If you have any questions in the meantime, simply reply to this email or write to us at <a href="mailto:hello@oakvaleltd.com" style="color:#0A3D2B;">hello@oakvaleltd.com</a>. We are happy to help.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:24px 32px 32px;font-size:14px;color:#1C1C1C;line-height:1.7;">
+            Warm regards,<br>
+            <strong>Sitasri De</strong><br>
+            Programme Co-ordinator<br>
+            Oakvale Learning
+          </td>
+        </tr>
+        <tr>
+          <td style="background:#0A3D2B;padding:16px 32px;text-align:center;font-size:11px;color:rgba(255,255,255,0.55);">
+            OAKVALE LEARNING · hello@oakvaleltd.com · www.oakvaleltd.com
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+  </table>
+</body></html>`;
+  }
 
   const payBlock = requiresPayment && paymentUrl ? `
         <tr>
@@ -208,8 +267,8 @@ function buildApplicantHtml(data: {
         </tr>
         <tr>
           <td style="padding:26px 32px 4px;font-size:14px;color:#1C1C1C;line-height:1.7;">
-            Dear ${firstName},<br><br>
-            Thank you for applying to the <strong>Oakvale Summer Intensive 2026</strong>. We have received your application${trackLabel ? ` for <strong>${trackLabel}</strong>` : ''}.
+            Dear ${fullName},<br><br>
+            Thank you for applying to the <strong>Healthcare Leadership and Innovation Summer Intensive 2026</strong>. We have received your application${trackLabel ? ` for <strong>${trackLabel}</strong>` : ''}.
             <br><br>
             Your application reference is <strong>${applicationId}</strong>. Please keep this for your records.
           </td>
@@ -224,7 +283,9 @@ function buildApplicantHtml(data: {
         <tr>
           <td style="padding:24px 32px 32px;font-size:14px;color:#1C1C1C;line-height:1.7;">
             Warm regards,<br>
-            <strong>The Oakvale Learning Team</strong>
+            <strong>Sitasri De</strong><br>
+            Programme Co-ordinator<br>
+            Oakvale Learning
           </td>
         </tr>
         <tr>
@@ -383,18 +444,22 @@ export async function POST(request: Request) {
       if (process.env.RESEND_KEY && process.env.EMAIL_FROM) {
         try {
           const resend = new Resend(process.env.RESEND_KEY);
+          const existingScholarship = existing.needsAid && existing.aidLevel === 'full';
           await resend.emails.send({
             from: process.env.EMAIL_FROM,
             to: existing.email,
-            subject: 'Complete your Oakvale Summer Intensive 2026 application',
+            subject: existingScholarship
+              ? 'Your scholarship application is complete — Summer Intensive 2026'
+              : 'Complete your Oakvale Summer Intensive 2026 application',
             html: buildApplicantHtml({
               firstName: existing.firstName,
+              lastName: existing.lastName,
               applicationId: existing.id,
               trackFirst: existing.trackFirst,
               requiresPayment,
               paymentUrl: retryUrl,
               feeNaira: APPLICATION_FEE_NAIRA,
-              fullScholarship: existing.needsAid && existing.aidLevel === 'full',
+              fullScholarship: existingScholarship,
             }),
           });
         } catch (emailErr) {
@@ -545,18 +610,22 @@ export async function POST(request: Request) {
 
       // 2. Applicant acknowledgement
       try {
+        const isScholarship = needsAid && fields.aidLevel === 'full';
         await resend.emails.send({
           from: process.env.EMAIL_FROM,
           to: fields.email,
-          subject: 'We have received your Oakvale Summer Intensive 2026 application',
+          subject: isScholarship
+            ? 'Your scholarship application is complete — Summer Intensive 2026'
+            : 'We have received your Oakvale Summer Intensive 2026 application',
           html: buildApplicantHtml({
             firstName: fields.firstName,
+            lastName: fields.lastName,
             applicationId: application.id,
             trackFirst: fields.trackFirst,
             requiresPayment,
             paymentUrl,
             feeNaira: APPLICATION_FEE_NAIRA,
-            fullScholarship: needsAid && fields.aidLevel === 'full',
+            fullScholarship: isScholarship,
           }),
         });
       } catch (emailErr) {

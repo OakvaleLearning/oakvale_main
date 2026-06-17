@@ -66,7 +66,7 @@ export async function POST(request: Request) {
 
         const application = await prisma.application.findUnique({
           where: { id: payment.applicationId },
-          select: { id: true, email: true, firstName: true, trackFirst: true },
+          select: { id: true, email: true, firstName: true, lastName: true, trackFirst: true },
         });
         if (application) {
           await sendStatusEmail({ field: 'payment', value: 'Paid', application });

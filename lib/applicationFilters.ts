@@ -1,6 +1,6 @@
 import type { Prisma } from '@prisma/client';
 
-export const PAYMENT_OPTS = ['All', 'Pending', 'Paid', 'Waived', 'Rejected'] as const;
+export const PAYMENT_OPTS = ['All', 'Pending', 'Paid', 'Partial', 'Waived', 'Rejected'] as const;
 export const STATUS_OPTS = ['All', 'Submitted', 'UnderReview', 'Accepted', 'Declined'] as const;
 
 export type PaymentOpt = (typeof PAYMENT_OPTS)[number];

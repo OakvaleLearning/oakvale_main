@@ -18,6 +18,8 @@ const C = {
 
 type Accent = 'gold' | 'red';
 
+const LEARNING_PLATFORM_URL = 'https://oakvale-learning.mn.co/collections/3101470';
+
 function accentColor(accent: Accent): string {
   return accent === 'red' ? C.red : C.gold;
 }
@@ -70,7 +72,7 @@ function greeting(firstName: string): string {
 }
 
 function signoff(): string {
-  return `<tr><td style="padding:8px 32px 32px;font-size:14px;color:${C.charcoal};line-height:1.7;font-family:Arial,sans-serif;">Warm regards,<br><strong>The Oakvale Learning Team</strong></td></tr>`;
+  return `<tr><td style="padding:8px 32px 32px;font-size:14px;color:${C.charcoal};line-height:1.7;font-family:Arial,sans-serif;">Warm regards,<br><strong>Sitasri De</strong><br>Programme Co-ordinator<br>Oakvale Learning</td></tr>`;
 }
 
 function callout({ accent, html }: { accent: Accent; html: string }): string {
@@ -86,8 +88,12 @@ function reference(applicationId: string): string {
 
 export type ApplicantContext = {
   firstName: string;
+  lastName: string;
   trackFirst: string;
   applicationId: string;
+  amountPaidNaira?: number;
+  balanceDueNaira?: number;
+  completePaymentUrl?: string | null;
 };
 
 type Built = { subject: string; html: string };
@@ -96,26 +102,79 @@ function trackLabel(trackFirst: string): string {
   return TRACK_NAMES[trackFirst] || (trackFirst ? `Track ${trackFirst}` : 'your chosen track');
 }
 
+function formatNaira(naira: number): string {
+  return `₦${Math.round(naira).toLocaleString('en-NG')}`;
+}
+
 // ─── Payment templates ──────────────────────────────────────────────
 
-function paymentPaid({ firstName, applicationId }: ApplicantContext): Built {
+function paymentPaid({ firstName, lastName, trackFirst }: ApplicantContext): Built {
+  const fullName = `${firstName} ${lastName}`.trim();
+  const track = trackLabel(trackFirst);
+  const button = `<tr><td style="padding:4px 32px 24px;text-align:center;">
+    <a href="${LEARNING_PLATFORM_URL}" style="display:inline-block;background:${C.forest};color:#ffffff;text-decoration:none;font-weight:500;font-size:14px;font-family:Arial,sans-serif;padding:13px 30px;border-radius:4px;">Join the Learning Platform</a>
+  </td></tr>`;
   const body =
-    greeting(firstName) +
-    paragraph(`We're delighted to confirm that we have <strong>received your application fee</strong> for the Oakvale Summer Intensive 2026. Thank you.`) +
-    paragraph(`Your application is now complete and has entered our review pool. Applications are assessed on a rolling basis, and we will be in touch with a decision soon.`) +
-    reference(applicationId) +
-    paragraph(`If you have any questions in the meantime, simply reply to this email.`) +
+    `<tr><td style="padding:26px 32px 16px;font-size:14px;color:${C.charcoal};line-height:1.7;font-family:Arial,sans-serif;">Dear ${fullName},</td></tr>` +
+    paragraph(`Your payment has been received in full, and your place on the <strong>Healthcare Leadership and Innovation Summer Intensive 2026</strong> is now confirmed.`) +
+    paragraph(`You have been enrolled on the following track: <strong>${track}</strong>`) +
+    paragraph(`Over the programme period, you will build real skills, work on real problems, and join a community of students from across Lagos who care about the future of healthcare. We are glad to have you with us.`) +
+    callout({
+      accent: 'gold',
+      html: `<div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${C.gold};margin-bottom:10px;">Your Joining Instructions</div>
+        <strong>Opening Ceremony.</strong> 8 August 2026, Julius Berger Hall, University of Lagos, Yaba.<br><br>
+        <strong>Online learning.</strong> 10 August to 4 September 2026, delivered on our online learning platform.<br><br>
+        <strong>Showcase and Health Innovation Challenge.</strong> 5 September 2026.`,
+    }) +
+    paragraph(`<strong>Access your platform.</strong> Use the button below to join the online learning space. Sign in with the same email address you used to apply.`) +
+    button +
+    paragraph(`Once you are in, take a few minutes to set up your profile and look around. Your course materials, schedule, and group spaces will all live there.`) +
+    paragraph(`If you have any questions, simply reply to this email or write to us at <a href="mailto:hello@oakvaleltd.com" style="color:${C.forest};">hello@oakvaleltd.com</a>. We are happy to help.`) +
     signoff();
   return {
-    subject: 'Payment confirmed — Oakvale Summer Intensive 2026',
-    html: renderShell({ badge: 'Oakvale Learning · Summer Intensive 2026', heading: 'Payment confirmed ✓', accent: 'gold', bodyHtml: body }),
+    subject: "You're In! Welcome To The Health Leadership & Innovation Summer Intensive",
+    html: renderShell({ badge: 'Oakvale Learning · Summer Intensive 2026', heading: "You're in — welcome aboard", accent: 'gold', bodyHtml: body }),
+  };
+}
+
+function paymentPartial({ firstName, lastName, trackFirst, amountPaidNaira, balanceDueNaira, completePaymentUrl }: ApplicantContext): Built {
+  const fullName = `${firstName} ${lastName}`.trim();
+  const track = trackLabel(trackFirst);
+  const button = completePaymentUrl ? `<tr><td style="padding:4px 32px 24px;text-align:center;">
+    <a href="${completePaymentUrl}" style="display:inline-block;background:${C.forest};color:#ffffff;text-decoration:none;font-weight:500;font-size:14px;font-family:Arial,sans-serif;padding:13px 30px;border-radius:4px;">Complete My Payment</a>
+  </td></tr>` : '';
+  const moneyRow = (label: string, value: string) =>
+    `<tr>
+      <td style="padding:8px 0;font-size:13px;color:${C.muted};font-family:Arial,sans-serif;">${label}</td>
+      <td style="padding:8px 0;font-size:14px;font-weight:700;color:${C.charcoal};text-align:right;font-family:Arial,sans-serif;">${value}</td>
+    </tr>`;
+  const body =
+    `<tr><td style="padding:26px 32px 16px;font-size:14px;color:${C.charcoal};line-height:1.7;font-family:Arial,sans-serif;">Dear ${fullName},</td></tr>` +
+    paragraph(`Thank you for your application. We have received <strong>part</strong> of your application fee for the <strong>Healthcare Leadership and Innovation Summer Intensive 2026</strong>, and your place is being held on the following track: <strong>${track}</strong>.`) +
+    paragraph(`To complete your enrolment, please pay the remaining balance before the registration deadline.`) +
+    callout({
+      accent: 'gold',
+      html: `<div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${C.gold};margin-bottom:10px;">Your Payment So Far</div>
+        <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+          ${moneyRow('Amount paid', formatNaira(amountPaidNaira ?? 0))}
+          ${moneyRow('Balance remaining', formatNaira(balanceDueNaira ?? 0))}
+        </table>`,
+    }) +
+    paragraph(`Please complete your payment <strong>by 2 July 2026</strong>. This is the registration deadline. To keep your place, your full fee must be received on or before this date.`) +
+    button +
+    paragraph(`Once your full payment is received, we will send your joining instructions and your link to the online learning platform. You will not be able to access the platform until your fee is paid in full.`) +
+    paragraph(`If you have any questions about your payment, simply reply to this email or write to us at <a href="mailto:hello@oakvaleltd.com" style="color:${C.forest};">hello@oakvaleltd.com</a>. We are happy to help.`) +
+    signoff();
+  return {
+    subject: 'Part Payment Received. One Step to Go...',
+    html: renderShell({ badge: 'Oakvale Learning · Summer Intensive 2026', heading: 'Part payment received — one step to go', accent: 'gold', bodyHtml: body }),
   };
 }
 
 function paymentWaived({ firstName, applicationId }: ApplicantContext): Built {
   const body =
     greeting(firstName) +
-    paragraph(`Good news — your <strong>application fee has been waived</strong> for the Oakvale Summer Intensive 2026. No payment is required from you.`) +
+    paragraph(`Good news — your <strong>application fee has been waived</strong> for the Healthcare Leadership and Innovation Summer Intensive 2026. No payment is required from you.`) +
     callout({ accent: 'gold', html: `Your application is now complete and will be reviewed alongside all other completed applications. There is nothing further you need to do at this stage.` }) +
     reference(applicationId) +
     paragraph(`If you have any questions, simply reply to this email.`) +
@@ -129,7 +188,7 @@ function paymentWaived({ firstName, applicationId }: ApplicantContext): Built {
 function paymentRejected({ firstName, applicationId }: ApplicantContext): Built {
   const body =
     greeting(firstName) +
-    paragraph(`We're writing about your application to the Oakvale Summer Intensive 2026. Unfortunately, there is currently an <strong>issue with your application fee</strong> and it has not been accepted.`) +
+    paragraph(`We're writing about your application to the Healthcare Leadership and Innovation Summer Intensive 2026. Unfortunately, there is currently an <strong>issue with your application fee</strong> and it has not been accepted.`) +
     callout({ accent: 'gold', html: `To keep your application active, please contact us so we can help you resolve this. Reply to this email or write to <a href="mailto:hello@oakvaleltd.com" style="color:${C.forest};">hello@oakvaleltd.com</a> and our team will assist you.` }) +
     reference(applicationId) +
     signoff();
@@ -144,7 +203,7 @@ function paymentRejected({ firstName, applicationId }: ApplicantContext): Built 
 function statusUnderReview({ firstName, trackFirst, applicationId }: ApplicantContext): Built {
   const body =
     greeting(firstName) +
-    paragraph(`Thank you for applying to the Oakvale Summer Intensive 2026. We wanted to let you know that your application for <strong>${trackLabel(trackFirst)}</strong> is now <strong>under review</strong>.`) +
+    paragraph(`Thank you for applying to the Healthcare Leadership and Innovation Summer Intensive 2026. We wanted to let you know that your application for <strong>${trackLabel(trackFirst)}</strong> is now <strong>under review</strong>.`) +
     paragraph(`Our team is carefully reading every application. We review on a rolling basis and will write to you again as soon as a decision has been made — there is nothing further you need to do right now.`) +
     reference(applicationId) +
     signoff();
@@ -157,7 +216,7 @@ function statusUnderReview({ firstName, trackFirst, applicationId }: ApplicantCo
 function statusAccepted({ firstName, trackFirst, applicationId }: ApplicantContext): Built {
   const body =
     greeting(firstName) +
-    paragraph(`We are thrilled to tell you that you have been <strong>accepted</strong> into the Oakvale Healthcare Leadership and Innovation Summer Intensive 2026, in <strong>${trackLabel(trackFirst)}</strong>. Congratulations — this is a genuine achievement.`) +
+    paragraph(`We are thrilled to tell you that you have been <strong>accepted</strong> into the Healthcare Leadership and Innovation Summer Intensive 2026, in <strong>${trackLabel(trackFirst)}</strong>. Congratulations — this is a genuine achievement.`) +
     callout({
       accent: 'gold',
       html: `<div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${C.gold};margin-bottom:10px;">What happens next</div>
@@ -177,7 +236,7 @@ function statusAccepted({ firstName, trackFirst, applicationId }: ApplicantConte
 function statusDeclined({ firstName, applicationId }: ApplicantContext): Built {
   const body =
     greeting(firstName) +
-    paragraph(`Thank you for applying to the Oakvale Summer Intensive 2026, and for the time and thought you put into your application.`) +
+    paragraph(`Thank you for applying to the Healthcare Leadership and Innovation Summer Intensive 2026, and for the time and thought you put into your application.`) +
     paragraph(`This year we received many strong applications for a limited number of places, and after careful consideration we are unable to offer you a place in this cohort. This was a difficult decision and is in no way a reflection of your potential.`) +
     callout({ accent: 'gold', html: `We would warmly encourage you to stay connected with Oakvale Learning and to apply again for future programmes. We would be glad to see your application next time.` }) +
     reference(applicationId) +
@@ -192,6 +251,7 @@ function statusDeclined({ firstName, applicationId }: ApplicantContext): Built {
 
 const PAYMENT_TEMPLATES: Record<string, ((ctx: ApplicantContext) => Built) | undefined> = {
   Paid: paymentPaid,
+  Partial: paymentPartial,
   Waived: paymentWaived,
   Rejected: paymentRejected,
 };
@@ -213,10 +273,12 @@ export async function sendStatusEmail({
   field,
   value,
   application,
+  extra,
 }: {
   field: StatusEmailField;
   value: string;
-  application: { email: string; firstName: string; trackFirst: string; id: string };
+  application: { email: string; firstName: string; lastName: string; trackFirst: string; id: string };
+  extra?: { amountPaidNaira?: number; balanceDueNaira?: number; completePaymentUrl?: string | null };
 }): Promise<void> {
   try {
     const builder = field === 'payment' ? PAYMENT_TEMPLATES[value] : STATUS_TEMPLATES[value];
@@ -229,8 +291,10 @@ export async function sendStatusEmail({
 
     const { subject, html } = builder({
       firstName: application.firstName,
+      lastName: application.lastName,
       trackFirst: application.trackFirst,
       applicationId: application.id,
+      ...extra,
     });
 
     const resend = new Resend(process.env.RESEND_KEY);

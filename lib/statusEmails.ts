@@ -206,6 +206,100 @@ function paymentRejected({ firstName, applicationId }: ApplicantContext): Built 
   };
 }
 
+// ─── Bulk payment-reminder templates ───────────────────────────────
+
+export type ReminderKind = 'not_paid' | 'part_payment';
+
+export type ReminderContext = {
+  firstName: string;
+  lastName: string;
+  trackFirst: string;
+  feeNaira?: number;
+  amountPaidNaira?: number;
+  balanceDueNaira?: number;
+  paymentUrl?: string | null;
+};
+
+function reminderNotPaid({ firstName, lastName, trackFirst, feeNaira, paymentUrl }: ReminderContext): Built {
+  const fullName = `${firstName} ${lastName}`.trim();
+  const track = trackLabel(trackFirst);
+  const fee = formatNaira(feeNaira ?? 0);
+  const button = paymentUrl ? `<tr><td style="padding:4px 32px 24px;text-align:center;">
+    <a href="${paymentUrl}" style="display:inline-block;background:${C.forest};color:#ffffff;text-decoration:none;font-weight:500;font-size:14px;font-family:Arial,sans-serif;padding:13px 30px;border-radius:4px;">Pay Application Fee</a>
+  </td></tr>` : '';
+  const body =
+    `<tr><td style="padding:26px 32px 16px;font-size:14px;color:${C.charcoal};line-height:1.7;font-family:Arial,sans-serif;">Dear ${fullName},</td></tr>` +
+    paragraph(`Thank you for your application to the <strong>Healthcare Leadership and Innovation Summer Intensive 2026</strong>. Your application for <strong>${track}</strong> has been received, but your place is not yet secure.`) +
+    paragraph(`To confirm your spot in the programme, your full application fee of <strong>${fee}</strong> must be paid before registration closes. Because places are limited, we cannot hold spots for unconfirmed applications.`) +
+    (paymentUrl
+      ? paragraph(`Please complete your payment using the button below:`)
+      : paragraph(`To complete your payment, simply reply to this email and we will send you a secure payment link.`)) +
+    button +
+    callout({
+      accent: 'gold',
+      html: `<div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${C.gold};margin-bottom:10px;">Important Deadline</div>
+        <strong>2 July 2026</strong> — Registration closes. Your payment must be received on or before this date to secure your place.`,
+    }) +
+    paragraph(`Once your payment is received in full, we will send over your official joining instructions and your personal link to our online learning platform.`) +
+    paragraph(`If you have any questions or are facing any challenges with the payment process, simply reply to this email or write to us at <a href="mailto:hello@oakvaleltd.com" style="color:${C.forest};">hello@oakvaleltd.com</a>. We are happy to help.`) +
+    signoff();
+  return {
+    subject: 'Action Required: Complete your application for the Health Leadership & Innovation Summer Intensive',
+    html: renderShell({ badge: 'Oakvale Learning · Summer Intensive 2026', heading: 'Complete your application', accent: 'gold', bodyHtml: body }),
+  };
+}
+
+function reminderPartPayment({ firstName, lastName, trackFirst, amountPaidNaira, balanceDueNaira, paymentUrl }: ReminderContext): Built {
+  const fullName = `${firstName} ${lastName}`.trim();
+  const track = trackLabel(trackFirst);
+  const button = paymentUrl ? `<tr><td style="padding:4px 32px 24px;text-align:center;">
+    <a href="${paymentUrl}" style="display:inline-block;background:${C.forest};color:#ffffff;text-decoration:none;font-weight:500;font-size:14px;font-family:Arial,sans-serif;padding:13px 30px;border-radius:4px;">Complete My Payment</a>
+  </td></tr>` : '';
+  const moneyRow = (label: string, value: string) =>
+    `<tr>
+      <td style="padding:8px 0;font-size:13px;color:${C.muted};font-family:Arial,sans-serif;">${label}</td>
+      <td style="padding:8px 0;font-size:14px;font-weight:700;color:${C.charcoal};text-align:right;font-family:Arial,sans-serif;">${value}</td>
+    </tr>`;
+  const body =
+    `<tr><td style="padding:26px 32px 16px;font-size:14px;color:${C.charcoal};line-height:1.7;font-family:Arial,sans-serif;">Dear ${fullName},</td></tr>` +
+    paragraph(`Thank you for your application.`) +
+    paragraph(`This is a quick reminder regarding your application for the <strong>Healthcare Leadership and Innovation Summer Intensive 2026</strong>. Your place on the <strong>${track}</strong> track is currently being held, but your enrolment is not yet complete.`) +
+    paragraph(`The registration deadline is exactly one week away. To secure your spot and join us this August, please clear your outstanding balance.`) +
+    callout({
+      accent: 'gold',
+      html: `<div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${C.gold};margin-bottom:10px;">Your Payment Status</div>
+        <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+          ${moneyRow('Amount paid', formatNaira(amountPaidNaira ?? 0))}
+          ${moneyRow('Balance remaining', formatNaira(balanceDueNaira ?? 0))}
+        </table>`,
+    }) +
+    (paymentUrl
+      ? paragraph(`Please complete your final payment by <strong>2 July 2026</strong> using the button below:`)
+      : paragraph(`To complete your final payment by <strong>2 July 2026</strong>, simply reply to this email and we will send you a secure payment link.`)) +
+    button +
+    paragraph(`Please note: Your full fee must be received on or before <strong>2 July 2026</strong>. You will not be able to access the online learning platform or receive your joining instructions until your balance is paid in full.`) +
+    paragraph(`If you have any questions about your remaining balance, simply reply to this email or write to us at <a href="mailto:hello@oakvaleltd.com" style="color:${C.forest};">hello@oakvaleltd.com</a>. We are here to assist you.`) +
+    signoff();
+  return {
+    subject: 'Reminder: 1 Week Left to Complete Your Payment for the Summer Intensive',
+    html: renderShell({ badge: 'Oakvale Learning · Summer Intensive 2026', heading: 'One week left to complete your payment', accent: 'gold', bodyHtml: body }),
+  };
+}
+
+const REMINDER_TEMPLATES: Record<ReminderKind, (ctx: ReminderContext) => Built> = {
+  not_paid: reminderNotPaid,
+  part_payment: reminderPartPayment,
+};
+
+/** Build a themed bulk-reminder email. `type` is the EmailLog key. */
+export function buildReminderEmail(
+  kind: ReminderKind,
+  ctx: ReminderContext
+): { type: string; subject: string; html: string } {
+  const { subject, html } = REMINDER_TEMPLATES[kind](ctx);
+  return { type: `reminder_${kind}`, subject, html };
+}
+
 // ─── Application status templates ───────────────────────────────────
 
 function statusUnderReview({ firstName, trackFirst, applicationId }: ApplicantContext): Built {

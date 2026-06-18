@@ -1,6 +1,5 @@
 'use server';
 
-import { Prisma } from '@prisma/client';
 import { Resend } from 'resend';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
@@ -15,15 +14,9 @@ import {
   initializeTransaction,
   siteUrl,
 } from '@/lib/paystack';
+import { REMINDER_AUDIENCE } from './audience';
 
 export type ReminderResult = { sent: number; failed: number; skipped: number };
-
-/** Prisma WHERE clauses for each reminder audience — shared with the page's counts. */
-export const REMINDER_AUDIENCE: Record<ReminderKind, Prisma.ApplicationWhereInput> = {
-  // Owes the full fee. Exclude full-scholarship applicants (they owe nothing).
-  not_paid: { paymentStatus: 'Pending', NOT: { needsAid: true, aidLevel: 'full' } },
-  part_payment: { paymentStatus: 'Partial' },
-};
 
 async function requireAdmin() {
   const session = await auth();

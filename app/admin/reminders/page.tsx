@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import { REMINDER_AUDIENCE } from './actions';
+import { REMINDER_AUDIENCE } from './audience';
 import ReminderButtons from './ReminderButtons';
 
 const C = {

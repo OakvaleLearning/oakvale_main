@@ -4,7 +4,10 @@ import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { updateNotes } from '../../actions';
 import StatusControls from './StatusControls';
-import { APPLICATION_FEE_NAIRA } from '@/lib/paystack';
+import EmailHistory, { type LoggedEmail, type TemplatePreview } from './EmailHistory';
+import { buildStatusEmail } from '@/lib/statusEmails';
+import { buildApplicantHtml } from '@/lib/applyEmails';
+import { APPLICATION_FEE_KOBO, APPLICATION_FEE_NAIRA } from '@/lib/paystack';
 
 const C = {
   forest: '#0A3D2B',
@@ -42,7 +45,10 @@ export default async function ApplicationDetail({ params }: { params: Promise<{ 
   const { id } = await params;
   const a = await prisma.application.findUnique({
     where: { id },
-    include: { payments: { orderBy: { createdAt: 'desc' } } },
+    include: {
+      payments: { orderBy: { createdAt: 'desc' } },
+      emailLogs: { orderBy: { createdAt: 'desc' } },
+    },
   });
   if (!a) notFound();
 
@@ -50,6 +56,62 @@ export default async function ApplicationDetail({ params }: { params: Promise<{ 
 
   const paidSoFarKobo = a.payments.filter((p) => p.status === 'Success').reduce((sum, p) => sum + p.amount, 0);
   const paidSoFarNaira = Math.round((a.amountPaidKobo ?? paidSoFarKobo) / 100);
+
+  // ─── Email history + live template previews ──────────────────────────
+  const loggedEmails: LoggedEmail[] = a.emailLogs.map((e) => ({
+    id: e.id,
+    type: e.type,
+    recipient: e.recipient,
+    toAddress: e.toAddress,
+    subject: e.subject,
+    status: e.status,
+    createdAt: e.createdAt.toISOString(),
+    html: e.html,
+  }));
+
+  const isFullScholarship = a.needsAid && a.aidLevel === 'full';
+  const balanceNaira = Math.max(0, APPLICATION_FEE_KOBO / 100 - paidSoFarNaira);
+  const ctx = { firstName: a.firstName, lastName: a.lastName, trackFirst: a.trackFirst, id: a.id };
+
+  const templatePreviews: TemplatePreview[] = [];
+  const pushStatusPreview = (field: 'payment' | 'application', value: string, label: string, extra?: Parameters<typeof buildStatusEmail>[0]['extra']) => {
+    const built = buildStatusEmail({ field, value, application: ctx, extra });
+    if (built) templatePreviews.push({ type: built.type, label, subject: built.subject, html: built.html });
+  };
+
+  // Submission / acknowledgement templates
+  templatePreviews.push({
+    type: 'application_received',
+    label: isFullScholarship ? 'Scholarship application complete' : 'Application received',
+    subject: isFullScholarship
+      ? 'Your scholarship application is complete — Summer Intensive 2026'
+      : 'We have received your Oakvale Summer Intensive 2026 application',
+    html: buildApplicantHtml({
+      firstName: a.firstName,
+      lastName: a.lastName,
+      applicationId: a.id,
+      trackFirst: a.trackFirst,
+      requiresPayment: !isFullScholarship,
+      paymentUrl: '#',
+      feeNaira: APPLICATION_FEE_NAIRA,
+      fullScholarship: isFullScholarship,
+    }),
+  });
+
+  // Payment status templates
+  pushStatusPreview('payment', 'Paid', 'Payment confirmed');
+  pushStatusPreview('payment', 'Partial', 'Part payment received', {
+    amountPaidNaira: paidSoFarNaira,
+    balanceDueNaira: balanceNaira,
+    completePaymentUrl: '#',
+  });
+  pushStatusPreview('payment', 'Waived', 'Scholarship / fee waived');
+  pushStatusPreview('payment', 'Rejected', 'Payment issue');
+
+  // Application status templates
+  pushStatusPreview('application', 'UnderReview', 'Under review');
+  pushStatusPreview('application', 'Accepted', 'Accepted');
+  pushStatusPreview('application', 'Declined', 'Declined');
 
   const setNotes = async (formData: FormData) => {
     'use server';
@@ -165,6 +227,10 @@ export default async function ApplicationDetail({ params }: { params: Promise<{ 
             </tbody>
           </table>
         )}
+      </Section>
+
+      <Section title="Email History">
+        <EmailHistory logged={loggedEmails} previews={templatePreviews} />
       </Section>
 
       <Section title="Internal notes">

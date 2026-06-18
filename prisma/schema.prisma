@@ -61,6 +61,7 @@ model Application {
   updatedAt        DateTime          @updatedAt
 
   payments         Payment[]
+  emailLogs        EmailLog[]
 
   @@unique([email])
   @@unique([studentId])
@@ -86,6 +87,22 @@ model Payment {
 
   @@index([applicationId])
   @@index([status])
+}
+
+model EmailLog {
+  id            String      @id @default(cuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  recipient     String      // "applicant" | "admin"
+  toAddress     String
+  type          String      // template key, e.g. "application_received", "payment_paid"
+  subject       String
+  html          String      // full rendered HTML
+  status        String      @default("sent") // "sent" | "failed"
+  error         String?
+  createdAt     DateTime    @default(now())
+
+  @@index([applicationId])
 }
 
 model Admin {

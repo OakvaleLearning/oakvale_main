@@ -1,4 +1,5 @@
 import { Resend } from 'resend';
+import { logEmail } from '@/lib/emailLog';
 
 const TRACK_NAMES: Record<string, string> = {
   A: 'Track A — Clinical Enterprise',
@@ -271,10 +272,43 @@ const STATUS_TEMPLATES: Record<string, ((ctx: ApplicantContext) => Built) | unde
 
 export type StatusEmailField = 'payment' | 'application';
 
+/** Stable log/type key for a status email, e.g. "payment_paid", "status_accepted". */
+function statusEmailType(field: StatusEmailField, value: string): string {
+  const snake = value.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase();
+  return `${field}_${snake}`;
+}
+
+/**
+ * Build a themed status-change email without sending it. Returns null for
+ * default statuses (Pending/Submitted) that have no template.
+ */
+export function buildStatusEmail({
+  field,
+  value,
+  application,
+  extra,
+}: {
+  field: StatusEmailField;
+  value: string;
+  application: { firstName: string; lastName: string; trackFirst: string; id: string };
+  extra?: { amountPaidNaira?: number; balanceDueNaira?: number; completePaymentUrl?: string | null };
+}): { type: string; subject: string; html: string } | null {
+  const builder = field === 'payment' ? PAYMENT_TEMPLATES[value] : STATUS_TEMPLATES[value];
+  if (!builder) return null;
+  const { subject, html } = builder({
+    firstName: application.firstName,
+    lastName: application.lastName,
+    trackFirst: application.trackFirst,
+    applicationId: application.id,
+    ...extra,
+  });
+  return { type: statusEmailType(field, value), subject, html };
+}
+
 /**
  * Send the themed status-change email to an applicant. No-ops for default
  * statuses (Pending/Submitted) or when email is not configured. Never throws —
- * an email failure must not break the status update.
+ * an email failure must not break the status update. Records the send in EmailLog.
  */
 export async function sendStatusEmail({
   field,
@@ -287,31 +321,41 @@ export async function sendStatusEmail({
   application: { email: string; firstName: string; lastName: string; trackFirst: string; id: string };
   extra?: { amountPaidNaira?: number; balanceDueNaira?: number; completePaymentUrl?: string | null };
 }): Promise<void> {
+  const built = buildStatusEmail({ field, value, application, extra });
+  if (!built) return;
+
+  if (!process.env.RESEND_KEY || !process.env.EMAIL_FROM) {
+    console.warn('[statusEmails] RESEND_KEY/EMAIL_FROM not configured — skipping email');
+    return;
+  }
+
   try {
-    const builder = field === 'payment' ? PAYMENT_TEMPLATES[value] : STATUS_TEMPLATES[value];
-    if (!builder) return;
-
-    if (!process.env.RESEND_KEY || !process.env.EMAIL_FROM) {
-      console.warn('[statusEmails] RESEND_KEY/EMAIL_FROM not configured — skipping email');
-      return;
-    }
-
-    const { subject, html } = builder({
-      firstName: application.firstName,
-      lastName: application.lastName,
-      trackFirst: application.trackFirst,
-      applicationId: application.id,
-      ...extra,
-    });
-
     const resend = new Resend(process.env.RESEND_KEY);
     await resend.emails.send({
       from: process.env.EMAIL_FROM,
       to: application.email,
-      subject,
-      html,
+      subject: built.subject,
+      html: built.html,
+    });
+    await logEmail({
+      applicationId: application.id,
+      recipient: 'applicant',
+      toAddress: application.email,
+      type: built.type,
+      subject: built.subject,
+      html: built.html,
     });
   } catch (err) {
     console.error('[statusEmails] failed to send status email:', err);
+    await logEmail({
+      applicationId: application.id,
+      recipient: 'applicant',
+      toAddress: application.email,
+      type: built.type,
+      subject: built.subject,
+      html: built.html,
+      status: 'failed',
+      error: err instanceof Error ? err.message : String(err),
+    });
   }
 }

@@ -87,6 +87,11 @@ function reference(applicationId: string): string {
   return paragraph(`Your application reference is <strong>${applicationId}</strong>. Please keep this for your records.`);
 }
 
+/** Reassurance shown beneath a payment button — link freshness fallback. */
+function linkFreshnessNote(): string {
+  return paragraph(`If the payment link above no longer works, simply reply to this email and we'll send you a fresh one.`);
+}
+
 export type ApplicantContext = {
   firstName: string;
   lastName: string;
@@ -162,6 +167,7 @@ function paymentPartial({ firstName, lastName, trackFirst, amountPaidNaira, bala
     }) +
     paragraph(`Please complete your payment <strong>by 2 July 2026</strong>. This is the registration deadline. To keep your place, your full fee must be received on or before this date.`) +
     button +
+    (completePaymentUrl ? linkFreshnessNote() : '') +
     paragraph(`Once your full payment is received, we will send your joining instructions and your link to the online learning platform. You will not be able to access the platform until your fee is paid in full.`) +
     paragraph(`If you have any questions about your payment, simply reply to this email or write to us at <a href="mailto:hello@oakvaleltd.com" style="color:${C.forest};">hello@oakvaleltd.com</a>. We are happy to help.`) +
     signoff();
@@ -235,6 +241,7 @@ function reminderNotPaid({ firstName, lastName, trackFirst, feeNaira, paymentUrl
       ? paragraph(`Please complete your payment using the button below:`)
       : paragraph(`To complete your payment, simply reply to this email and we will send you a secure payment link.`)) +
     button +
+    (paymentUrl ? linkFreshnessNote() : '') +
     callout({
       accent: 'gold',
       html: `<div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${C.gold};margin-bottom:10px;">Important Deadline</div>
@@ -277,6 +284,7 @@ function reminderPartPayment({ firstName, lastName, trackFirst, amountPaidNaira,
       ? paragraph(`Please complete your final payment by <strong>2 July 2026</strong> using the button below:`)
       : paragraph(`To complete your final payment by <strong>2 July 2026</strong>, simply reply to this email and we will send you a secure payment link.`)) +
     button +
+    (paymentUrl ? linkFreshnessNote() : '') +
     paragraph(`Please note: Your full fee must be received on or before <strong>2 July 2026</strong>. You will not be able to access the online learning platform or receive your joining instructions until your balance is paid in full.`) +
     paragraph(`If you have any questions about your remaining balance, simply reply to this email or write to us at <a href="mailto:hello@oakvaleltd.com" style="color:${C.forest};">hello@oakvaleltd.com</a>. We are here to assist you.`) +
     signoff();

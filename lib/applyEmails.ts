@@ -228,6 +228,9 @@ export function buildApplicantHtml(data: {
                 Or paste this link into your browser:<br>
                 <a href="${paymentUrl}" style="color:#0A3D2B;">${paymentUrl}</a>
               </div>
+              <div style="margin-top:14px;font-size:12px;color:#5A5A5A;line-height:1.6;font-family:Arial,sans-serif;">
+                If this payment link no longer works, simply reply to this email and we'll send you a fresh one.
+              </div>
             </div>
           </td>
         </tr>` : '';

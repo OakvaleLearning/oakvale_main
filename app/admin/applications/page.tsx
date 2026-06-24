@@ -5,9 +5,11 @@ import { prisma } from "@/lib/prisma";
 import {
   PAYMENT_OPTS,
   STATUS_OPTS,
+  AID_OPTS,
   buildApplicationWhere,
   normalizePayment,
   normalizeStatus,
+  normalizeAid,
 } from "@/lib/applicationFilters";
 
 const C = {
@@ -59,6 +61,7 @@ export default async function ApplicationsPage({
   searchParams: Promise<{
     payment?: string;
     status?: string;
+    aid?: string;
     page?: string;
     q?: string;
   }>;
@@ -69,10 +72,11 @@ export default async function ApplicationsPage({
   const params = await searchParams;
   const payment = normalizePayment(params.payment);
   const status = normalizeStatus(params.status);
+  const aid = normalizeAid(params.aid);
   const q = (params.q ?? "").trim();
   const page = Math.max(1, Number(params.page ?? "1") || 1);
 
-  const where = buildApplicationWhere({ payment, status, q });
+  const where = buildApplicationWhere({ payment, status, aid, q });
 
   const [total, rows] = await Promise.all([
     prisma.application.count({ where }),
@@ -97,10 +101,19 @@ export default async function ApplicationsPage({
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
+  const activeFilters = [
+    payment !== "All" ? `Payment: ${payment}` : null,
+    status !== "All" ? `Status: ${status}` : null,
+    aid !== "All" ? `Aid: ${aid}` : null,
+    q ? `Search: “${q}”` : null,
+  ].filter(Boolean) as string[];
+  const isFiltered = activeFilters.length > 0;
+
   function buildQS(overrides: Record<string, string>) {
     const sp = new URLSearchParams();
     if (payment !== "All") sp.set("payment", payment);
     if (status !== "All") sp.set("status", status);
+    if (aid !== "All") sp.set("aid", aid);
     if (q) sp.set("q", q);
     if (page > 1) sp.set("page", String(page));
     for (const [k, v] of Object.entries(overrides)) {
@@ -115,6 +128,7 @@ export default async function ApplicationsPage({
     const sp = new URLSearchParams();
     if (payment !== "All") sp.set("payment", payment);
     if (status !== "All") sp.set("status", status);
+    if (aid !== "All") sp.set("aid", aid);
     if (q) sp.set("q", q);
     sp.set("format", format);
     return `/admin/applications/export?${sp.toString()}`;
@@ -155,9 +169,45 @@ export default async function ApplicationsPage({
           >
             Applications
           </h1>
-          <p style={{ fontSize: 13, color: C.muted, margin: "0 0 20px" }}>
-            {total} total{q ? ` matching “${q}”` : ""}
+          <p style={{ fontSize: 13, color: C.muted, margin: "0 0 8px" }}>
+            <strong style={{ color: C.forest, fontWeight: 600 }}>{total}</strong>{" "}
+            {isFiltered ? "matching" : "total"} application{total === 1 ? "" : "s"}
+            {isFiltered ? " (filtered)" : ""}
           </p>
+          {isFiltered && (
+            <div
+              style={{
+                display: "flex",
+                gap: 6,
+                flexWrap: "wrap",
+                margin: "0 0 20px",
+                alignItems: "center",
+              }}
+            >
+              {activeFilters.map((f) => (
+                <span
+                  key={f}
+                  style={{
+                    display: "inline-block",
+                    padding: "2px 8px",
+                    borderRadius: 999,
+                    fontSize: 11,
+                    fontWeight: 600,
+                    background: C.gold + "22",
+                    color: C.gold,
+                  }}
+                >
+                  {f}
+                </span>
+              ))}
+              <Link
+                href="/admin/applications"
+                style={{ fontSize: 12, color: C.muted, textDecoration: "underline" }}
+              >
+                Clear
+              </Link>
+            </div>
+          )}
         </div>
         <div>
           <div style={{ display: "flex", gap: 8 }}>
@@ -279,6 +329,37 @@ export default async function ApplicationsPage({
             }}
           >
             {STATUS_OPTS.map((p) => (
+              <option key={p} value={p}>
+                {p}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label
+            style={{
+              display: "block",
+              fontSize: 11,
+              color: C.muted,
+              textTransform: "uppercase",
+              letterSpacing: "0.08em",
+              marginBottom: 4,
+            }}
+          >
+            Financial aid
+          </label>
+          <select
+            name="aid"
+            defaultValue={aid}
+            style={{
+              padding: "8px 10px",
+              border: `1px solid ${C.border}`,
+              borderRadius: 4,
+              fontSize: 13,
+              fontFamily: "inherit",
+            }}
+          >
+            {AID_OPTS.map((p) => (
               <option key={p} value={p}>
                 {p}
               </option>

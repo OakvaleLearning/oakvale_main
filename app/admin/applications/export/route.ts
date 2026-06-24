@@ -2,7 +2,7 @@ import type { NextRequest } from 'next/server';
 import ExcelJS from 'exceljs';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import { buildApplicationWhere, normalizePayment, normalizeStatus } from '@/lib/applicationFilters';
+import { buildApplicationWhere, normalizePayment, normalizeStatus, normalizeAid } from '@/lib/applicationFilters';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -60,10 +60,11 @@ export async function GET(request: NextRequest) {
   const sp = request.nextUrl.searchParams;
   const payment = normalizePayment(sp.get('payment') ?? undefined);
   const status = normalizeStatus(sp.get('status') ?? undefined);
+  const aid = normalizeAid(sp.get('aid') ?? undefined);
   const q = (sp.get('q') ?? '').trim();
   const format = sp.get('format') === 'xlsx' ? 'xlsx' : 'csv';
 
-  const where = buildApplicationWhere({ payment, status, q });
+  const where = buildApplicationWhere({ payment, status, aid, q });
 
   const apps = await prisma.application.findMany({
     where,

@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import { REMINDER_AUDIENCE } from './audience';
+import { reminderWhere, REMINDER_COOLDOWN_DAYS } from './audience';
 import ReminderButtons from './ReminderButtons';
 
 const C = {
@@ -17,9 +17,18 @@ export default async function RemindersPage() {
   const session = await auth();
   if (!session?.user) redirect('/admin/login');
 
-  const [notPaidCount, partPaymentCount] = await Promise.all([
-    prisma.application.count({ where: REMINDER_AUDIENCE.not_paid }),
-    prisma.application.count({ where: REMINDER_AUDIENCE.part_payment }),
+  const lastSentOf = (kind: 'not_paid' | 'part_payment') =>
+    prisma.emailLog.findFirst({
+      where: { type: `reminder_${kind}`, status: 'sent' },
+      orderBy: { createdAt: 'desc' },
+      select: { createdAt: true },
+    });
+
+  const [notPaidCount, partPaymentCount, notPaidLast, partPaymentLast] = await Promise.all([
+    prisma.application.count({ where: reminderWhere('not_paid') }),
+    prisma.application.count({ where: reminderWhere('part_payment') }),
+    lastSentOf('not_paid'),
+    lastSentOf('part_payment'),
   ]);
 
   return (
@@ -32,7 +41,12 @@ export default async function RemindersPage() {
         Paystack payment button. Registration closes 2 July 2026.
       </p>
 
-      <ReminderButtons notPaidCount={notPaidCount} partPaymentCount={partPaymentCount} />
+      <ReminderButtons
+        notPaidCount={notPaidCount}
+        partPaymentCount={partPaymentCount}
+        notPaidLastSent={notPaidLast?.createdAt.toISOString() ?? null}
+        partPaymentLastSent={partPaymentLast?.createdAt.toISOString() ?? null}
+      />
 
       <div
         style={{
@@ -49,7 +63,9 @@ export default async function RemindersPage() {
       >
         <strong style={{ color: C.forest }}>Note:</strong> sending records each email against the
         applicant in their email history. Re-sending within 25 minutes reuses the same payment link
-        rather than creating a new one. Recipient counts update live from the current applicant data.
+        rather than creating a new one. Once reminded, an applicant is excluded from the recipient
+        count for {REMINDER_COOLDOWN_DAYS} days before becoming eligible again. Counts update live
+        from the current applicant data.
       </div>
     </div>
   );

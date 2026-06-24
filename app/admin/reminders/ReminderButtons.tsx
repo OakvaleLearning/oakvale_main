@@ -15,16 +15,25 @@ const C = {
   border: 'rgba(10,61,43,0.12)',
 };
 
+function formatLastSent(iso: string | null | undefined): string {
+  if (!iso) return 'Not sent yet';
+  return new Date(iso).toLocaleString('en-GB', {
+    day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit',
+  });
+}
+
 function ReminderCard({
   kind,
   title,
   description,
   count,
+  lastSent,
 }: {
   kind: ReminderKind;
   title: string;
   description: string;
   count: number;
+  lastSent: string | null;
 }) {
   const [isPending, startTransition] = useTransition();
   const disabled = isPending || count === 0;
@@ -77,6 +86,9 @@ function ReminderCard({
           recipient{count === 1 ? '' : 's'}
         </span>
       </div>
+      <div style={{ fontSize: 12, color: C.muted }}>
+        Last sent: <strong style={{ color: C.charcoal, fontWeight: 500 }}>{formatLastSent(lastSent)}</strong>
+      </div>
       <button
         type="button"
         onClick={send}
@@ -109,9 +121,13 @@ function ReminderCard({
 export default function ReminderButtons({
   notPaidCount,
   partPaymentCount,
+  notPaidLastSent,
+  partPaymentLastSent,
 }: {
   notPaidCount: number;
   partPaymentCount: number;
+  notPaidLastSent: string | null;
+  partPaymentLastSent: string | null;
 }) {
   return (
     <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
@@ -120,12 +136,14 @@ export default function ReminderButtons({
         title="Payment reminder"
         description="Applicants who have not paid the application fee (excludes full-scholarship applicants). Sends the “Complete your application” email with a Pay Application Fee button for the full ₦10,000."
         count={notPaidCount}
+        lastSent={notPaidLastSent}
       />
       <ReminderCard
         kind="part_payment"
         title="Balance reminder"
         description="Applicants who have paid part of the fee. Sends the “1 week left” email showing amount paid and balance remaining, with a Complete My Payment button for the outstanding balance."
         count={partPaymentCount}
+        lastSent={partPaymentLastSent}
       />
     </div>
   );

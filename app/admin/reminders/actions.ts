@@ -14,7 +14,7 @@ import {
   initializeTransaction,
   siteUrl,
 } from '@/lib/paystack';
-import { REMINDER_AUDIENCE } from './audience';
+import { reminderWhere } from './audience';
 
 export type ReminderResult = { sent: number; failed: number; skipped: number };
 
@@ -167,7 +167,7 @@ export async function sendReminders(kind: ReminderKind): Promise<ReminderResult>
   }
 
   const applicants = await prisma.application.findMany({
-    where: REMINDER_AUDIENCE[kind],
+    where: reminderWhere(kind),
     select: APPLICANT_SELECT,
   });
 
@@ -222,5 +222,7 @@ export async function sendPaymentLink(applicationId: string): Promise<ReminderRe
   result[await deliverPaymentLink(applicant, kind, resend)] += 1;
 
   revalidatePath(`/admin/applications/${applicationId}`);
+  // Keep the reminders page counts/history in sync after a one-off send.
+  revalidatePath('/admin/reminders');
   return result;
 }

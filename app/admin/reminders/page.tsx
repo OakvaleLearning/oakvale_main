@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import { reminderWhere, REMINDER_COOLDOWN_DAYS } from './audience';
+import { reminderWhere } from './audience';
 import ReminderButtons from './ReminderButtons';
 
 const C = {
@@ -63,9 +63,8 @@ export default async function RemindersPage() {
       >
         <strong style={{ color: C.forest }}>Note:</strong> sending records each email against the
         applicant in their email history. Re-sending within 25 minutes reuses the same payment link
-        rather than creating a new one. Once reminded, an applicant is excluded from the recipient
-        count for {REMINDER_COOLDOWN_DAYS} days before becoming eligible again. Counts update live
-        from the current applicant data.
+        rather than creating a new one. Recipient counts reflect every applicant in the matching
+        payment status and update live as applicants pay.
       </div>
     </div>
   );

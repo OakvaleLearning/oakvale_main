@@ -35,7 +35,7 @@ export default async function AdminLayout({
     <div
       style={{
         minHeight: "100vh",
-        background: C.cream,
+        background: "#fff",
         fontFamily: "DM Sans, sans-serif",
         color: C.charcoal,
       }}

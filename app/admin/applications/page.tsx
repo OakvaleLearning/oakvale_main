@@ -11,6 +11,7 @@ import {
   normalizeStatus,
   normalizeAid,
 } from "@/lib/applicationFilters";
+import ApplicationsTable from "./ApplicationsTable";
 
 const C = {
   forest: "#0A3D2B",
@@ -24,36 +25,6 @@ const C = {
 const PAGE_SIZE = 25;
 
 export const dynamic = "force-dynamic";
-
-function badge(text: string, color: string) {
-  return (
-    <span
-      style={{
-        display: "inline-block",
-        padding: "2px 8px",
-        borderRadius: 999,
-        fontSize: 11,
-        fontWeight: 600,
-        background: color + "22",
-        color,
-      }}
-    >
-      {text}
-    </span>
-  );
-}
-
-function paymentColor(s: string) {
-  return s === "Paid"
-    ? "#145C3F"
-    : s === "Partial"
-      ? "#9a6510"
-      : s === "Pending"
-        ? "#a06010"
-        : s === "Waived"
-          ? "#1a4bcc"
-          : "#9a1d1d";
-}
 
 export default async function ApplicationsPage({
   searchParams,
@@ -383,123 +354,9 @@ export default async function ApplicationsPage({
         </button>
       </form>
 
-      <div
-        style={{
-          background: "#fff",
-          border: `1px solid ${C.border}`,
-          borderRadius: 6,
-          overflow: "hidden",
-        }}
-      >
-        {rows.length === 0 ? (
-          <div
-            style={{
-              padding: 32,
-              textAlign: "center",
-              color: C.muted,
-              fontSize: 14,
-            }}
-          >
-            No applications found.
-          </div>
-        ) : (
-          <table
-            style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}
-          >
-            <thead>
-              <tr
-                style={{
-                  background: C.cream,
-                  textAlign: "left",
-                  color: C.muted,
-                  fontSize: 11,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.08em",
-                }}
-              >
-                <th style={{ padding: "10px 14px" }}>Name</th>
-                <th style={{ padding: "10px 14px" }}>Institution</th>
-                <th style={{ padding: "10px 14px" }}>Track</th>
-                <th style={{ padding: "10px 14px" }}>Payment</th>
-                <th style={{ padding: "10px 14px" }}>Status</th>
-                <th style={{ padding: "10px 14px" }}>Submitted</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((r) => (
-                <tr key={r.id}>
-                  <td
-                    style={{
-                      padding: "12px 14px",
-                      borderTop: `1px solid ${C.border}`,
-                    }}
-                  >
-                    <Link
-                      href={`/admin/applications/${r.id}`}
-                      style={{
-                        color: C.forest,
-                        textDecoration: "none",
-                        fontWeight: 500,
-                      }}
-                    >
-                      {r.firstName} {r.lastName}
-                    </Link>
-                    <div style={{ fontSize: 12, color: C.muted }}>
-                      {r.email}
-                    </div>
-                  </td>
-                  <td
-                    style={{
-                      padding: "12px 14px",
-                      borderTop: `1px solid ${C.border}`,
-                    }}
-                  >
-                    {r.institution}
-                  </td>
-                  <td
-                    style={{
-                      padding: "12px 14px",
-                      borderTop: `1px solid ${C.border}`,
-                    }}
-                  >
-                    Track {r.trackFirst}
-                  </td>
-                  <td
-                    style={{
-                      padding: "12px 14px",
-                      borderTop: `1px solid ${C.border}`,
-                    }}
-                  >
-                    {badge(r.paymentStatus, paymentColor(r.paymentStatus))}
-                  </td>
-                  <td
-                    style={{
-                      padding: "12px 14px",
-                      borderTop: `1px solid ${C.border}`,
-                      color: C.muted,
-                    }}
-                  >
-                    {r.status}
-                  </td>
-                  <td
-                    style={{
-                      padding: "12px 14px",
-                      borderTop: `1px solid ${C.border}`,
-                      color: C.muted,
-                    }}
-                  >
-                    {r.createdAt.toLocaleDateString("en-GB", {
-                      day: "2-digit",
-                      month: "short",
-                      year: "numeric",
-                    })}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+      <ApplicationsTable
+        rows={rows.map((r) => ({ ...r, createdAt: r.createdAt.toISOString() }))}
+      />
 
       {totalPages > 1 && (
         <div

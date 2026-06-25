@@ -24,9 +24,16 @@ export default async function RemindersPage() {
       select: { createdAt: true },
     });
 
-  const [notPaidCount, partPaymentCount, notPaidLast, partPaymentLast] = await Promise.all([
-    prisma.application.count({ where: reminderWhere('not_paid') }),
-    prisma.application.count({ where: reminderWhere('part_payment') }),
+  const recipientsOf = (kind: 'not_paid' | 'part_payment') =>
+    prisma.application.findMany({
+      where: reminderWhere(kind),
+      orderBy: { createdAt: 'desc' },
+      select: { id: true, firstName: true, lastName: true, email: true, institution: true, trackFirst: true },
+    });
+
+  const [notPaidRecipients, partPaymentRecipients, notPaidLast, partPaymentLast] = await Promise.all([
+    recipientsOf('not_paid'),
+    recipientsOf('part_payment'),
     lastSentOf('not_paid'),
     lastSentOf('part_payment'),
   ]);
@@ -42,8 +49,8 @@ export default async function RemindersPage() {
       </p>
 
       <ReminderButtons
-        notPaidCount={notPaidCount}
-        partPaymentCount={partPaymentCount}
+        notPaidRecipients={notPaidRecipients}
+        partPaymentRecipients={partPaymentRecipients}
         notPaidLastSent={notPaidLast?.createdAt.toISOString() ?? null}
         partPaymentLastSent={partPaymentLast?.createdAt.toISOString() ?? null}
       />

@@ -19,7 +19,7 @@ const C = {
 };
 
 type TrackKey = 'A' | 'B' | 'C';
-type AidKey = 'full' | 'flexible';
+type AidKey = 'full';
 
 interface FormData {
   firstName: string; lastName: string; email: string; phone: string; state: string;
@@ -71,7 +71,6 @@ const TRACK_LABELS: Record<TrackKey, string> = {
 
 const AID_LEVELS: { key: AidKey; name: string; desc: string }[] = [
   { key: 'full',     name: 'Full scholarship',  desc: '₦10,000 fee fully waived' },
-  { key: 'flexible', name: 'Flexible payment',  desc: 'Pay in two instalments' },
 ];
 
 function wordCount(t: string) {
@@ -658,7 +657,7 @@ export default function ApplicationFormPage() {
                     rows: [
                       ['Applying for aid', form.needsAid ? 'Yes' : 'No'],
                       ...(form.needsAid
-                        ? [['Level of support', form.aidLevel === 'full' ? 'Full scholarship' : form.aidLevel === 'flexible' ? 'Flexible payment' : '—']]
+                        ? [['Level of support', form.aidLevel === 'full' ? 'Full scholarship' : '—']]
                         : []),
                     ],
                   },

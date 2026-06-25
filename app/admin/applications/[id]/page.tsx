@@ -86,8 +86,8 @@ export default async function ApplicationDetail({ params }: { params: Promise<{ 
     type: 'application_received',
     label: isFullScholarship ? 'Scholarship application complete' : 'Application received',
     subject: isFullScholarship
-      ? 'Your scholarship application is complete — Summer Intensive 2026'
-      : 'We have received your Oakvale Summer Intensive 2026 application',
+      ? 'Your scholarship application is complete — Summer Intensive 2026.'
+      : 'We have received your Oakvale Summer Intensive 2026 application.',
     html: buildApplicantHtml({
       firstName: a.firstName,
       lastName: a.lastName,

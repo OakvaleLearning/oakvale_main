@@ -2,7 +2,7 @@ import type { Prisma } from '@prisma/client';
 
 export const PAYMENT_OPTS = ['All', 'Pending', 'Paid', 'Partial', 'Waived', 'Rejected'] as const;
 export const STATUS_OPTS = ['All', 'Submitted', 'UnderReview', 'Accepted', 'Declined'] as const;
-export const AID_OPTS = ['All', 'Applying', 'Not applying'] as const;
+export const AID_OPTS = ['All', 'Full', 'Flexible', 'No'] as const;
 
 export type PaymentOpt = (typeof PAYMENT_OPTS)[number];
 export type StatusOpt = (typeof STATUS_OPTS)[number];
@@ -38,7 +38,15 @@ export function buildApplicationWhere({
   const where: Prisma.ApplicationWhereInput = {};
   if (payment !== 'All') where.paymentStatus = payment as Prisma.ApplicationWhereInput['paymentStatus'];
   if (status !== 'All') where.status = status as Prisma.ApplicationWhereInput['status'];
-  if (aid !== 'All') where.needsAid = aid === 'Applying';
+  if (aid === 'Full') {
+    where.needsAid = true;
+    where.aidLevel = 'full';
+  } else if (aid === 'Flexible') {
+    where.needsAid = true;
+    where.aidLevel = 'flexible';
+  } else if (aid === 'No') {
+    where.needsAid = false;
+  }
   if (q) {
     where.OR = [
       { firstName: { contains: q, mode: 'insensitive' } },

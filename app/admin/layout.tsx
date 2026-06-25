@@ -13,7 +13,7 @@ const C = {
 };
 
 const navLink: React.CSSProperties = {
-  color: "rgba(255,255,255,0.85)",
+  color: "#0A3D2B",
   textDecoration: "none",
   fontSize: 13,
 };
@@ -21,7 +21,7 @@ const navLink: React.CSSProperties = {
 const divider: React.CSSProperties = {
   width: 1,
   height: 20,
-  background: "rgba(255,255,255,0.18)",
+  background: "rgba(10,61,43,0.18)",
 };
 
 export default async function AdminLayout({
@@ -43,8 +43,9 @@ export default async function AdminLayout({
       {session?.user ? (
         <header
           style={{
-            background: C.forest,
-            color: "#fff",
+            background: "#fff",
+            color: C.charcoal,
+            borderBottom: `1px solid ${C.border}`,
           }}
         >
           <div
@@ -66,9 +67,9 @@ export default async function AdminLayout({
                 style={{ display: "inline-flex", alignItems: "center", gap: 10 }}
               >
                 <Image
-                  src="/oakvale-white.svg"
-                  width={0}
-                  height={0}
+                  src="/logo_dark.png"
+                  width={1920}
+                  height={1080}
                   style={{ height: "1.9rem", width: "auto" }}
                   alt="Oakvale Learning Logo"
                   priority
@@ -122,7 +123,7 @@ export default async function AdminLayout({
                 Summer Intensive
               </Link>
               <span aria-hidden style={divider} />
-              <span style={{ fontSize: 12, color: "rgba(255,255,255,0.6)" }}>
+              <span style={{ fontSize: 12, color: C.muted }}>
                 {session.user.email}
               </span>
               <form action={logoutAction}>
@@ -130,8 +131,8 @@ export default async function AdminLayout({
                   type="submit"
                   style={{
                     background: "transparent",
-                    color: "#fff",
-                    border: "1px solid rgba(255,255,255,0.3)",
+                    color: C.forest,
+                    border: `1px solid ${C.border}`,
                     borderRadius: 4,
                     padding: "5px 12px",
                     fontSize: 12,

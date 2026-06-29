@@ -65,7 +65,7 @@ export default function Footer() {
           <ul>
             <li>
               <a href="mailto:hello@oakvalelearning.com">
-                hello@oakvalelearning.com
+                hello@oakvaleltd.com
               </a>
             </li>
             <li>

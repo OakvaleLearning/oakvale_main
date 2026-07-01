@@ -1,5 +1,11 @@
 import { prisma } from '@/lib/prisma';
-import { verifyWebhookSignature } from '@/lib/paystack';
+import {
+  buildReference,
+  initializeTransaction,
+  siteUrl,
+  verifyWebhookSignature,
+} from '@/lib/paystack';
+import { reconcileSuccessfulPayment } from '@/lib/payments';
 import { sendStatusEmail } from '@/lib/statusEmails';
 
 export const dynamic = 'force-dynamic';
@@ -44,32 +50,59 @@ export async function POST(request: Request) {
     }
 
     if (event.event === 'charge.success') {
-      if (payment.status !== 'Success') {
-        await prisma.$transaction([
-          prisma.payment.update({
-            where: { reference },
-            data: {
-              status: 'Success',
-              paidAt: event.data.paid_at ? new Date(event.data.paid_at) : new Date(),
-              paystackChannel: event.data.channel ?? null,
-              paystackRaw: event.data as unknown as object,
-            },
-          }),
-          prisma.application.update({
-            where: { id: payment.applicationId },
-            data: {
-              paymentStatus: 'Paid',
-              paystackCustomerCode: event.data.customer?.customer_code ?? undefined,
-            },
-          }),
-        ]);
+      // Verify the amount with Paystack and reconcile: Paid only if the
+      // cumulative amount covers the fee, otherwise Partial.
+      const result = await reconcileSuccessfulPayment(reference);
 
+      if (result.ok && !result.wasAlreadyProcessed) {
         const application = await prisma.application.findUnique({
-          where: { id: payment.applicationId },
+          where: { id: result.applicationId },
           select: { id: true, email: true, firstName: true, lastName: true, trackFirst: true },
         });
+
         if (application) {
-          await sendStatusEmail({ field: 'payment', value: 'Paid', application });
+          if (result.status === 'Paid') {
+            await sendStatusEmail({ field: 'payment', value: 'Paid', application });
+          } else {
+            // Under-payment — generate a fresh link for the outstanding balance
+            // (mirrors app/admin/actions.ts) and send the part-payment email.
+            let completePaymentUrl: string | null = null;
+            if (result.balanceKobo > 0 && process.env.PAYSTACK_SECRET_KEY) {
+              try {
+                const balanceRef = buildReference(application.id);
+                const init = await initializeTransaction({
+                  email: application.email,
+                  amountKobo: result.balanceKobo,
+                  reference: balanceRef,
+                  callbackUrl: `${siteUrl()}/apply/payment/success`,
+                  metadata: { applicationId: application.id, kind: 'balance' },
+                });
+                await prisma.payment.create({
+                  data: {
+                    applicationId: application.id,
+                    reference: init.reference,
+                    amount: result.balanceKobo,
+                    authorizationUrl: init.authorization_url,
+                    status: 'Initialized',
+                  },
+                });
+                completePaymentUrl = init.authorization_url;
+              } catch (balanceErr) {
+                console.error('[paystack webhook] balance link init failed:', balanceErr);
+              }
+            }
+
+            await sendStatusEmail({
+              field: 'payment',
+              value: 'Partial',
+              application,
+              extra: {
+                amountPaidNaira: result.amountPaidKobo / 100,
+                balanceDueNaira: result.balanceKobo / 100,
+                completePaymentUrl,
+              },
+            });
+          }
         }
       }
     } else if (event.event === 'charge.failed') {

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
-import { verifyTransaction } from '@/lib/paystack';
+import { reconcileSuccessfulPayment } from '@/lib/payments';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,11 +15,15 @@ const C = {
 };
 
 type Outcome = {
-  state: 'success' | 'pending' | 'failed' | 'error' | 'missing';
+  state: 'success' | 'partial' | 'pending' | 'failed' | 'error' | 'missing';
   message: string;
   paymentUrl?: string | null;
   applicationId?: string | null;
+  amountPaidNaira?: number;
+  balanceDueNaira?: number;
 };
+
+const naira = (n: number) => `₦${n.toLocaleString('en-NG')}`;
 
 async function processReference(reference: string | undefined): Promise<Outcome> {
   if (!reference) {
@@ -27,65 +31,45 @@ async function processReference(reference: string | undefined): Promise<Outcome>
   }
 
   try {
-    const data = await verifyTransaction(reference);
+    // Verifies the amount with Paystack and reconciles our records (Paid vs Partial).
+    const result = await reconcileSuccessfulPayment(reference);
 
-    const payment = await prisma.payment.findUnique({
-      where: { reference },
-      include: { application: true },
-    });
+    if (result.ok) {
+      if (result.status === 'Paid') {
+        return {
+          state: 'success',
+          message: 'Payment confirmed.',
+          applicationId: result.applicationId,
+        };
+      }
+      return {
+        state: 'partial',
+        message: 'Part payment received.',
+        applicationId: result.applicationId,
+        amountPaidNaira: result.amountPaidKobo / 100,
+        balanceDueNaira: result.balanceKobo / 100,
+      };
+    }
 
-    if (!payment) {
+    if (result.reason === 'unknown_reference') {
       return { state: 'error', message: 'Payment reference not recognised.' };
     }
 
-    if (data.status === 'success') {
-      if (payment.status !== 'Success') {
-        await prisma.$transaction([
-          prisma.payment.update({
-            where: { reference },
-            data: {
-              status: 'Success',
-              paidAt: data.paid_at ? new Date(data.paid_at) : new Date(),
-              paystackChannel: data.channel ?? null,
-              paystackRaw: data as unknown as object,
-            },
-          }),
-          prisma.application.update({
-            where: { id: payment.applicationId },
-            data: {
-              paymentStatus: 'Paid',
-              paystackCustomerCode: data.customer?.customer_code ?? undefined,
-            },
-          }),
-        ]);
-      }
-      return {
-        state: 'success',
-        message: 'Payment confirmed.',
-        applicationId: payment.applicationId,
-      };
-    }
-
-    if (data.status === 'failed') {
-      if (payment.status !== 'Failed') {
-        await prisma.payment.update({
-          where: { reference },
-          data: { status: 'Failed', paystackRaw: data as unknown as object },
-        });
-      }
+    // Paystack reports the transaction as not successful yet.
+    const payment = await prisma.payment.findUnique({ where: { reference } });
+    if (result.paystackStatus === 'failed') {
       return {
         state: 'failed',
         message: 'Payment was not successful.',
-        paymentUrl: payment.authorizationUrl,
-        applicationId: payment.applicationId,
+        paymentUrl: payment?.authorizationUrl,
+        applicationId: payment?.applicationId,
       };
     }
-
     return {
       state: 'pending',
       message: 'Payment is still being processed.',
-      paymentUrl: payment.authorizationUrl,
-      applicationId: payment.applicationId,
+      paymentUrl: payment?.authorizationUrl,
+      applicationId: payment?.applicationId,
     };
   } catch (err) {
     console.error('verify error:', err);
@@ -110,11 +94,21 @@ export default async function PaymentSuccessPage({
           Oakvale · Summer Intensive 2026
         </div>
         <h1 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 34, fontWeight: 500, color: C.forest, margin: '0 0 12px' }}>
-          {ok ? 'Payment confirmed' : outcome.state === 'pending' ? 'Payment pending' : outcome.state === 'failed' ? 'Payment unsuccessful' : 'Payment not verified'}
+          {ok
+            ? 'Payment confirmed'
+            : outcome.state === 'partial'
+            ? 'Part payment received'
+            : outcome.state === 'pending'
+            ? 'Payment pending'
+            : outcome.state === 'failed'
+            ? 'Payment unsuccessful'
+            : 'Payment not verified'}
         </h1>
         <p style={{ fontSize: 15, color: C.muted, lineHeight: 1.7, margin: '0 0 24px' }}>
           {ok
             ? 'Thank you. Your application is now complete and our admissions team will be in touch within five working days.'
+            : outcome.state === 'partial'
+            ? `We received ${naira(outcome.amountPaidNaira ?? 0)} of your application fee. A balance of ${naira(outcome.balanceDueNaira ?? 0)} is still outstanding — please complete it by 2 July 2026 to secure your place. We've emailed you a link to pay the balance.`
             : outcome.message}
         </p>
 

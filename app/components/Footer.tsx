@@ -17,7 +17,7 @@ export default function Footer() {
                 src="/oakvale-white.svg"
                 width={120}
                 height={32}
-                style={{ height: '2rem', width: 'auto' }}
+                style={{ height: "2rem", width: "auto" }}
                 alt="Oakvale Learning Logo"
               />
             </Link>
@@ -64,9 +64,7 @@ export default function Footer() {
           <h4>Contact</h4>
           <ul>
             <li>
-              <a href="mailto:hello@oakvalelearning.com">
-                hello@oakvaleltd.com
-              </a>
+              <a href="mailto:hello@oakvaleltd.com">hello@oakvaleltd.com</a>
             </li>
             <li>
               <a onClick={() => onNavigate("contact")}>Partnership Enquiries</a>
@@ -77,7 +75,8 @@ export default function Footer() {
       <div className="footer-bottom">
         <span>&copy; 2026 Oakvale Learning Ltd. All rights reserved.</span>
         <span>
-          <a href="#">Privacy Policy</a> &middot; <a href="#">Terms</a>  &middot; <Link href="/admin">Admin</Link>
+          <a href="#">Privacy Policy</a> &middot; <a href="#">Terms</a> &middot;{" "}
+          <Link href="/admin">Admin</Link>
         </span>
       </div>
     </footer>

@@ -202,7 +202,7 @@ Additionally, include:
 |---|---|
 | Open to | Penultimate and final-year students in Medicine, Pharmacy, Dentistry, Nursing, Lab Sciences, and Physiotherapy at CMUL, LASUCOM, and EkoUnimed. |
 | Applications open | 9 June 2026 |
-| Applications close | 2 July 2026 |
+| Applications close | 15 July 2026 |
 | Opening Ceremony | Saturday 8 August 2026. Julius Berger Hall, UNILAG Yaba. Hybrid. |
 | Online modules | 10 August to 4 September 2026 |
 | Innovata-thon Showcase | Saturday 5 September 2026. Online via Zoom. |
@@ -240,7 +240,7 @@ Additionally, include:
 **Layout:** Full-width banner, dark or accent background (matching the hero in tone). Strong headline, supporting text, single CTA button. Should feel like a confident close.
 
 **Headline:**
-> Applications close 2 July 2026. Sixty places per institution across three tracks.
+> Applications close 15 July 2026. Sixty places per institution across three tracks.
 
 **Supporting text:**
 > Three tracks. One cohort. A chance to compete for ₦4,000,000 in prizes and walk away with a UK CPD certificate. Apply now and be part of the first cohort.

@@ -165,7 +165,7 @@ function paymentPartial({ firstName, lastName, trackFirst, amountPaidNaira, bala
           ${moneyRow('Balance remaining', formatNaira(balanceDueNaira ?? 0))}
         </table>`,
     }) +
-    paragraph(`Please complete your payment <strong>by 2 July 2026</strong>. This is the registration deadline. To keep your place, your full fee must be received on or before this date.`) +
+    paragraph(`Please complete your payment <strong>by 15 July 2026</strong>. This is the registration deadline. To keep your place, your full fee must be received on or before this date.`) +
     button +
     (completePaymentUrl ? linkFreshnessNote() : '') +
     paragraph(`Once your full payment is received, we will send your joining instructions and your link to the online learning platform. You will not be able to access the platform until your fee is paid in full.`) +
@@ -187,7 +187,7 @@ function paymentWaived({ firstName, lastName, trackFirst }: ApplicantContext): B
     callout({
       accent: 'gold',
       html: `<div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${C.gold};margin-bottom:10px;">What happens next</div>
-        <strong>2 July 2026</strong> — Registration closes. All scholarship applications will be reviewed together once the window has ended.<br><br>
+        <strong>15 July 2026</strong> — Registration closes. All scholarship applications will be reviewed together once the window has ended.<br><br>
         <strong>On or before 9 July 2026</strong> — We will email you with the outcome of your scholarship application.`,
     }) +
     paragraph(`We know waiting is not easy, so we will keep this simple: watch your inbox in early July. Please check your spam or junk folder too, just in case our message lands there.`) +
@@ -245,7 +245,7 @@ function reminderNotPaid({ firstName, lastName, trackFirst, feeNaira, paymentUrl
     callout({
       accent: 'gold',
       html: `<div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${C.gold};margin-bottom:10px;">Important Deadline</div>
-        <strong>2 July 2026</strong> — Registration closes. Your payment must be received on or before this date to secure your place.`,
+        <strong>15 July 2026</strong> — Registration closes. Your payment must be received on or before this date to secure your place.`,
     }) +
     paragraph(`Once your payment is received in full, we will send over your official joining instructions and your personal link to our online learning platform.`) +
     paragraph(`If you have any questions or are facing any challenges with the payment process, simply reply to this email or write to us at <a href="mailto:hello@oakvaleltd.com" style="color:${C.forest};">hello@oakvaleltd.com</a>. We are happy to help.`) +
@@ -281,11 +281,11 @@ function reminderPartPayment({ firstName, lastName, trackFirst, amountPaidNaira,
         </table>`,
     }) +
     (paymentUrl
-      ? paragraph(`Please complete your final payment by <strong>2 July 2026</strong> using the button below:`)
-      : paragraph(`To complete your final payment by <strong>2 July 2026</strong>, simply reply to this email and we will send you a secure payment link.`)) +
+      ? paragraph(`Please complete your final payment by <strong>15 July 2026</strong> using the button below:`)
+      : paragraph(`To complete your final payment by <strong>15 July 2026</strong>, simply reply to this email and we will send you a secure payment link.`)) +
     button +
     (paymentUrl ? linkFreshnessNote() : '') +
-    paragraph(`Please note: Your full fee must be received on or before <strong>2 July 2026</strong>. You will not be able to access the online learning platform or receive your joining instructions until your balance is paid in full.`) +
+    paragraph(`Please note: Your full fee must be received on or before <strong>15 July 2026</strong>. You will not be able to access the online learning platform or receive your joining instructions until your balance is paid in full.`) +
     paragraph(`If you have any questions about your remaining balance, simply reply to this email or write to us at <a href="mailto:hello@oakvaleltd.com" style="color:${C.forest};">hello@oakvaleltd.com</a>. We are here to assist you.`) +
     signoff();
   return {

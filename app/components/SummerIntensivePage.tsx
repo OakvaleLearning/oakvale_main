@@ -134,7 +134,7 @@ const STEPS = [
 const DETAILS: [string, string][] = [
   ['Open to', 'Penultimate and final-year students in Medicine, Pharmacy, Dentistry, Nursing, Lab Sciences, and Physiotherapy at CMUL, LASUCOM, and EkoUnimed.'],
   ['Applications open', '9 June 2026'],
-  ['Applications close', '2 July 2026'],
+  ['Applications close', '15 July 2026'],
   ['Opening Ceremony', 'Saturday 8 August 2026. Julius Berger Hall, UNILAG Yaba. Hybrid.'],
   ['Online modules', '10 August to 4 September 2026'],
   ['Innovata-thon Showcase', 'Saturday 5 September 2026. Online via Zoom.'],
@@ -1045,7 +1045,7 @@ export default function SummerIntensivePage() {
               lineHeight: 1.25,
               marginBottom: '1.5rem',
             }}>
-              Applications close 2 July 2026. <br /> Sixty places per institution across three tracks.
+              Applications close 15 July 2026. <br /> Sixty places per institution across three tracks.
             </h2>
 
             <p style={{ fontSize: '1.05rem', color: 'rgba(247,243,236,0.78)', lineHeight: 1.78, maxWidth: 580, margin: '0 auto 2.5rem' }}>

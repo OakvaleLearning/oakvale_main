@@ -45,7 +45,7 @@ export default async function RemindersPage() {
       </h1>
       <p style={{ fontSize: 13, color: C.muted, margin: '0 0 24px', maxWidth: 640, lineHeight: 1.6 }}>
         Send a one-off reminder email to applicants with an outstanding fee. Each email includes a fresh
-        Paystack payment button. Registration closes 2 July 2026.
+        Paystack payment button. Registration closes 15 July 2026.
       </p>
 
       <ReminderButtons

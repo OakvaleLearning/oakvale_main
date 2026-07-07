@@ -108,7 +108,7 @@ export default async function PaymentSuccessPage({
           {ok
             ? 'Thank you. Your application is now complete and our admissions team will be in touch within five working days.'
             : outcome.state === 'partial'
-            ? `We received ${naira(outcome.amountPaidNaira ?? 0)} of your application fee. A balance of ${naira(outcome.balanceDueNaira ?? 0)} is still outstanding — please complete it by 2 July 2026 to secure your place. We've emailed you a link to pay the balance.`
+            ? `We received ${naira(outcome.amountPaidNaira ?? 0)} of your application fee. A balance of ${naira(outcome.balanceDueNaira ?? 0)} is still outstanding — please complete it by 15 July 2026 to secure your place. We've emailed you a link to pay the balance.`
             : outcome.message}
         </p>
 

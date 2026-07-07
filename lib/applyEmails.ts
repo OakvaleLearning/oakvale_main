@@ -177,7 +177,7 @@ export function buildApplicantHtml(data: {
           <td style="padding:14px 32px 0;">
             <div style="background:#F7F3EC;border:1px solid #e8e2da;border-left:4px solid #C8881A;border-radius:6px;padding:18px 22px;font-size:13px;color:#1C1C1C;line-height:1.7;font-family:Arial,sans-serif;">
               <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#C8881A;margin-bottom:10px;">What happens next</div>
-              <strong>2 July 2026</strong> — Registration closes. All scholarship applications will be reviewed together once the window has ended.<br><br>
+              <strong>15 July 2026</strong> — Registration closes. All scholarship applications will be reviewed together once the window has ended.<br><br>
               <strong>On or before 9 July 2026</strong> — We will email you with the outcome of your scholarship application.
             </div>
           </td>

@@ -38,7 +38,7 @@ const FAQ_SECTIONS: { title: string; items: { q: string; a: string }[] }[] = [
     items: [
       { q: 'How do I apply?', a: 'Complete the online application form on this page. The form has six sections: personal details, academic information, track selection, motivation statement, financial aid (optional), and review and submit.' },
       { q: 'What should I write in my motivation statement?', a: 'The form asks two questions: why you chose your track, and what you want to do differently as a health professional because of it. Be honest and specific. We are looking for real reasons, not perfect writing. Students who are vague or who seem to have copied a template are easy to spot. Students who are genuine are even easier.' },
-      { q: 'When do applications open and close?', a: 'Applications open on 9 June 2026 and close on 2 July 2026. We review applications on a rolling basis and send offers as strong applications arrive, so applying earlier gives you a better chance of securing your first track preference.' },
+      { q: 'When do applications open and close?', a: 'Applications open on 9 June 2026 and close on 15 July 2026. We review applications on a rolling basis and send offers as strong applications arrive, so applying earlier gives you a better chance of securing your first track preference.' },
       { q: 'How will I know if I have been accepted?', a: 'We will contact you by email and WhatsApp with confirmation of your place, your assigned track, and your payment or scholarship instructions. If you do not hear from us within five working days of submitting, check your spam folder and then contact us at hello@oakvaleltd.com.' },
     ],
   },
@@ -157,7 +157,7 @@ export default function ApplyFaqPage() {
         {/* CTA */}
         <div style={{ borderTop: `0.5px solid ${C.border}`, paddingTop: '2rem', textAlign: 'center' }}>
           <p style={{ fontSize: 14, color: C.muted, marginBottom: '1.25rem', lineHeight: 1.6, fontFamily: 'DM Sans, sans-serif' }}>
-            Applications close <strong style={{ color: C.charcoal }}>2 July 2026</strong>. We review on a rolling basis — applying early improves your chance of securing your first track preference.
+            Applications close <strong style={{ color: C.charcoal }}>15 July 2026</strong>. We review on a rolling basis — applying early improves your chance of securing your first track preference.
           </p>
           <a
             href="/apply"

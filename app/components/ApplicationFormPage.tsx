@@ -712,7 +712,7 @@ export default function ApplicationFormPage() {
           </div>
         )}
           <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.5, margin: 0, fontFamily: 'DM Sans, sans-serif' }}>
-            Applications close 2 July 2026. 
+            Applications close 15 July 2026. 
           </p>
 
       </div>

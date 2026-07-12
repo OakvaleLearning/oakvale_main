@@ -67,7 +67,7 @@ export default function NewInstitutionsPage() {
         New Institution
       </h1>
       {message && (
-        <p style={{ fontSize: "1.05rem", color: "#555", lineHeight: 1.5 }}>
+        <p style={{ fontSize: "1rem", color: "#555", lineHeight: 1.5, textDecoration: 'italic' }}>
           {message}
         </p>
       )}
@@ -122,7 +122,7 @@ export default function NewInstitutionsPage() {
         </form>
       </div>
 
-      <p style={{ fontSize: "1.05rem", color: "#555", lineHeight: 1.5 }}>
+      <p style={{ fontSize: "1.05rem", color: "#555", lineHeight: 1.5, marginTop: "1rem" }}>
         You can also write us at{" "}
         <a
           href="mailto:hello@oakvaleltd.com"

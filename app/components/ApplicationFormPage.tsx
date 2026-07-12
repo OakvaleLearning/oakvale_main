@@ -365,7 +365,7 @@ export default function ApplicationFormPage() {
                 <option>EkoUnimed (Eko University of Medical and Health Sciences)</option>
               </select>
 
-              <div><Link href="/new-institutions" style={{ fontSize: 12, color: C.muted, textDecoration: 'underline', marginTop: 4, display: 'inline-block', fontFamily: 'DM Sans, sans-serif' }}>Your institution not on the list? Check here.</Link></div>
+              <div><Link href="/new-institutions" style={{ fontSize: 12, color: C.muted, textDecoration: 'underline', marginTop: 4, display: 'inline-block', fontFamily: 'DM Sans, sans-serif' }}>Your institution not listed? Check here.</Link></div>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>

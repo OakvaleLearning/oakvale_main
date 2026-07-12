@@ -112,3 +112,10 @@ model Admin {
   name         String?
   createdAt    DateTime @default(now())
 }
+
+model NewInstitutionRequest {
+   id          String   @id @default(cuid())
+  email        String   @unique
+  institution  String 
+  createdAt    DateTime @default(now())
+}

@@ -6,6 +6,7 @@ import {
   ChevronRight, ChevronLeft, Check,
   Upload, FileText, X, Info, CheckCircle2,
 } from 'lucide-react';
+import Link from 'next/link';
 
 const C = {
   forest: '#0A3D2B',
@@ -363,6 +364,8 @@ export default function ApplicationFormPage() {
                 <option>LASUCOM (Lagos State University College of Medicine)</option>
                 <option>EkoUnimed (Eko University of Medical and Health Sciences)</option>
               </select>
+
+              <div><Link href="/new-institutions" style={{ fontSize: 12, color: C.muted, textDecoration: 'underline', marginTop: 4, display: 'inline-block', fontFamily: 'DM Sans, sans-serif' }}>Your institution not on the list? Check here.</Link></div>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
@@ -712,7 +715,7 @@ export default function ApplicationFormPage() {
           </div>
         )}
           <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.5, margin: 0, fontFamily: 'DM Sans, sans-serif' }}>
-            Applications close 15 July 2026. 
+            Applications close 14 August, 2026. 
           </p>
 
       </div>

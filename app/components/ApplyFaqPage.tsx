@@ -20,7 +20,7 @@ const FAQ_SECTIONS: { title: string; items: { q: string; a: string }[] }[] = [
     items: [
       { q: 'What is the Oakvale Summer Intensive?', a: 'It is a four-week blended-learning programme for penultimate and final-year health sciences students at CMUL, LASUCOM, and EkoUNIMED. You choose one of three specialist tracks: Clinical Enterprise, Health Systems Leadership, or Digital Health Innovation. Over four weeks, you work through interactive course content, attend live sessions with global health industry experts, discuss ideas with your cohort, and build toward the Health Innovation Challenge capstone.' },
       { q: 'Is this a university course?', a: 'No. It is an external programme run by Oakvale Learning. Completing the programme earns you a formally recognised UK CPD certificate, which you can share on LinkedIn and include in your CV. Your university does not need to be involved in your application.' },
-      { q: 'What is the Health Innovation Challenge?', a: 'The Health Innovation Challenge is the capstone competition at the heart of the programme. In Week 3, your team of two receives a real, unsolved healthcare challenge relevant to your track. You develop a solution over one week and pitch it live to an independent panel of industry judges on 5 September 2026. There are 18 teams across the programme and a total prize pool of ₦4,000,000.' },
+      { q: 'What is the Health Innovation Challenge?', a: 'The Health Innovation Challenge is the capstone competition at the heart of the programme. In Week 3, your team of two receives a real, unsolved healthcare challenge relevant to your track. You develop a solution over one week and pitch it live to an independent panel of industry judges on 2 October, 2026. There are 18 teams across the programme and a total prize pool of ₦4,000,000.' },
       { q: 'What certificate do I get?', a: 'You receive a formally recognised UK CPD certificate issued by Oakvale Learning. It is accredited, can be verified by employers and institutions, and is issued digitally so you can share it directly on LinkedIn.' },
       { q: 'Will this affect my university studies?', a: 'The programme runs in August and September 2026. Plan for around five to seven hours per week. Think about whether that fits around any rotations or assessments you have before applying.' },
     ],
@@ -38,7 +38,7 @@ const FAQ_SECTIONS: { title: string; items: { q: string; a: string }[] }[] = [
     items: [
       { q: 'How do I apply?', a: 'Complete the online application form on this page. The form has six sections: personal details, academic information, track selection, motivation statement, financial aid (optional), and review and submit.' },
       { q: 'What should I write in my motivation statement?', a: 'The form asks two questions: why you chose your track, and what you want to do differently as a health professional because of it. Be honest and specific. We are looking for real reasons, not perfect writing. Students who are vague or who seem to have copied a template are easy to spot. Students who are genuine are even easier.' },
-      { q: 'When do applications open and close?', a: 'Applications open on 9 June 2026 and close on 15 July 2026. We review applications on a rolling basis and send offers as strong applications arrive, so applying earlier gives you a better chance of securing your first track preference.' },
+      { q: 'When do applications open and close?', a: 'Applications open on 9 June 2026 and close on 14 August 2026. We review applications on a rolling basis and send offers as strong applications arrive, so applying earlier gives you a better chance of securing your first track preference.' },
       { q: 'How will I know if I have been accepted?', a: 'We will contact you by email and WhatsApp with confirmation of your place, your assigned track, and your payment or scholarship instructions. If you do not hear from us within five working days of submitting, check your spam folder and then contact us at hello@oakvaleltd.com.' },
     ],
   },
@@ -64,11 +64,11 @@ const FAQ_SECTIONS: { title: string; items: { q: string; a: string }[] }[] = [
   {
     title: 'The programme itself',
     items: [
-      { q: 'Do I need to attend anything in person?', a: 'The Opening Ceremony on 8 August 2026 is at Julius Berger Hall, UNILAG Yaba Campus. Attendance is strongly encouraged and is part of the programme experience. A hybrid option is available for students who genuinely cannot attend in person. The Health Innovation Challenge Showcase on 5 September is fully online via Zoom. All other programme activity is online.' },
+      { q: 'Do I need to attend anything in person?', a: 'The Opening Ceremony on 8 August 2026 is at Julius Berger Hall, UNILAG Yaba Campus. Attendance is strongly encouraged and is part of the programme experience. A hybrid option is available for students who genuinely cannot attend in person. The Health Innovation Challenge Showcase on 5 October is fully online via Zoom. All other programme activity is online.' },
       { q: 'What happens each week?', a: 'Each week follows a consistent pattern: your track module unlocks at the start of the week (around 45 to 60 minutes of work); a global health industry expert delivers a live session mid-week; and at the end of the week you submit a short reflection post and respond to your peers.' },
       { q: 'Who delivers the live sessions?', a: 'Live sessions are delivered by practising health professionals with real experience in the relevant field. Speakers come from clinical practice, health systems leadership, digital health, and medical entrepreneurship. Sessions are grounded in Nigerian and West African healthcare realities, not generic global examples.' },
       { q: 'Do I have to attend the live sessions?', a: 'Yes. Attending live sessions is part of the completion requirement. Sessions are recorded and shared within 24 hours in case of genuine technical difficulties, but regular live attendance is expected.' },
-      { q: 'What is the Health Innovation Challenge brief?', a: 'In Week 3, your team of two receives a real, unsolved problem relevant to your track. You have one week to develop your solution. By Thursday 3 September your team submits a structured pitch deck. On Saturday 5 September you deliver a live five-minute pitch to the independent judging panel via Zoom.' },
+      { q: 'What is the Health Innovation Challenge brief?', a: 'In Week 3, your team of two receives a real, unsolved problem relevant to your track. You have one week to develop your solution. By Thursday 3 September your team submits a structured pitch deck. On Saturday 5 October you deliver a live five-minute pitch to the independent judging panel via Zoom.' },
     ],
   },
   {
@@ -157,7 +157,7 @@ export default function ApplyFaqPage() {
         {/* CTA */}
         <div style={{ borderTop: `0.5px solid ${C.border}`, paddingTop: '2rem', textAlign: 'center' }}>
           <p style={{ fontSize: 14, color: C.muted, marginBottom: '1.25rem', lineHeight: 1.6, fontFamily: 'DM Sans, sans-serif' }}>
-            Applications close <strong style={{ color: C.charcoal }}>15 July 2026</strong>. We review on a rolling basis — applying early improves your chance of securing your first track preference.
+            Applications close <strong style={{ color: C.charcoal }}>14 August, 2026</strong>. We review on a rolling basis — applying early improves your chance of securing your first track preference.
           </p>
           <a
             href="/apply"

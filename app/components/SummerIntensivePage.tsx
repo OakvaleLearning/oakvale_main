@@ -126,42 +126,57 @@ const STEPS = [
     body: 'Starting on Monday 10 August. Each week, an interactive module unlocks on the platform. You study it in your own time. In Week 2, we will host a guest practitioner on a live session. At the end of the week, you post a reflection and respond to a peer. In Week 3, your team will receive the Innovation Challenge brief.',
   },
   {
-    label: 'Compete in the Innovata-thon Showcase',
-    body: 'On 5 September, your team pitches your solution live to the judges via Zoom. All students attend. Winners are announced at the closing ceremony. You receive your UK CPD certificate the same day.',
+    label: 'Health Innovation Challenge Showcase and Awards. Certificates distributed',
+    body: 'On 5 October 2026, your team pitches your solution live to the judges via Zoom. All students attend. Winners are announced at the closing ceremony. You receive your UK CPD certificate the same day.',
   },
 ];
 
 const DETAILS: [string, string][] = [
-  ['Open to', 'Penultimate and final-year students in Medicine, Pharmacy, Dentistry, Nursing, Lab Sciences, and Physiotherapy at CMUL, LASUCOM, and EkoUnimed.'],
-  ['Applications open', '9 June 2026'],
-  ['Applications close', '15 July 2026'],
-  ['Opening Ceremony', 'Saturday 8 August 2026. Julius Berger Hall, UNILAG Yaba. Hybrid.'],
-  ['Online modules', '10 August to 4 September 2026'],
-  ['Innovata-thon Showcase', 'Saturday 5 September 2026. Online via Zoom.'],
-  ['Application fee', '₦10,000. Fifteen scholarship places available: five per institution.'],
-  ['Certificate', 'UK CPD-accredited certificate, formally recognised.'],
+  [
+    "Open to",
+    "Penultimate and final-year students in Medicine, Pharmacy, Dentistry, Nursing, Lab Sciences, and Physiotherapy at CMUL, LASUCOM, and EkoUnimed.",
+  ],
+  ["Applications open", "Tuesday 9 June, 2026"],
+  ["Applications close", "Friday 14 August, 2026"],
+  ["Scholarship Applications close", "Wednesday 15 July, 2026"],
+  [
+    "Opening Ceremony",
+    "Saturday 8 August 2026. Julius Berger Hall, UNILAG Yaba. Hybrid.",
+  ],
+  ["Online programme begins", "Monday 7 September, 2026"],
+  [
+    "Health Innovation Challenge brief issued to all teams",
+    "Monday 28 September, 2026.",
+  ],
+  ["Health Innovation Challenge pitch decks due", "Friday 2 October, 2026."],
+  ["Health Innovation Challenge Showcase and Awards. Certificates distributed.", "Monday 5 October, 2026."],
+  [
+    "Application fee",
+    "₦10,000. Fifteen scholarship places available: five per institution.",
+  ],
+  ["Certificate", "UK CPD-accredited certificate, formally recognised."],
 ];
 
 const FAQS = [
   {
-    q: 'Do I have to attend the Opening Ceremony in person?',
+    q: "Do I have to attend the Opening Ceremony in person?",
     a: "Attendance isn't mandatory, but attending the Opening Ceremony on 8 August is strongly encouraged. The rest of the programme is fully online.",
   },
   {
-    q: 'I study Pharmacy, not Medicine. Can I apply?',
-    a: 'Yes. The programme is open to all health sciences disciplines: Medicine, Pharmacy, Dentistry, Nursing, Laboratory Sciences, and Physiotherapy.',
+    q: "I study Pharmacy, not Medicine. Can I apply?",
+    a: "Yes. The programme is open to all health sciences disciplines: Medicine, Pharmacy, Dentistry, Nursing, Laboratory Sciences, and Physiotherapy.",
   },
   {
-    q: 'What if I cannot pay the application fee?',
-    a: 'Fifteen scholarship places are available — five per track. Mention in your motivation statement that you are applying for a scholarship and why. Scholarships are awarded on merit and financial need.',
+    q: "What if I cannot pay the application fee?",
+    a: "Fifteen scholarship places are available — five per track. Mention in your motivation statement that you are applying for a scholarship and why. Scholarships are awarded on merit and financial need.",
   },
   {
-    q: 'How much time does it take each week?',
-    a: 'Plan for around three to five hours per week. This includes the self-study module, the live session, and the weekly reflection activity.',
+    q: "How much time does it take each week?",
+    a: "Plan for around three to five hours per week. This includes the self-study module, the live session, and the weekly reflection activity.",
   },
   {
-    q: 'What is the Oakvale Health Innovation Challenge?',
-    a: 'It is a team competition built into the programme. In Week 3, your team receives a real healthcare challenge. You develop a solution and pitch it live to judges on 5 September. There is a total prize pool of ₦4,000,000.',
+    q: "What is the Oakvale Health Innovation Challenge?",
+    a: "It is a team competition built into the programme. In Week 3, your team receives a real healthcare challenge. You develop a solution and pitch it live to judges on 2 October. There is a total prize pool of ₦4,000,000.",
   },
 ];
 
@@ -1045,7 +1060,7 @@ export default function SummerIntensivePage() {
               lineHeight: 1.25,
               marginBottom: '1.5rem',
             }}>
-              Applications close 15 July 2026. <br /> Sixty places per institution across three tracks.
+              Applications close 14 August, 2026. <br /> Sixty places per institution across three tracks.
             </h2>
 
             <p style={{ fontSize: '1.05rem', color: 'rgba(247,243,236,0.78)', lineHeight: 1.78, maxWidth: 580, margin: '0 auto 2.5rem' }}>

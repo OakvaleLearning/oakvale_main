@@ -123,7 +123,7 @@ const STEPS = [
   },
   {
     label: 'Complete the four weeks online',
-    body: 'Starting on Monday 10 August. Each week, an interactive module unlocks on the platform. You study it in your own time. In Week 2, we will host a guest practitioner on a live session. At the end of the week, you post a reflection and respond to a peer. In Week 3, your team will receive the Innovation Challenge brief.',
+    body: 'Starting on Monday 7 September 2026. Each week, an interactive module unlocks on the platform. You study it in your own time. In Week 2, we will host a guest practitioner on a live session. At the end of the week, you post a reflection and respond to a peer. In Week 3, your team will receive the Innovation Challenge brief.',
   },
   {
     label: 'Health Innovation Challenge Showcase and Awards. Certificates distributed',
@@ -760,7 +760,7 @@ export default function SummerIntensivePage() {
               <span style={{ color: C.goldLight, fontSize: '1.4rem', fontWeight: 700, fontFamily: 'var(--font-cormorant)', letterSpacing: '0.02em' }}>
                 ₦4,000,000
               </span>
-              , distributed across 4 winning teams — one overall grand prize winner and three track winners — alongside one individual student award.
+              , distributed across 3 winning teams — one overall grand prize winner and three track winners — alongside one individual student award.
             </p>
 
             {/* Prize breakdown */}
@@ -801,9 +801,9 @@ export default function SummerIntensivePage() {
                 </thead>
                 <tbody>
                   {[
-                    ['Track A: Clinical Enterprise', '₦750,000'],
-                    ['Track B: Health Systems Leadership', '₦750,000'],
-                    ['Track C: Digital Health Innovation', '₦750,000'],
+                    ['Track A: Clinical Enterprise', '₦500,000'],
+                    ['Track B: Health Systems Leadership', '₦500,000'],
+                    ['Track C: Digital Health Innovation', '₦500,000'],
                   ].map(([track, prize]) => (
                     <tr key={track}>
                       <td style={{ color: 'rgba(247,243,236,0.88)', fontSize: '0.97rem', lineHeight: 1.5, padding: '0.85rem 0', borderTop: '1px solid rgba(232,168,50,0.4)' }}>

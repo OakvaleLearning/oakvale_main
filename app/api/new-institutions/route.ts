@@ -38,7 +38,7 @@ export async function POST(request: Request) {
      from: process.env.EMAIL_FROM!,
      to: process.env.EMAIL_TO!,
      subject: `New Instiution Request`,
-     html: `<p>${institutionName}</p>`
+     html: `<p>New institution ${institutionName}</p>`
     });
     return Response.json({ success: true, message: 'Form submitted successfully' }, { status: 200 });
   }

@@ -251,39 +251,79 @@ export default function ApplicationFormPage() {
   // ─── Wrapper ───────────────────────────────────────────────────────────────
 
   return (
-    <div style={{ minHeight: '100vh', background: C.cream, paddingTop: 80 }}>
-      <div style={{ maxWidth: 680, margin: '0 auto', padding: '2rem 1.5rem 5rem' }}>
-
+    <div style={{ minHeight: "100vh", background: C.cream, paddingTop: 80 }}>
+      <div
+        style={{ maxWidth: 680, margin: "0 auto", padding: "2rem 1.5rem 5rem" }}
+      >
         {/* Header */}
-        <div style={{ marginBottom: '1.75rem' }}>
-          <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: C.muted, marginBottom: 6, fontFamily: 'DM Sans, sans-serif' }}>
-            Oakvale Learning · Summer Intensive 2026
-          </div>
-          <h1 style={{ fontFamily: 'var(--font-cormorant)', fontSize: 28, fontWeight: 400, color: C.forest, margin: '0 0 6px', lineHeight: 1.2 }}>
-            Student Application Form
-          </h1>
-        
-          <p className='py-2what'>All fields marked <span style={{ color: '#c0392b' }}>*</span> are required.</p>
-          <span className="text-slate-500 font-medium font-sans border-b border-slate-300 pb-0.5" style={{ display: 'inline-block', marginTop: 6, fontSize: 13, fontFamily: 'DM Sans, sans-serif' }}> 
-           Want to learn more? {" "}
-          <a
-            href="/apply/faq"
+        <div style={{ marginBottom: "1.75rem" }}>
+          <div
             style={{
-              display: 'inline-block', 
+              fontSize: 11,
               fontWeight: 500,
-              color: C.gold,
-              textDecoration: 'none',
-              fontFamily: 'DM Sans, sans-serif', 
-              paddingBottom: 1,
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              color: C.muted,
+              marginBottom: 6,
+              fontFamily: "DM Sans, sans-serif",
             }}
           >
-           Read the FAQs before you apply →
-          </a>
+            Oakvale Learning · Summer Intensive 2026
+          </div>
+          <h1
+            style={{
+              fontFamily: "var(--font-cormorant)",
+              fontSize: 28,
+              fontWeight: 400,
+              color: C.forest,
+              margin: "0 0 6px",
+              lineHeight: 1.2,
+            }}
+          >
+            Student Application Form
+          </h1>
+
+          <p className="py-2what">
+            All fields marked <span style={{ color: "#c0392b" }}>*</span> are
+            required.
+          </p>
+          <span
+            className="text-slate-500 font-medium font-sans border-b border-slate-300 pb-0.5"
+            style={{
+              display: "inline-block",
+              marginTop: 6,
+              fontSize: 13,
+              fontFamily: "DM Sans, sans-serif",
+            }}
+          >
+            Want to learn more?{" "}
+            <a
+              href="/apply/faq"
+              style={{
+                display: "inline-block",
+                fontWeight: 500,
+                color: C.gold,
+                textDecoration: "none",
+                fontFamily: "DM Sans, sans-serif",
+                paddingBottom: 1,
+              }}
+            >
+              Read the FAQs before you apply →
+            </a>
           </span>
         </div>
 
         {/* Step bar */}
-        <div style={{ display: 'flex', marginBottom: '1.75rem', border: `0.5px solid ${C.border}`, borderRadius: 6, overflow: 'hidden', background: '#fff' }}>
+        <div
+          style={{
+            display: "flex",
+            marginBottom: "1.75rem",
+            border: `0.5px solid ${C.border}`,
+            borderRadius: 6,
+            overflow: "hidden",
+            background: "#fff",
+          }}
+        >
           {STEP_LABELS.map((label, i) => {
             const done = i < step;
             const active = i === step;
@@ -292,21 +332,46 @@ export default function ApplicationFormPage() {
                 key={label}
                 onClick={() => goTo(i)}
                 style={{
-                  flex: 1, padding: '9px 4px', textAlign: 'center',
-                  fontSize: 11, fontWeight: 500, lineHeight: 1.3,
-                  cursor: done ? 'pointer' : 'default',
-                  border: 'none',
-                  borderRight: i < STEP_LABELS.length - 1 ? `0.5px solid ${C.border}` : 'none',
-                  background: active ? C.creamWarm : '#fff',
+                  flex: 1,
+                  padding: "9px 4px",
+                  textAlign: "center",
+                  fontSize: 11,
+                  fontWeight: 500,
+                  lineHeight: 1.3,
+                  cursor: done ? "pointer" : "default",
+                  border: "none",
+                  borderRight:
+                    i < STEP_LABELS.length - 1
+                      ? `0.5px solid ${C.border}`
+                      : "none",
+                  background: active ? C.creamWarm : "#fff",
                   color: active ? C.forest : done ? C.forestMid : C.muted,
-                  fontFamily: 'DM Sans, sans-serif',
-                  transition: 'background 0.15s',
+                  fontFamily: "DM Sans, sans-serif",
+                  transition: "background 0.15s",
                 }}
               >
-                {done
-                  ? <Check size={12} strokeWidth={2.5} style={{ display: 'inline', verticalAlign: '-1px', marginRight: 3 }} />
-                  : <span style={{ display: 'block', fontSize: 12, fontWeight: 600, marginBottom: 2 }}>{i + 1}</span>
-                }
+                {done ? (
+                  <Check
+                    size={12}
+                    strokeWidth={2.5}
+                    style={{
+                      display: "inline",
+                      verticalAlign: "-1px",
+                      marginRight: 3,
+                    }}
+                  />
+                ) : (
+                  <span
+                    style={{
+                      display: "block",
+                      fontSize: 12,
+                      fontWeight: 600,
+                      marginBottom: 2,
+                    }}
+                  >
+                    {i + 1}
+                  </span>
+                )}
                 <span>{label}</span>
               </button>
             );
@@ -316,34 +381,83 @@ export default function ApplicationFormPage() {
         {/* ── STEP 0: Personal ─────────────────────────────────────────────── */}
         {step === 0 && (
           <div>
-            <SectionHead title="Personal details" sub="Enter your details exactly as they appear on your student ID." />
+            <SectionHead
+              title="Personal details"
+              sub="Enter your details exactly as they appear on your student ID."
+            />
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: 12,
+                marginBottom: 12,
+              }}
+            >
               <div>
                 <label style={lbl}>First name{req}</label>
-                <input type="text" value={form.firstName} onChange={e => set('firstName', e.target.value)} placeholder="e.g. Adaeze" style={input} />
+                <input
+                  type="text"
+                  value={form.firstName}
+                  onChange={(e) => set("firstName", e.target.value)}
+                  placeholder="e.g. Adaeze"
+                  style={input}
+                />
               </div>
               <div>
                 <label style={lbl}>Last name{req}</label>
-                <input type="text" value={form.lastName} onChange={e => set('lastName', e.target.value)} placeholder="e.g. Okafor" style={input} />
+                <input
+                  type="text"
+                  value={form.lastName}
+                  onChange={(e) => set("lastName", e.target.value)}
+                  placeholder="e.g. Okafor"
+                  style={input}
+                />
               </div>
             </div>
 
             <div style={{ marginBottom: 12 }}>
               <label style={lbl}>Email address{req}</label>
-              <input type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="your.name@email.com" style={input} />
-              <p style={hint}>We will send your offer and all communications to this address.</p>
+              <input
+                type="email"
+                value={form.email}
+                onChange={(e) => set("email", e.target.value)}
+                placeholder="your.name@email.com"
+                style={input}
+              />
+              <p style={hint}>
+                We will send your offer and all communications to this address.
+              </p>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: 12,
+                marginBottom: 12,
+              }}
+            >
               <div>
                 <label style={lbl}>Phone number (WhatsApp){req}</label>
-                <input type="tel" value={form.phone} onChange={e => set('phone', e.target.value)} placeholder="+234 800 000 0000" style={input} />
+                <input
+                  type="tel"
+                  value={form.phone}
+                  onChange={(e) => set("phone", e.target.value)}
+                  placeholder="+234 800 000 0000"
+                  style={input}
+                />
                 <p style={hint}>We will send updates via WhatsApp.</p>
               </div>
               <div>
                 <label style={lbl}>State of residence{req}</label>
-                <input type="text" value={form.state} onChange={e => set('state', e.target.value)} placeholder="e.g. Lagos" style={input} />
+                <input
+                  type="text"
+                  value={form.state}
+                  onChange={(e) => set("state", e.target.value)}
+                  placeholder="e.g. Lagos"
+                  style={input}
+                />
               </div>
             </div>
 
@@ -354,24 +468,60 @@ export default function ApplicationFormPage() {
         {/* ── STEP 1: Academic ─────────────────────────────────────────────── */}
         {step === 1 && (
           <div>
-            <SectionHead title="Academic information" sub="Tell us about your current studies." />
+            <SectionHead
+              title="Academic information"
+              sub="Tell us about your current studies."
+            />
 
             <div style={{ marginBottom: 12 }}>
               <label style={lbl}>Institution{req}</label>
-              <select value={form.institution} onChange={e => set('institution', e.target.value)} style={input}>
+              <select
+                value={form.institution}
+                onChange={(e) => set("institution", e.target.value)}
+                style={input}
+              >
                 <option value="">Select your institution</option>
                 <option>CMUL (College of Medicine, University of Lagos)</option>
-                <option>LASUCOM (Lagos State University College of Medicine)</option>
-                <option>EkoUnimed (Eko University of Medical and Health Sciences)</option>
+                <option>
+                  LASUCOM (Lagos State University College of Medicine)
+                </option>
+                <option>
+                  EkoUnimed (Eko University of Medical and Health Sciences)
+                </option>
               </select>
 
-              <div><Link href="/new-institutions" style={{ fontSize: 12, color: C.muted, textDecoration: 'underline', marginTop: 4, display: 'inline-block', fontFamily: 'DM Sans, sans-serif' }}>Your institution not listed? Check here.</Link></div>
+              <div>
+                <Link
+                  href="/summer-intensive/register-interest"
+                  style={{
+                    fontSize: 12,
+                    color: C.muted,
+                    textDecoration: "underline",
+                    marginTop: 4,
+                    display: "inline-block",
+                    fontFamily: "DM Sans, sans-serif",
+                  }}
+                >
+                  Your institution not listed? Check here.
+                </Link>
+              </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: 12,
+                marginBottom: 12,
+              }}
+            >
               <div>
                 <label style={lbl}>Discipline / Faculty{req}</label>
-                <select value={form.discipline} onChange={e => set('discipline', e.target.value)} style={input}>
+                <select
+                  value={form.discipline}
+                  onChange={(e) => set("discipline", e.target.value)}
+                  style={input}
+                >
                   <option value="">Select your discipline</option>
                   <option>Medicine and Surgery</option>
                   <option>Pharmacy</option>
@@ -384,7 +534,11 @@ export default function ApplicationFormPage() {
               </div>
               <div>
                 <label style={lbl}>Current year of study{req}</label>
-                <select value={form.yearOfStudy} onChange={e => set('yearOfStudy', e.target.value)} style={input}>
+                <select
+                  value={form.yearOfStudy}
+                  onChange={(e) => set("yearOfStudy", e.target.value)}
+                  style={input}
+                >
                   <option value="">Select year</option>
                   <option>400 level</option>
                   <option>500 level (final year)</option>
@@ -395,11 +549,23 @@ export default function ApplicationFormPage() {
 
             <div style={{ marginBottom: 12 }}>
               <label style={lbl}>Student ID number{req}</label>
-              <input type="text" value={form.studentId} onChange={e => set('studentId', e.target.value)} placeholder="e.g. 190501001" style={input} />
-              <p style={hint}>Used for verification only. Not shared with third parties.</p>
+              <input
+                type="text"
+                value={form.studentId}
+                onChange={(e) => set("studentId", e.target.value)}
+                placeholder="e.g. 190501001"
+                style={input}
+              />
+              <p style={hint}>
+                Used for verification only. Not shared with third parties.
+              </p>
             </div>
 
-            <NavRow onBack={goBack} onNext={goNext} nextLabel="Next: Choose your track" />
+            <NavRow
+              onBack={goBack}
+              onNext={goNext}
+              nextLabel="Next: Choose your track"
+            />
           </div>
         )}
 
@@ -411,46 +577,110 @@ export default function ApplicationFormPage() {
               sub="You will stay in this track for the full four weeks. Choose the one that best fits where you want to grow."
             />
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: '1rem' }}>
-              {TRACKS.map(t => (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 10,
+                marginBottom: "1rem",
+              }}
+            >
+              {TRACKS.map((t) => (
                 <div
                   key={t.key}
                   onClick={() => {
-                    set('trackFirst', t.key);
-                    if (form.trackSecond === t.key) set('trackSecond', '');
+                    set("trackFirst", t.key);
+                    if (form.trackSecond === t.key) set("trackSecond", "");
                   }}
                   style={{
-                    border: form.trackFirst === t.key ? `1.5px solid ${C.gold}` : `0.5px solid ${C.border}`,
-                    borderRadius: 6, padding: '14px 16px', cursor: 'pointer',
-                    background: form.trackFirst === t.key ? '#fffbf4' : '#fff',
-                    transition: 'border-color 0.15s, background 0.15s',
+                    border:
+                      form.trackFirst === t.key
+                        ? `1.5px solid ${C.gold}`
+                        : `0.5px solid ${C.border}`,
+                    borderRadius: 6,
+                    padding: "14px 16px",
+                    cursor: "pointer",
+                    background: form.trackFirst === t.key ? "#fffbf4" : "#fff",
+                    transition: "border-color 0.15s, background 0.15s",
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
-                    <span style={{ fontSize: 10, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', padding: '3px 8px', borderRadius: 20, background: t.badgeBg, color: t.badgeColor, fontFamily: 'DM Sans, sans-serif' }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 10,
+                      marginBottom: 4,
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: 10,
+                        fontWeight: 500,
+                        letterSpacing: "0.12em",
+                        textTransform: "uppercase",
+                        padding: "3px 8px",
+                        borderRadius: 20,
+                        background: t.badgeBg,
+                        color: t.badgeColor,
+                        fontFamily: "DM Sans, sans-serif",
+                      }}
+                    >
                       {t.label}
                     </span>
-                    <span style={{ fontSize: 14, fontWeight: 500, color: C.charcoal, fontFamily: 'DM Sans, sans-serif' }}>{t.name}</span>
+                    <span
+                      style={{
+                        fontSize: 14,
+                        fontWeight: 500,
+                        color: C.charcoal,
+                        fontFamily: "DM Sans, sans-serif",
+                      }}
+                    >
+                      {t.name}
+                    </span>
                   </div>
-                  <div style={{ fontSize: 13, color: C.muted, lineHeight: 1.5, fontFamily: 'DM Sans, sans-serif' }}>{t.desc}</div>
+                  <div
+                    style={{
+                      fontSize: 13,
+                      color: C.muted,
+                      lineHeight: 1.5,
+                      fontFamily: "DM Sans, sans-serif",
+                    }}
+                  >
+                    {t.desc}
+                  </div>
                 </div>
               ))}
             </div>
 
             <div style={{ marginBottom: 12 }}>
               <label style={lbl}>Second track preference</label>
-              <select value={form.trackSecond} onChange={e => set('trackSecond', e.target.value)} style={input}>
+              <select
+                value={form.trackSecond}
+                onChange={(e) => set("trackSecond", e.target.value)}
+                style={input}
+              >
                 <option value="">No second preference</option>
-                {TRACKS.map(t => (
-                  <option key={t.key} value={t.key} disabled={t.key === form.trackFirst}>
+                {TRACKS.map((t) => (
+                  <option
+                    key={t.key}
+                    value={t.key}
+                    disabled={t.key === form.trackFirst}
+                  >
                     {t.label}: {t.name}
                   </option>
                 ))}
               </select>
-              <p style={hint}>If your first choice is full, we will try to place you in your second preference.</p>
+              <p style={hint}>
+                If your first choice is full, we will try to place you in your
+                second preference.
+              </p>
             </div>
 
-            <NavRow onBack={goBack} onNext={goNext} nextLabel="Next: Motivation statement" />
+            <NavRow
+              onBack={goBack}
+              onNext={goNext}
+              nextLabel="Next: Motivation statement"
+            />
           </div>
         )}
 
@@ -464,37 +694,73 @@ export default function ApplicationFormPage() {
 
             {[
               {
-                id: 'mot1' as const,
-                q: 'Why have you chosen your track, and what draws you to it?',
-                ph: 'Tell us what interests you about this track and what specific aspects you are most curious about.',
+                id: "mot1" as const,
+                q: "Why have you chosen your track, and what draws you to it?",
+                ph: "Tell us what interests you about this track and what specific aspects you are most curious about.",
               },
               {
-                id: 'mot2' as const,
-                q: 'What do you want to do differently as a health professional because of this programme?',
-                ph: 'Be specific. What problem do you want to solve? What kind of work do you want to do? How does this programme connect to that?',
+                id: "mot2" as const,
+                q: "What do you want to do differently as a health professional because of this programme?",
+                ph: "Be specific. What problem do you want to solve? What kind of work do you want to do? How does this programme connect to that?",
               },
             ].map(({ id, q, ph }) => (
               <div key={id} style={{ marginBottom: 14 }}>
-                <label style={lbl}>{q}{req}</label>
+                <label style={lbl}>
+                  {q}
+                  {req}
+                </label>
                 <textarea
                   value={form[id]}
-                  onChange={e => set(id, e.target.value)}
+                  onChange={(e) => set(id, e.target.value)}
                   rows={5}
                   placeholder={ph}
-                  style={{ ...input, resize: 'vertical', lineHeight: 1.6 }}
+                  style={{ ...input, resize: "vertical", lineHeight: 1.6 }}
                 />
-                <div style={{ fontSize: 12, color: C.muted, textAlign: 'right', marginTop: 4, fontFamily: 'DM Sans, sans-serif' }}>
-                  {wordCount(form[id])} {wordCount(form[id]) === 1 ? 'word' : 'words'}
+                <div
+                  style={{
+                    fontSize: 12,
+                    color: C.muted,
+                    textAlign: "right",
+                    marginTop: 4,
+                    fontFamily: "DM Sans, sans-serif",
+                  }}
+                >
+                  {wordCount(form[id])}{" "}
+                  {wordCount(form[id]) === 1 ? "word" : "words"}
                 </div>
               </div>
             ))}
 
-            <div style={{ background: '#eef4ff', borderRadius: 4, padding: '12px 14px', fontSize: 13, color: '#1a4bcc', lineHeight: 1.5, marginBottom: '1rem', fontFamily: 'DM Sans, sans-serif' }}>
-              <Info size={14} style={{ display: 'inline', verticalAlign: '-2px', marginRight: 5 }} />
-              We read every statement. Students who show real, specific reasons for applying are the ones we select. You do not need to sound impressive. You need to be honest.
+            <div
+              style={{
+                background: "#eef4ff",
+                borderRadius: 4,
+                padding: "12px 14px",
+                fontSize: 13,
+                color: "#1a4bcc",
+                lineHeight: 1.5,
+                marginBottom: "1rem",
+                fontFamily: "DM Sans, sans-serif",
+              }}
+            >
+              <Info
+                size={14}
+                style={{
+                  display: "inline",
+                  verticalAlign: "-2px",
+                  marginRight: 5,
+                }}
+              />
+              We read every statement. Students who show real, specific reasons
+              for applying are the ones we select. You do not need to sound
+              impressive. You need to be honest.
             </div>
 
-            <NavRow onBack={goBack} onNext={goNext} nextLabel="Next: Financial aid" />
+            <NavRow
+              onBack={goBack}
+              onNext={goNext}
+              nextLabel="Next: Financial aid"
+            />
           </div>
         )}
 
@@ -506,42 +772,110 @@ export default function ApplicationFormPage() {
               sub="The application fee is ₦10,000. Fifteen scholarship places are available across all three institutions. If the fee presents a genuine difficulty, we encourage you to apply for support."
             />
 
-            <label style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: '14px 16px', border: `0.5px solid ${C.border}`, borderRadius: 6, cursor: 'pointer', marginBottom: '1rem', background: '#fff' }}>
+            <label
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                gap: 12,
+                padding: "14px 16px",
+                border: `0.5px solid ${C.border}`,
+                borderRadius: 6,
+                cursor: "pointer",
+                marginBottom: "1rem",
+                background: "#fff",
+              }}
+            >
               <input
                 type="checkbox"
                 checked={form.needsAid}
-                onChange={e => set('needsAid', e.target.checked)}
+                onChange={(e) => set("needsAid", e.target.checked)}
                 style={{ marginTop: 2, flexShrink: 0, accentColor: C.forest }}
               />
               <div>
-                <div style={{ fontSize: 14, fontWeight: 500, color: C.charcoal, marginBottom: 3, fontFamily: 'DM Sans, sans-serif' }}>
+                <div
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 500,
+                    color: C.charcoal,
+                    marginBottom: 3,
+                    fontFamily: "DM Sans, sans-serif",
+                  }}
+                >
                   I would like to apply for financial aid
                 </div>
-                <div style={{ fontSize: 13, color: C.muted, lineHeight: 1.45, fontFamily: 'DM Sans, sans-serif' }}>
-                  Scholarship places are awarded based on the strength of your statement and level of financial need. Applying for aid does not affect how your application is assessed.
+                <div
+                  style={{
+                    fontSize: 13,
+                    color: C.muted,
+                    lineHeight: 1.45,
+                    fontFamily: "DM Sans, sans-serif",
+                  }}
+                >
+                  Scholarship places are awarded based on the strength of your
+                  statement and level of financial need. Applying for aid does
+                  not affect how your application is assessed.
                 </div>
               </div>
             </label>
 
             {form.needsAid && (
-              <div style={{ border: `0.5px solid ${C.border}`, borderRadius: 6, padding: 16, marginBottom: '1rem', background: '#fff' }}>
+              <div
+                style={{
+                  border: `0.5px solid ${C.border}`,
+                  borderRadius: 6,
+                  padding: 16,
+                  marginBottom: "1rem",
+                  background: "#fff",
+                }}
+              >
                 {/* Aid level selector */}
                 <div style={{ marginBottom: 14 }}>
                   <label style={lbl}>Level of support needed{req}</label>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
-                    {AID_LEVELS.map(a => (
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "1fr 1fr 1fr",
+                      gap: 8,
+                    }}
+                  >
+                    {AID_LEVELS.map((a) => (
                       <div
                         key={a.key}
-                        onClick={() => set('aidLevel', a.key)}
+                        onClick={() => set("aidLevel", a.key)}
                         style={{
-                          border: form.aidLevel === a.key ? `1.5px solid ${C.gold}` : `0.5px solid ${C.border}`,
-                          borderRadius: 6, padding: '10px 12px', cursor: 'pointer',
-                          textAlign: 'center', background: form.aidLevel === a.key ? '#fffbf4' : '#fafaf9',
-                          transition: 'border-color 0.15s, background 0.15s',
+                          border:
+                            form.aidLevel === a.key
+                              ? `1.5px solid ${C.gold}`
+                              : `0.5px solid ${C.border}`,
+                          borderRadius: 6,
+                          padding: "10px 12px",
+                          cursor: "pointer",
+                          textAlign: "center",
+                          background:
+                            form.aidLevel === a.key ? "#fffbf4" : "#fafaf9",
+                          transition: "border-color 0.15s, background 0.15s",
                         }}
                       >
-                        <div style={{ fontSize: 13, fontWeight: 500, color: C.charcoal, marginBottom: 2, fontFamily: 'DM Sans, sans-serif' }}>{a.name}</div>
-                        <div style={{ fontSize: 11, color: C.muted, fontFamily: 'DM Sans, sans-serif' }}>{a.desc}</div>
+                        <div
+                          style={{
+                            fontSize: 13,
+                            fontWeight: 500,
+                            color: C.charcoal,
+                            marginBottom: 2,
+                            fontFamily: "DM Sans, sans-serif",
+                          }}
+                        >
+                          {a.name}
+                        </div>
+                        <div
+                          style={{
+                            fontSize: 11,
+                            color: C.muted,
+                            fontFamily: "DM Sans, sans-serif",
+                          }}
+                        >
+                          {a.desc}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -549,16 +883,27 @@ export default function ApplicationFormPage() {
 
                 {/* Aid statement */}
                 <div style={{ marginBottom: 14 }}>
-                  <label style={lbl}>Why are you applying for financial aid?{req}</label>
+                  <label style={lbl}>
+                    Why are you applying for financial aid?{req}
+                  </label>
                   <textarea
                     value={form.aidStatement}
-                    onChange={e => set('aidStatement', e.target.value)}
+                    onChange={(e) => set("aidStatement", e.target.value)}
                     rows={4}
                     placeholder="Tell us honestly about your situation. You do not need to share anything you are not comfortable with. We are looking for genuine need, not a perfect explanation."
-                    style={{ ...input, resize: 'vertical', lineHeight: 1.6 }}
+                    style={{ ...input, resize: "vertical", lineHeight: 1.6 }}
                   />
-                  <div style={{ fontSize: 12, color: C.muted, textAlign: 'right', marginTop: 4, fontFamily: 'DM Sans, sans-serif' }}>
-                    {wordCount(form.aidStatement)} {wordCount(form.aidStatement) === 1 ? 'word' : 'words'}
+                  <div
+                    style={{
+                      fontSize: 12,
+                      color: C.muted,
+                      textAlign: "right",
+                      marginTop: 4,
+                      fontFamily: "DM Sans, sans-serif",
+                    }}
+                  >
+                    {wordCount(form.aidStatement)}{" "}
+                    {wordCount(form.aidStatement) === 1 ? "word" : "words"}
                   </div>
                 </div>
 
@@ -566,39 +911,131 @@ export default function ApplicationFormPage() {
                 <div>
                   <label style={lbl}>Supporting documents</label>
                   <p style={{ ...hint, marginBottom: 8 }}>
-                    Optional but helpful. Acceptable documents include a letter from your institution, a letter from a parent or guardian, or any other document that helps us understand your circumstances. All documents are treated with strict confidentiality.
+                    Optional but helpful. Acceptable documents include a letter
+                    from your institution, a letter from a parent or guardian,
+                    or any other document that helps us understand your
+                    circumstances. All documents are treated with strict
+                    confidentiality.
                   </p>
                   <div
                     onClick={() => fileRef.current?.click()}
-                    onDragOver={e => { e.preventDefault(); setDragOver(true); }}
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      setDragOver(true);
+                    }}
                     onDragLeave={() => setDragOver(false)}
-                    onDrop={e => { e.preventDefault(); setDragOver(false); addFiles(e.dataTransfer.files); }}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      setDragOver(false);
+                      addFiles(e.dataTransfer.files);
+                    }}
                     style={{
                       border: `1.5px dashed ${dragOver ? C.gold : C.border}`,
-                      borderRadius: 6, padding: 20, textAlign: 'center', cursor: 'pointer',
-                      background: dragOver ? '#fffbf4' : '#fafaf9',
-                      transition: 'border-color 0.15s, background 0.15s',
+                      borderRadius: 6,
+                      padding: 20,
+                      textAlign: "center",
+                      cursor: "pointer",
+                      background: dragOver ? "#fffbf4" : "#fafaf9",
+                      transition: "border-color 0.15s, background 0.15s",
                       marginBottom: 8,
                     }}
                   >
-                    <Upload size={24} color={C.muted} style={{ display: 'block', margin: '0 auto 8px' }} />
-                    <div style={{ fontSize: 14, fontWeight: 500, color: C.charcoal, marginBottom: 3, fontFamily: 'DM Sans, sans-serif' }}>
+                    <Upload
+                      size={24}
+                      color={C.muted}
+                      style={{ display: "block", margin: "0 auto 8px" }}
+                    />
+                    <div
+                      style={{
+                        fontSize: 14,
+                        fontWeight: 500,
+                        color: C.charcoal,
+                        marginBottom: 3,
+                        fontFamily: "DM Sans, sans-serif",
+                      }}
+                    >
                       Click to upload or drag and drop
                     </div>
-                    <div style={{ fontSize: 12, color: C.muted, fontFamily: 'DM Sans, sans-serif' }}>
+                    <div
+                      style={{
+                        fontSize: 12,
+                        color: C.muted,
+                        fontFamily: "DM Sans, sans-serif",
+                      }}
+                    >
                       PDF, JPG, or PNG · Maximum 5 MB per file · Up to 3 files
                     </div>
-                    <input ref={fileRef} type="file" accept=".pdf,.jpg,.jpeg,.png" multiple onChange={e => addFiles(e.target.files)} style={{ display: 'none' }} />
+                    <input
+                      ref={fileRef}
+                      type="file"
+                      accept=".pdf,.jpg,.jpeg,.png"
+                      multiple
+                      onChange={(e) => addFiles(e.target.files)}
+                      style={{ display: "none" }}
+                    />
                   </div>
 
                   {files.length > 0 && (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 6,
+                      }}
+                    >
                       {files.map((f, i) => (
-                        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 10px', background: C.creamWarm, borderRadius: 4, fontSize: 13, fontFamily: 'DM Sans, sans-serif' }}>
-                          <FileText size={16} color={C.muted} style={{ flexShrink: 0 }} />
-                          <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: C.charcoal }}>{f.name}</span>
-                          <span style={{ color: C.muted, fontSize: 12, flexShrink: 0 }}>{fmtBytes(f.size)}</span>
-                          <button onClick={() => setFiles(fl => fl.filter((_, j) => j !== i))} style={{ border: 'none', background: 'none', cursor: 'pointer', padding: 0, color: C.muted, display: 'flex', alignItems: 'center' }}>
+                        <div
+                          key={i}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 8,
+                            padding: "8px 10px",
+                            background: C.creamWarm,
+                            borderRadius: 4,
+                            fontSize: 13,
+                            fontFamily: "DM Sans, sans-serif",
+                          }}
+                        >
+                          <FileText
+                            size={16}
+                            color={C.muted}
+                            style={{ flexShrink: 0 }}
+                          />
+                          <span
+                            style={{
+                              flex: 1,
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                              color: C.charcoal,
+                            }}
+                          >
+                            {f.name}
+                          </span>
+                          <span
+                            style={{
+                              color: C.muted,
+                              fontSize: 12,
+                              flexShrink: 0,
+                            }}
+                          >
+                            {fmtBytes(f.size)}
+                          </span>
+                          <button
+                            onClick={() =>
+                              setFiles((fl) => fl.filter((_, j) => j !== i))
+                            }
+                            style={{
+                              border: "none",
+                              background: "none",
+                              cursor: "pointer",
+                              padding: 0,
+                              color: C.muted,
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
                             <X size={15} />
                           </button>
                         </div>
@@ -610,13 +1047,37 @@ export default function ApplicationFormPage() {
             )}
 
             {!form.needsAid && (
-              <div style={{ background: '#eef4ff', borderRadius: 4, padding: '12px 14px', fontSize: 13, color: '#1a4bcc', lineHeight: 1.5, fontFamily: 'DM Sans, sans-serif' }}>
-                <Info size={14} style={{ display: 'inline', verticalAlign: '-2px', marginRight: 5 }} />
-                If you do not need financial aid, you will be asked to pay the ₦10,000 application fee within 10 working days of receiving your offer. Payment instructions will be included in your offer message.
+              <div
+                style={{
+                  background: "#eef4ff",
+                  borderRadius: 4,
+                  padding: "12px 14px",
+                  fontSize: 13,
+                  color: "#1a4bcc",
+                  lineHeight: 1.5,
+                  fontFamily: "DM Sans, sans-serif",
+                }}
+              >
+                <Info
+                  size={14}
+                  style={{
+                    display: "inline",
+                    verticalAlign: "-2px",
+                    marginRight: 5,
+                  }}
+                />
+                If you do not need financial aid, you will be asked to pay the
+                ₦10,000 application fee within 10 working days of receiving your
+                offer. Payment instructions will be included in your offer
+                message.
               </div>
             )}
 
-            <NavRow onBack={goBack} onNext={goNext} nextLabel="Review my application" />
+            <NavRow
+              onBack={goBack}
+              onNext={goNext}
+              nextLabel="Review my application"
+            />
           </div>
         )}
 
@@ -628,53 +1089,110 @@ export default function ApplicationFormPage() {
               sub="Please check your details below before submitting. Once submitted, you will receive a confirmation by email and WhatsApp."
             />
 
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13, marginBottom: '1.25rem' }}>
+            <table
+              style={{
+                width: "100%",
+                borderCollapse: "collapse",
+                fontSize: 13,
+                marginBottom: "1.25rem",
+              }}
+            >
               <tbody>
                 {[
                   {
-                    head: 'Personal details',
+                    head: "Personal details",
                     rows: [
-                      ['Full name', `${form.firstName} ${form.lastName}`.trim() || '—'],
-                      ['Email', form.email || '—'],
-                      ['Phone', form.phone || '—'],
-                      ['State', form.state || '—'],
+                      [
+                        "Full name",
+                        `${form.firstName} ${form.lastName}`.trim() || "—",
+                      ],
+                      ["Email", form.email || "—"],
+                      ["Phone", form.phone || "—"],
+                      ["State", form.state || "—"],
                     ],
                   },
                   {
-                    head: 'Academic details',
+                    head: "Academic details",
                     rows: [
-                      ['Institution', form.institution || '—'],
-                      ['Discipline', form.discipline || '—'],
-                      ['Year of study', form.yearOfStudy || '—'],
+                      ["Institution", form.institution || "—"],
+                      ["Discipline", form.discipline || "—"],
+                      ["Year of study", form.yearOfStudy || "—"],
                     ],
                   },
                   {
-                    head: 'Track selection',
+                    head: "Track selection",
                     rows: [
-                      ['First preference', form.trackFirst ? TRACK_LABELS[form.trackFirst] : '—'],
-                      ['Second preference', form.trackSecond ? TRACK_LABELS[form.trackSecond as TrackKey] : 'None'],
+                      [
+                        "First preference",
+                        form.trackFirst ? TRACK_LABELS[form.trackFirst] : "—",
+                      ],
+                      [
+                        "Second preference",
+                        form.trackSecond
+                          ? TRACK_LABELS[form.trackSecond as TrackKey]
+                          : "None",
+                      ],
                     ],
                   },
                   {
-                    head: 'Financial aid',
+                    head: "Financial aid",
                     rows: [
-                      ['Applying for aid', form.needsAid ? 'Yes' : 'No'],
+                      ["Applying for aid", form.needsAid ? "Yes" : "No"],
                       ...(form.needsAid
-                        ? [['Level of support', form.aidLevel === 'full' ? 'Full scholarship' : '—']]
+                        ? [
+                            [
+                              "Level of support",
+                              form.aidLevel === "full"
+                                ? "Full scholarship"
+                                : "—",
+                            ],
+                          ]
                         : []),
                     ],
                   },
-                ].map(section => (
+                ].map((section) => (
                   <React.Fragment key={section.head}>
                     <tr>
-                      <td colSpan={2} style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: C.muted, padding: '12px 10px 4px', fontFamily: 'DM Sans, sans-serif' }}>
+                      <td
+                        colSpan={2}
+                        style={{
+                          fontSize: 11,
+                          fontWeight: 500,
+                          letterSpacing: "0.12em",
+                          textTransform: "uppercase",
+                          color: C.muted,
+                          padding: "12px 10px 4px",
+                          fontFamily: "DM Sans, sans-serif",
+                        }}
+                      >
                         {section.head}
                       </td>
                     </tr>
                     {section.rows.map(([k, v]) => (
                       <tr key={k}>
-                        <td style={{ padding: '8px 10px', borderBottom: `0.5px solid ${C.border}`, color: C.muted, width: '38%', verticalAlign: 'top', fontFamily: 'DM Sans, sans-serif' }}>{k}</td>
-                        <td style={{ padding: '8px 10px', borderBottom: `0.5px solid ${C.border}`, color: C.charcoal, fontWeight: 500, fontFamily: 'DM Sans, sans-serif' }}>{v}</td>
+                        <td
+                          style={{
+                            padding: "8px 10px",
+                            borderBottom: `0.5px solid ${C.border}`,
+                            color: C.muted,
+                            width: "38%",
+                            verticalAlign: "top",
+                            fontFamily: "DM Sans, sans-serif",
+                          }}
+                        >
+                          {k}
+                        </td>
+                        <td
+                          style={{
+                            padding: "8px 10px",
+                            borderBottom: `0.5px solid ${C.border}`,
+                            color: C.charcoal,
+                            fontWeight: 500,
+                            fontFamily: "DM Sans, sans-serif",
+                          }}
+                        >
+                          {v}
+                        </td>
                       </tr>
                     ))}
                   </React.Fragment>
@@ -684,15 +1202,34 @@ export default function ApplicationFormPage() {
 
             {/* Consent checkboxes */}
             {[
-              'The information I have provided in this form is accurate and true to the best of my knowledge.',
-              'I understand that my application will be assessed by the Oakvale team, and that being offered a place is subject to the programme terms.',
-              'I agree to Oakvale Learning contacting me by email and WhatsApp with information about my application and the programme.',
+              "The information I have provided in this form is accurate and true to the best of my knowledge.",
+              "I understand that my application will be assessed by the Oakvale team, and that being offered a place is subject to the programme terms.",
+              "I agree to Oakvale Learning contacting me by email and WhatsApp with information about my application and the programme.",
             ].map((text, i) => (
-              <label key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, fontSize: 13, color: C.muted, marginBottom: 10, lineHeight: 1.5, cursor: 'pointer', fontFamily: 'DM Sans, sans-serif' }}>
+              <label
+                key={i}
+                style={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: 10,
+                  fontSize: 13,
+                  color: C.muted,
+                  marginBottom: 10,
+                  lineHeight: 1.5,
+                  cursor: "pointer",
+                  fontFamily: "DM Sans, sans-serif",
+                }}
+              >
                 <input
                   type="checkbox"
                   checked={consents[i]}
-                  onChange={e => setConsents(c => { const n = [...c]; n[i] = e.target.checked; return n; })}
+                  onChange={(e) =>
+                    setConsents((c) => {
+                      const n = [...c];
+                      n[i] = e.target.checked;
+                      return n;
+                    })
+                  }
                   style={{ marginTop: 2, flexShrink: 0, accentColor: C.forest }}
                 />
                 {text}
@@ -702,22 +1239,57 @@ export default function ApplicationFormPage() {
             <button
               onClick={handleSubmit}
               disabled={submitting}
-              style={{ width: '100%', background: submitting ? C.forestMid : C.forest, border: 'none', borderRadius: 4, padding: '13px 0', fontSize: 15, fontWeight: 500, cursor: submitting ? 'not-allowed' : 'pointer', color: '#fff', marginTop: '0.5rem', fontFamily: 'DM Sans, sans-serif', letterSpacing: '0.02em', opacity: submitting ? 0.8 : 1 }}
+              style={{
+                width: "100%",
+                background: submitting ? C.forestMid : C.forest,
+                border: "none",
+                borderRadius: 4,
+                padding: "13px 0",
+                fontSize: 15,
+                fontWeight: 500,
+                cursor: submitting ? "not-allowed" : "pointer",
+                color: "#fff",
+                marginTop: "0.5rem",
+                fontFamily: "DM Sans, sans-serif",
+                letterSpacing: "0.02em",
+                opacity: submitting ? 0.8 : 1,
+              }}
             >
-              {submitting ? 'Sending your application…' : 'Submit my application'}
+              {submitting
+                ? "Sending your application…"
+                : "Submit my application"}
             </button>
 
-            <div style={{ marginTop: '0.75rem' }}>
-              <button onClick={goBack} style={{ background: 'none', border: `0.5px solid ${C.border}`, borderRadius: 4, padding: '8px 18px', fontSize: 14, cursor: 'pointer', color: C.charcoal, fontFamily: 'DM Sans, sans-serif' }}>
+            <div style={{ marginTop: "0.75rem" }}>
+              <button
+                onClick={goBack}
+                style={{
+                  background: "none",
+                  border: `0.5px solid ${C.border}`,
+                  borderRadius: 4,
+                  padding: "8px 18px",
+                  fontSize: 14,
+                  cursor: "pointer",
+                  color: C.charcoal,
+                  fontFamily: "DM Sans, sans-serif",
+                }}
+              >
                 Back to edit
               </button>
             </div>
           </div>
         )}
-          <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.5, margin: 0, fontFamily: 'DM Sans, sans-serif' }}>
-            Applications close 14 August, 2026. 
-          </p>
-
+        <p
+          style={{
+            fontSize: 14,
+            color: C.muted,
+            lineHeight: 1.5,
+            margin: 0,
+            fontFamily: "DM Sans, sans-serif",
+          }}
+        >
+          Applications close 14 August, 2026.
+        </p>
       </div>
     </div>
   );

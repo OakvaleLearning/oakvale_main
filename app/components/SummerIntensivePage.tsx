@@ -1088,6 +1088,13 @@ export default function SummerIntensivePage() {
               Apply now
             </a>
 
+            <p style={{ fontSize: '0.92rem', color: 'rgba(247,243,236,0.7)', marginTop: '1.5rem', lineHeight: 1.7 }}>
+              Missed this cohort or want a future edition in your school or city?{' '}
+              <a href="/summer-intensive/register-interest" style={{ color: C.gold, textDecoration: 'underline', fontWeight: 600 }}>
+                Register your interest
+              </a>
+            </p>
+
             <p style={{ fontSize: '0.84rem', color: 'rgba(247,243,236,0.45)', marginTop: '1.75rem', lineHeight: 1.7 }}>
               Questions? Contact the Oakvale team:{' '}
               <a href="mailto:hello@oakvaleltd.com" style={{ color: 'rgba(247,243,236,0.65)', textDecoration: 'underline' }}>

@@ -116,6 +116,28 @@ model Admin {
 model NewInstitutionRequest {
    id          String   @id @default(cuid())
   email        String   @unique
-  institution  String 
+  institution  String
   createdAt    DateTime @default(now())
+}
+
+model InterestEnquiry {
+  id                    String   @id @default(cuid())
+  name                  String
+  email                 String
+  phone                 String?
+  state                 String
+  interest              String   // "Join as an individual" | "Bring in my school" | "Come to my area" | "Something else"
+  discipline            String?
+  individualInstitution String?
+  yearOfStudy           String?
+  institutionName       String?
+  institutionRole       String?
+  cityOrArea            String?
+  connectedSchool       String?
+  message               String?
+  heardVia              String?
+  createdAt             DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([interest])
 }

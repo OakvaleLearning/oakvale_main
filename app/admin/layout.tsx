@@ -97,6 +97,9 @@ export default async function AdminLayout({
                 <Link href="/admin/applications" style={navLink}>
                   Applications
                 </Link>
+                <Link href="/admin/enquiries" style={navLink}>
+                  Enquiries
+                </Link>
                 <Link href="/admin/reminders" style={navLink}>
                   Reminders
                 </Link>

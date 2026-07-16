@@ -132,7 +132,7 @@ function paymentPaid({ firstName, lastName, trackFirst }: ApplicantContext): Bui
         <strong>Showcase and Health Innovation Challenge.</strong> 5 September 2026.`,
     }) +
     // paragraph(`Your first step is to join the online learning space. Tap the button below and sign in with the same email address you used to apply.`) +
-    paragraph(`LMS access will be given once apploication closes. Keep an eye on your email inbox for further updates.`) +
+    paragraph(`LMS access will be granted once application closes. Keep an eye on your email inbox for further updates.`) +
     // button +
     // paragraph(`Once you are in, set up your profile and have a look around — your course materials, schedule, and group spaces all live there, ready for you.`) +
     paragraph(`If you have any questions, simply reply to this email or write to us at <a href="mailto:hello@oakvaleltd.com" style="color:${C.forest};">hello@oakvaleltd.com</a>. We are happy to help.`) +

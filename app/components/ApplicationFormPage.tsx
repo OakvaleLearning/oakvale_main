@@ -19,16 +19,17 @@ const C = {
   border: 'rgba(10,61,43,0.12)',
 };
 
-type TrackKey = 'A' | 'B' | 'C'; 
+type TrackKey = 'A' | 'B' | 'C';
+type AidKey = 'full';
 
 interface FormData {
   firstName: string; lastName: string; email: string; phone: string; state: string;
   institution: string; discipline: string; yearOfStudy: string; studentId: string;
   trackFirst: TrackKey | ''; trackSecond: string;
   mot1: string; mot2: string;
-  needsAid: boolean; aidLevel: ''; aidStatement: string;
+  needsAid: boolean; aidLevel: AidKey | ''; aidStatement: string;
 }
- 
+
 const BLANK: FormData = {
   firstName: '', lastName: '', email: '', phone: '', state: '',
   institution: '', discipline: '', yearOfStudy: '', studentId: '',
@@ -69,7 +70,10 @@ const TRACK_LABELS: Record<TrackKey, string> = {
   C: 'Track C: Digital Health Innovation',
 };
 
- 
+const AID_LEVELS: { key: AidKey; name: string; desc: string }[] = [
+  { key: 'full',     name: 'Full scholarship',  desc: '₦10,000 fee fully waived' },
+];
+
 function wordCount(t: string) {
   return t.trim() === '' ? 0 : t.trim().split(/\s+/).length;
 }
@@ -175,7 +179,10 @@ export default function ApplicationFormPage() {
       if (!form.mot1.trim()) return 'Please answer the first motivation question.';
       if (!form.mot2.trim()) return 'Please answer the second motivation question.';
     }
-    
+    if (s === 4) {
+      if (form.needsAid && !form.aidLevel) return 'Please select a level of support needed.';
+      if (form.needsAid && !form.aidStatement.trim()) return 'Please explain why you are applying for financial aid.';
+    }
     return '';
   }
 
@@ -217,7 +224,8 @@ export default function ApplicationFormPage() {
       }
       fd.append('consentTruth', String(consents[0]));
       fd.append('consentContact', String(consents[1]));
-      fd.append('consentTerms', String(consents[2])); 
+      fd.append('consentTerms', String(consents[2]));
+      for (const file of files) fd.append('aidFiles', file);
       const res = await fetch('/api/apply', { method: 'POST', body: fd });
       const json = await res.json();
       if (!res.ok || !json.success) {
@@ -755,7 +763,24 @@ export default function ApplicationFormPage() {
             />
           </div>
         )}
-   
+
+        {/* ── STEP 4: Financial Aid ────────────────────────────────────────── */}
+        {step === 4 && (
+          <div>
+            {/* <SectionHead
+              title="Financial aid"
+              sub="The application fee is ₦10,000. Fifteen scholarship places are available across all three institutions. If the fee presents a genuine difficulty, we encourage you to apply for support."
+            /> */}
+
+          <p>Financial Aid is now closed. </p>
+
+            <NavRow
+              onBack={goBack}
+              onNext={goNext}
+              nextLabel="Review my application"
+            />
+          </div>
+        )}
 
         {/* ── STEP 5: Review & Submit ──────────────────────────────────────── */}
         {step === 5 && (
@@ -809,8 +834,23 @@ export default function ApplicationFormPage() {
                           : "None",
                       ],
                     ],
-                  }
-                  
+                  },
+                  {
+                    head: "Financial aid",
+                    rows: [
+                      ["Applying for aid", form.needsAid ? "Yes" : "No"],
+                      ...(form.needsAid
+                        ? [
+                            [
+                              "Level of support",
+                              form.aidLevel === "full"
+                                ? "Full scholarship"
+                                : "—",
+                            ],
+                          ]
+                        : []),
+                    ],
+                  },
                 ].map((section) => (
                   <React.Fragment key={section.head}>
                     <tr>
@@ -1016,7 +1056,7 @@ function SuccessScreen({ paymentUrl, requiresPayment }: { paymentUrl: string | n
           <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.7, fontFamily: 'DM Sans, sans-serif' }}>
             {requiresPayment
               ? 'We could not start a payment session right now. Our team will contact you with payment instructions shortly.'
-              : 'We could not start a payment session right now. Our team will contact you with payment instructions shortly.'}
+              : 'You have requested a full scholarship. Our team will review your supporting documents and contact you about the scholarship decision separately — no payment is required at this stage.'}
           </p>
         )}
 

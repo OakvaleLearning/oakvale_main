@@ -206,7 +206,7 @@ Additionally, include:
 | Opening Ceremony | Saturday 8 August 2026. Julius Berger Hall, UNILAG Yaba. Hybrid. |
 | Online modules | 10 August to 4 September 2026 |
 | Innovata-thon Showcase | Saturday 5 September 2026. Online via Zoom. |
-| Application fee | ₦10,000. Fifteen scholarship places available: five per institution. |
+| Application fee | ₦10,000. |
 | Certificate | UK CPD-accredited certificate, formally recognised. |
 
 ---
@@ -224,14 +224,11 @@ Additionally, include:
 **Q2:** I study Pharmacy, not Medicine. Can I apply?
 **A2:** Yes. The programme is open to all health sciences disciplines: Medicine, Pharmacy, Dentistry, Nursing, Laboratory Sciences, and Physiotherapy.
 
-**Q3:** What if I cannot pay the application fee?
-**A3:** Fifteen scholarship places are available — five per track. Mention in your motivation statement that you are applying for a scholarship and why. Scholarships are awarded on merit and financial need.
+**Q3:** How much time does it take each week?
+**A3:** Plan for around five to seven hours per week, i.e. one hour daily. This includes the self-study module, the live session, and the weekly reflection activity.
 
-**Q4:** How much time does it take each week?
-**A4:** Plan for around five to seven hours per week, i.e. one hour daily. This includes the self-study module, the live session, and the weekly reflection activity.
-
-**Q5:** What is the Innovata-thon?
-**A5:** It is a team competition built into the programme. In Week 3, your team receives a real healthcare challenge. You develop a solution and pitch it live to judges on 5 September. There is a total prize pool of ₦4,000,000.
+**Q4:** What is the Innovata-thon?
+**A4:** It is a team competition built into the programme. In Week 3, your team receives a real healthcare challenge. You develop a solution and pitch it live to judges on 5 September. There is a total prize pool of ₦4,000,000.
 
 ---
 

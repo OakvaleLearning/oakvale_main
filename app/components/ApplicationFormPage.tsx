@@ -19,17 +19,16 @@ const C = {
   border: 'rgba(10,61,43,0.12)',
 };
 
-type TrackKey = 'A' | 'B' | 'C';
-type AidKey = 'full';
+type TrackKey = 'A' | 'B' | 'C'; 
 
 interface FormData {
   firstName: string; lastName: string; email: string; phone: string; state: string;
   institution: string; discipline: string; yearOfStudy: string; studentId: string;
   trackFirst: TrackKey | ''; trackSecond: string;
   mot1: string; mot2: string;
-  needsAid: boolean; aidLevel: AidKey | ''; aidStatement: string;
+  needsAid: boolean; aidLevel: ''; aidStatement: string;
 }
-
+ 
 const BLANK: FormData = {
   firstName: '', lastName: '', email: '', phone: '', state: '',
   institution: '', discipline: '', yearOfStudy: '', studentId: '',
@@ -70,10 +69,7 @@ const TRACK_LABELS: Record<TrackKey, string> = {
   C: 'Track C: Digital Health Innovation',
 };
 
-const AID_LEVELS: { key: AidKey; name: string; desc: string }[] = [
-  { key: 'full',     name: 'Full scholarship',  desc: '₦10,000 fee fully waived' },
-];
-
+ 
 function wordCount(t: string) {
   return t.trim() === '' ? 0 : t.trim().split(/\s+/).length;
 }
@@ -179,10 +175,7 @@ export default function ApplicationFormPage() {
       if (!form.mot1.trim()) return 'Please answer the first motivation question.';
       if (!form.mot2.trim()) return 'Please answer the second motivation question.';
     }
-    if (s === 4) {
-      if (form.needsAid && !form.aidLevel) return 'Please select a level of support needed.';
-      if (form.needsAid && !form.aidStatement.trim()) return 'Please explain why you are applying for financial aid.';
-    }
+    
     return '';
   }
 
@@ -224,8 +217,7 @@ export default function ApplicationFormPage() {
       }
       fd.append('consentTruth', String(consents[0]));
       fd.append('consentContact', String(consents[1]));
-      fd.append('consentTerms', String(consents[2]));
-      for (const file of files) fd.append('aidFiles', file);
+      fd.append('consentTerms', String(consents[2])); 
       const res = await fetch('/api/apply', { method: 'POST', body: fd });
       const json = await res.json();
       if (!res.ok || !json.success) {
@@ -763,323 +755,7 @@ export default function ApplicationFormPage() {
             />
           </div>
         )}
-
-        {/* ── STEP 4: Financial Aid ────────────────────────────────────────── */}
-        {step === 4 && (
-          <div>
-            <SectionHead
-              title="Financial aid"
-              sub="The application fee is ₦10,000. Fifteen scholarship places are available across all three institutions. If the fee presents a genuine difficulty, we encourage you to apply for support."
-            />
-
-            <label
-              style={{
-                display: "flex",
-                alignItems: "flex-start",
-                gap: 12,
-                padding: "14px 16px",
-                border: `0.5px solid ${C.border}`,
-                borderRadius: 6,
-                cursor: "pointer",
-                marginBottom: "1rem",
-                background: "#fff",
-              }}
-            >
-              <input
-                type="checkbox"
-                checked={form.needsAid}
-                onChange={(e) => set("needsAid", e.target.checked)}
-                style={{ marginTop: 2, flexShrink: 0, accentColor: C.forest }}
-              />
-              <div>
-                <div
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 500,
-                    color: C.charcoal,
-                    marginBottom: 3,
-                    fontFamily: "DM Sans, sans-serif",
-                  }}
-                >
-                  I would like to apply for financial aid
-                </div>
-                <div
-                  style={{
-                    fontSize: 13,
-                    color: C.muted,
-                    lineHeight: 1.45,
-                    fontFamily: "DM Sans, sans-serif",
-                  }}
-                >
-                  Scholarship places are awarded based on the strength of your
-                  statement and level of financial need. Applying for aid does
-                  not affect how your application is assessed.
-                </div>
-              </div>
-            </label>
-
-            {form.needsAid && (
-              <div
-                style={{
-                  border: `0.5px solid ${C.border}`,
-                  borderRadius: 6,
-                  padding: 16,
-                  marginBottom: "1rem",
-                  background: "#fff",
-                }}
-              >
-                {/* Aid level selector */}
-                <div style={{ marginBottom: 14 }}>
-                  <label style={lbl}>Level of support needed{req}</label>
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "1fr 1fr 1fr",
-                      gap: 8,
-                    }}
-                  >
-                    {AID_LEVELS.map((a) => (
-                      <div
-                        key={a.key}
-                        onClick={() => set("aidLevel", a.key)}
-                        style={{
-                          border:
-                            form.aidLevel === a.key
-                              ? `1.5px solid ${C.gold}`
-                              : `0.5px solid ${C.border}`,
-                          borderRadius: 6,
-                          padding: "10px 12px",
-                          cursor: "pointer",
-                          textAlign: "center",
-                          background:
-                            form.aidLevel === a.key ? "#fffbf4" : "#fafaf9",
-                          transition: "border-color 0.15s, background 0.15s",
-                        }}
-                      >
-                        <div
-                          style={{
-                            fontSize: 13,
-                            fontWeight: 500,
-                            color: C.charcoal,
-                            marginBottom: 2,
-                            fontFamily: "DM Sans, sans-serif",
-                          }}
-                        >
-                          {a.name}
-                        </div>
-                        <div
-                          style={{
-                            fontSize: 11,
-                            color: C.muted,
-                            fontFamily: "DM Sans, sans-serif",
-                          }}
-                        >
-                          {a.desc}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Aid statement */}
-                <div style={{ marginBottom: 14 }}>
-                  <label style={lbl}>
-                    Why are you applying for financial aid?{req}
-                  </label>
-                  <textarea
-                    value={form.aidStatement}
-                    onChange={(e) => set("aidStatement", e.target.value)}
-                    rows={4}
-                    placeholder="Tell us honestly about your situation. You do not need to share anything you are not comfortable with. We are looking for genuine need, not a perfect explanation."
-                    style={{ ...input, resize: "vertical", lineHeight: 1.6 }}
-                  />
-                  <div
-                    style={{
-                      fontSize: 12,
-                      color: C.muted,
-                      textAlign: "right",
-                      marginTop: 4,
-                      fontFamily: "DM Sans, sans-serif",
-                    }}
-                  >
-                    {wordCount(form.aidStatement)}{" "}
-                    {wordCount(form.aidStatement) === 1 ? "word" : "words"}
-                  </div>
-                </div>
-
-                {/* File upload */}
-                <div>
-                  <label style={lbl}>Supporting documents</label>
-                  <p style={{ ...hint, marginBottom: 8 }}>
-                    Optional but helpful. Acceptable documents include a letter
-                    from your institution, a letter from a parent or guardian,
-                    or any other document that helps us understand your
-                    circumstances. All documents are treated with strict
-                    confidentiality.
-                  </p>
-                  <div
-                    onClick={() => fileRef.current?.click()}
-                    onDragOver={(e) => {
-                      e.preventDefault();
-                      setDragOver(true);
-                    }}
-                    onDragLeave={() => setDragOver(false)}
-                    onDrop={(e) => {
-                      e.preventDefault();
-                      setDragOver(false);
-                      addFiles(e.dataTransfer.files);
-                    }}
-                    style={{
-                      border: `1.5px dashed ${dragOver ? C.gold : C.border}`,
-                      borderRadius: 6,
-                      padding: 20,
-                      textAlign: "center",
-                      cursor: "pointer",
-                      background: dragOver ? "#fffbf4" : "#fafaf9",
-                      transition: "border-color 0.15s, background 0.15s",
-                      marginBottom: 8,
-                    }}
-                  >
-                    <Upload
-                      size={24}
-                      color={C.muted}
-                      style={{ display: "block", margin: "0 auto 8px" }}
-                    />
-                    <div
-                      style={{
-                        fontSize: 14,
-                        fontWeight: 500,
-                        color: C.charcoal,
-                        marginBottom: 3,
-                        fontFamily: "DM Sans, sans-serif",
-                      }}
-                    >
-                      Click to upload or drag and drop
-                    </div>
-                    <div
-                      style={{
-                        fontSize: 12,
-                        color: C.muted,
-                        fontFamily: "DM Sans, sans-serif",
-                      }}
-                    >
-                      PDF, JPG, or PNG · Maximum 5 MB per file · Up to 3 files
-                    </div>
-                    <input
-                      ref={fileRef}
-                      type="file"
-                      accept=".pdf,.jpg,.jpeg,.png"
-                      multiple
-                      onChange={(e) => addFiles(e.target.files)}
-                      style={{ display: "none" }}
-                    />
-                  </div>
-
-                  {files.length > 0 && (
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 6,
-                      }}
-                    >
-                      {files.map((f, i) => (
-                        <div
-                          key={i}
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 8,
-                            padding: "8px 10px",
-                            background: C.creamWarm,
-                            borderRadius: 4,
-                            fontSize: 13,
-                            fontFamily: "DM Sans, sans-serif",
-                          }}
-                        >
-                          <FileText
-                            size={16}
-                            color={C.muted}
-                            style={{ flexShrink: 0 }}
-                          />
-                          <span
-                            style={{
-                              flex: 1,
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                              color: C.charcoal,
-                            }}
-                          >
-                            {f.name}
-                          </span>
-                          <span
-                            style={{
-                              color: C.muted,
-                              fontSize: 12,
-                              flexShrink: 0,
-                            }}
-                          >
-                            {fmtBytes(f.size)}
-                          </span>
-                          <button
-                            onClick={() =>
-                              setFiles((fl) => fl.filter((_, j) => j !== i))
-                            }
-                            style={{
-                              border: "none",
-                              background: "none",
-                              cursor: "pointer",
-                              padding: 0,
-                              color: C.muted,
-                              display: "flex",
-                              alignItems: "center",
-                            }}
-                          >
-                            <X size={15} />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {!form.needsAid && (
-              <div
-                style={{
-                  background: "#eef4ff",
-                  borderRadius: 4,
-                  padding: "12px 14px",
-                  fontSize: 13,
-                  color: "#1a4bcc",
-                  lineHeight: 1.5,
-                  fontFamily: "DM Sans, sans-serif",
-                }}
-              >
-                <Info
-                  size={14}
-                  style={{
-                    display: "inline",
-                    verticalAlign: "-2px",
-                    marginRight: 5,
-                  }}
-                />
-                If you do not need financial aid, you will be asked to pay the
-                ₦10,000 application fee within 10 working days of receiving your
-                offer. Payment instructions will be included in your offer
-                message.
-              </div>
-            )}
-
-            <NavRow
-              onBack={goBack}
-              onNext={goNext}
-              nextLabel="Review my application"
-            />
-          </div>
-        )}
+   
 
         {/* ── STEP 5: Review & Submit ──────────────────────────────────────── */}
         {step === 5 && (
@@ -1133,23 +809,8 @@ export default function ApplicationFormPage() {
                           : "None",
                       ],
                     ],
-                  },
-                  {
-                    head: "Financial aid",
-                    rows: [
-                      ["Applying for aid", form.needsAid ? "Yes" : "No"],
-                      ...(form.needsAid
-                        ? [
-                            [
-                              "Level of support",
-                              form.aidLevel === "full"
-                                ? "Full scholarship"
-                                : "—",
-                            ],
-                          ]
-                        : []),
-                    ],
-                  },
+                  }
+                  
                 ].map((section) => (
                   <React.Fragment key={section.head}>
                     <tr>
@@ -1355,7 +1016,7 @@ function SuccessScreen({ paymentUrl, requiresPayment }: { paymentUrl: string | n
           <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.7, fontFamily: 'DM Sans, sans-serif' }}>
             {requiresPayment
               ? 'We could not start a payment session right now. Our team will contact you with payment instructions shortly.'
-              : 'You have requested a full scholarship. Our team will review your supporting documents and contact you about the scholarship decision separately — no payment is required at this stage.'}
+              : 'We could not start a payment session right now. Our team will contact you with payment instructions shortly.'}
           </p>
         )}
 

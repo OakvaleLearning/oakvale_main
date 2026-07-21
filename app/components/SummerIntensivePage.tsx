@@ -39,7 +39,7 @@ const TRACKS = [
       {
         n: 4,
         title: 'Applied Scenario and Health Innovation Challenge',
-        body: 'Apply everything from the previous three weeks to a structured real-world scenario: running a fertility clinic in Lagos. You will diagnose operational and financial challenges, propose practical solutions, and complete your Health Innovation Challenge capstone project for the live pitch on 5 September.',
+        body: 'Apply everything from the previous three weeks to a structured real-world scenario: running a fertility clinic in Lagos. You will diagnose operational and financial challenges, propose practical solutions, and complete your Health Innovation Challenge capstone project for the live pitch on 5 October.',
         outcome: 'You have applied all four weeks of learning to a real-world scenario and completed a Service Design Roadmap ready for the Health Innovation Challenge Showcase.',
       },
     ],
@@ -70,7 +70,7 @@ const TRACKS = [
       {
         n: 4,
         title: 'Applied Scenario and Health Innovation Challenge',
-        body: 'Apply everything from the previous three weeks to a real-world systems challenge: strengthening maternal health services in a Nigerian state. You will design a multi-component intervention, develop a stakeholder engagement strategy, and complete your Health Innovation Challenge capstone for the live pitch on 5 September.',
+        body: 'Apply everything from the previous three weeks to a real-world systems challenge: strengthening maternal health services in a Nigerian state. You will design a multi-component intervention, develop a stakeholder engagement strategy, and complete your Health Innovation Challenge capstone for the live pitch on 5 October.',
         outcome: 'You have completed a structured Systems Change Proposal demonstrating competence across all four weeks and delivered a live pitch at the Health Innovation Challenge Showcase.',
       },
     ],
@@ -101,7 +101,7 @@ const TRACKS = [
       {
         n: 4,
         title: 'Applied Scenario and Health Innovation Challenge',
-        body: 'Apply everything from the previous three weeks to a structured real-world scenario: building a telemedicine service in Nigeria. You will diagnose clinical, technical, and adoption failures in an existing digital health service, redesign it using the frameworks from earlier weeks, and complete your Health Innovation Challenge capstone for the live pitch on 5 September.',
+        body: 'Apply everything from the previous three weeks to a structured real-world scenario: building a telemedicine service in Nigeria. You will diagnose clinical, technical, and adoption failures in an existing digital health service, redesign it using the frameworks from earlier weeks, and complete your Health Innovation Challenge capstone for the live pitch on 5 October.',
         outcome: 'You have completed a structured Digital Health Solution Concept demonstrating competence across all four weeks and delivered a live pitch at the Health Innovation Challenge Showcase.',
       },
     ],
@@ -753,7 +753,7 @@ export default function SummerIntensivePage() {
               As a group, you will work on this challenge and shape a real-world solution. You have one week to develop your solution.
             </p>
             <p style={{ fontSize: '1.05rem', color: 'rgba(247,243,236,0.88)', lineHeight: 1.82, marginBottom: '1.25rem' }}>
-              On Saturday 5 September 2026, every team will pitch their solution to an independent panel of industry judges.
+              On Saturday 5 October 2026, every team will pitch their solution to an independent panel of industry judges.
             </p>
             <p style={{ fontSize: '1.05rem', color: 'rgba(247,243,236,0.88)', lineHeight: 1.82, marginBottom: '2.5rem' }}>
               Winners are announced the same day. The prize pool is{' '}

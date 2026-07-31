@@ -151,6 +151,23 @@ export function buildApplicantHtml(data: {
   const trackLabel = trackFirst ? TRACK_NAMES[trackFirst] || `Track ${trackFirst}` : '';
   const feeFormatted = `₦${feeNaira.toLocaleString('en-NG')}`;
 
+  const whatsappBlock = `
+        <tr>
+          <td style="padding:20px 32px 0;">
+            <div style="background:#F7F3EC;border:1px solid #e8e2da;border-left:4px solid #25D366;border-radius:6px;padding:18px 22px;text-align:center;">
+              <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#0A3D2B;margin-bottom:8px;font-family:Arial,sans-serif;">
+                Join the cohort on WhatsApp
+              </div>
+              <div style="font-size:13px;color:#5A5A5A;line-height:1.6;font-family:Arial,sans-serif;margin-bottom:16px;">
+                Connect with fellow applicants and receive programme updates directly.
+              </div>
+              <a href="https://chat.whatsapp.com/EcLWOM9zaZzJBNgLOUquaa" style="display:inline-block;background:#25D366;color:#ffffff;text-decoration:none;font-weight:600;font-size:14px;font-family:Arial,sans-serif;padding:12px 28px;border-radius:4px;">
+                Join our WhatsApp community
+              </a>
+            </div>
+          </td>
+        </tr>`;
+
   // ─── Scholarship applicants get a dedicated email (no payment, review pool) ──
   if (fullScholarship) {
     return `<!DOCTYPE html>
@@ -182,6 +199,7 @@ export function buildApplicantHtml(data: {
             </div>
           </td>
         </tr>
+        ${whatsappBlock}
         <tr>
           <td style="padding:20px 32px 0;font-size:14px;color:#1C1C1C;line-height:1.7;">
             We know waiting is not easy, so we will keep this simple: watch your inbox in early July. Please check your spam or junk folder too, just in case our message lands there.
@@ -266,6 +284,7 @@ export function buildApplicantHtml(data: {
         </tr>
         ${payBlock}
         ${scholarshipBlock}
+        ${whatsappBlock}
         <tr>
           <td style="padding:20px 32px 0;font-size:13px;color:#5A5A5A;line-height:1.7;">
             Applications are reviewed on a rolling basis. If you are selected, you will hear from us within five working days of completing your application. If you have any questions, simply reply to this email.

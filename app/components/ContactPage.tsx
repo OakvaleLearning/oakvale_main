@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Mail, MapPin, Globe } from 'lucide-react';
+import { InstagramIcon, FacebookIcon } from './SocialIcons';
+import { SOCIAL_LINKS } from '@/lib/constants';
   
 type Page = 'home' | 'about' | 'services' | 'corporates' | 'academic' | 'donors' | 'government' | 'contact';
  
@@ -88,7 +90,16 @@ export default function ContactPage() {
             <div className="contact-detail-icon"><Globe size={20} /></div>
             <div className="contact-detail-text"><small>Programme Delivery</small>Africa and the Global South</div>
           </div>
-          
+          <div className="contact-detail">
+            <div className="contact-detail-icon"><InstagramIcon size={20} /></div>
+            <div className="contact-detail-text"><small>Follow us</small>
+              <div className="footer-social">
+                <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" aria-label="Oakvale Learning on Instagram"><InstagramIcon size={20} /></a>
+                <a href={SOCIAL_LINKS.facebook} target="_blank" rel="noopener noreferrer" aria-label="Oakvale Learning on Facebook"><FacebookIcon size={20} /></a>
+              </div>
+            </div>
+          </div>
+
         </div>
 
         <div className="contact-form">

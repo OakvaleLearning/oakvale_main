@@ -3,6 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { InstagramIcon, FacebookIcon } from "./SocialIcons";
+import { SOCIAL_LINKS } from "@/lib/constants";
 
 export default function Footer() {
   const router = useRouter();
@@ -26,6 +28,24 @@ export default function Footer() {
             Changing lives through learning and self-discovery. Evidence-based
             workforce, leadership and organisational development for Africa.
           </p>
+          <div className="footer-social">
+            <a
+              href={SOCIAL_LINKS.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Oakvale Learning on Instagram"
+            >
+              <InstagramIcon size={20} />
+            </a>
+            <a
+              href={SOCIAL_LINKS.facebook}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Oakvale Learning on Facebook"
+            >
+              <FacebookIcon size={20} />
+            </a>
+          </div>
         </div>
         <div className="footer-col">
           <h4>Services</h4>

@@ -119,7 +119,7 @@ const STEPS = [
   },
   {
     label: 'Attend the Opening Ceremony',
-    body: 'On Saturday 8 August 2026, all students gather at Julius Berger Hall, UNILAG Yaba Campus. You will hear from senior health system leaders, meet your cohort in person, and attend a practitioner session for your track. You also have the chance to hear from industry experts on possible career pathways.',
+    body: 'On Saturday 8 August 2026, all students gather at Rahman Bello Hall, UNILAG Yaba Campus. You will hear from senior health system leaders, meet your cohort in person, and attend a practitioner session for your track. You also have the chance to hear from industry experts on possible career pathways.',
   },
   {
     label: 'Complete the four weeks online',
@@ -141,7 +141,7 @@ const DETAILS: [string, string][] = [
   ["Scholarship Applications close", "Wednesday 15 July, 2026"],
   [
     "Opening Ceremony",
-    "Saturday 8 August 2026. Julius Berger Hall, UNILAG Yaba. Hybrid.",
+    "Saturday 8 August 2026. Rahman Bello Hall, UNILAG Yaba. Hybrid.",
   ],
   ["Online programme begins", "Monday 7 September, 2026"],
   [

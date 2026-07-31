@@ -127,9 +127,9 @@ function paymentPaid({ firstName, lastName, trackFirst }: ApplicantContext): Bui
     callout({
       accent: 'gold',
       html: `<div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${C.gold};margin-bottom:10px;">Your Joining Instructions</div>
-        <strong>Opening Ceremony.</strong> 8 August 2026, Julius Berger Hall, University of Lagos, Yaba.<br><br>
-        <strong>Online learning.</strong> 10 August to 4 September 2026, delivered on our online learning platform.<br><br>
-        <strong>Showcase and Health Innovation Challenge.</strong> 5 September 2026.`,
+        <strong>Opening Ceremony.</strong> 8 August 2026, Rahman Bello Hall, University of Lagos, Yaba.<br><br>
+        <strong>Online learning.</strong> Starts 7 September 2026, delivered on our online learning platform.<br><br>
+        <strong>Showcase and Health Innovation Challenge.</strong> 5 October 2026.`,
     }) +
     // paragraph(`Your first step is to join the online learning space. Tap the button below and sign in with the same email address you used to apply.`) +
     paragraph(`LMS access will be granted once application closes. Keep an eye on your email inbox for further updates.`) +
@@ -332,8 +332,8 @@ function statusAccepted({ firstName, trackFirst, applicationId }: ApplicantConte
       accent: 'gold',
       html: `<div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${C.gold};margin-bottom:10px;">What happens next</div>
         <strong>1. Onboarding.</strong> You'll receive an invitation to join the online programme platform, where you'll complete a short onboarding module and meet your track community.<br><br>
-        <strong>2. Opening Ceremony.</strong> Saturday 8 August 2026, Julius Berger Hall, UNILAG Yaba Campus. Meet your cohort in person and hear from senior health system leaders.<br><br>
-        <strong>3. Four weeks online.</strong> Interactive modules run from 10 August to 4 September 2026, culminating in the Oakvale Health Innovation Challenge.`,
+        <strong>2. Opening Ceremony.</strong> Saturday 8 August 2026, Rahman Bello Hall, UNILAG Yaba Campus. Meet your cohort in person and hear from senior health system leaders.<br><br>
+        <strong>3. Four weeks online.</strong> Interactive modules run from 7 September 2026, culminating in the Oakvale Health Innovation Challenge.`,
     }) +
     reference(applicationId) +
     paragraph(`We can't wait to welcome you. If you have any questions, just reply to this email.`) +

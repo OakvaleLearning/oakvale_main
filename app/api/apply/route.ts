@@ -4,6 +4,7 @@ import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import { logEmail } from '@/lib/emailLog';
 import { buildHtml, buildApplicantHtml } from '@/lib/applyEmails';
+import { getApplicationsOpen } from '@/lib/settings';
 import {
   APPLICATION_FEE_KOBO,
   APPLICATION_FEE_NAIRA,
@@ -211,6 +212,18 @@ export async function POST(request: Request) {
           reused: true,
         },
         { status: 200 }
+      );
+    }
+
+    // ─── New application — reject if applications are closed.
+    // (Existing "Pending" applicants are handled above and can still pay.)
+    if (!(await getApplicationsOpen())) {
+      return Response.json(
+        {
+          success: false,
+          error: 'Applications for the Summer Intensive 2026 are now closed. If you have already applied and need to complete payment, please use the link in your email or contact hello@oakvaleltd.com.',
+        },
+        { status: 403 }
       );
     }
 

@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import { auth, signIn, signOut } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { sendStatusEmail } from '@/lib/statusEmails';
+import { setApplicationsOpen } from '@/lib/settings';
 import {
   APPLICATION_FEE_KOBO,
   buildReference,
@@ -149,6 +150,13 @@ export async function updateApplicationStatus(id: string, value: string) {
   revalidatePath(`/admin/applications/${id}`);
   revalidatePath('/admin/applications');
   revalidatePath('/admin');
+}
+
+export async function toggleApplicationsOpen(open: boolean) {
+  await requireAdmin();
+  await setApplicationsOpen(open);
+  revalidatePath('/admin');
+  revalidatePath('/apply');
 }
 
 export async function updateNotes(id: string, notes: string) {

@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { getApplicationsOpen } from '@/lib/settings';
+import ApplicationsToggle from './ApplicationsToggle';
 
 const C = {
   forest: '#0A3D2B',
@@ -27,6 +29,8 @@ export default async function AdminOverview() {
   const session = await auth();
   if (!session?.user) redirect('/admin/login');
 
+  const applicationsOpen = await getApplicationsOpen();
+
   const [total, pending, paid, waived, rejected, accepted, submitted, recent] = await Promise.all([
     prisma.application.count(),
     prisma.application.count({ where: { paymentStatus: 'Pending' } }),
@@ -46,6 +50,8 @@ export default async function AdminOverview() {
     <div style={{ maxWidth: 1100, margin: '0 auto', padding: '32px 24px' }}>
       <h1 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 30, fontWeight: 500, color: C.forest, margin: '0 0 4px' }}>Overview</h1>
       <p style={{ fontSize: 13, color: C.muted, margin: '0 0 24px' }}>Summer Intensive 2026 — applications snapshot.</p>
+
+      <ApplicationsToggle initialOpen={applicationsOpen} />
 
       <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', marginBottom: 32 }}>
         <Stat label="Total" value={total} />

@@ -142,7 +142,7 @@ function SectionHead({ title, sub }: { title: React.ReactNode; sub: string }) {
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-export default function ApplicationFormPage() {
+export default function ApplicationFormPage({ closed = false }: { closed?: boolean }) {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<FormData>(BLANK);
   const [files, setFiles] = useState<File[]>([]);
@@ -240,6 +240,39 @@ export default function ApplicationFormPage() {
       toast.error('Could not reach the server. Please check your connection and try again.');
       setSubmitting(false);
     }
+  }
+
+  // ─── Applications closed ─────────────────────────────────────────────────────
+
+  if (closed) {
+    return (
+      <div style={{ minHeight: '100vh', background: C.cream, paddingTop: 80, display: 'flex', alignItems: 'flex-start', justifyContent: 'center' }}>
+        <div style={{ maxWidth: 560, margin: '0 auto', padding: '4rem 1.5rem 5rem', textAlign: 'center' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 56, height: 56, borderRadius: '50%', background: C.creamWarm, marginBottom: '1.5rem' }}>
+            <Info size={26} color={C.forest} />
+          </div>
+          <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.16em', textTransform: 'uppercase', color: C.gold, marginBottom: 10 }}>
+            Summer Intensive 2026
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-cormorant), Georgia, serif', fontSize: 30, fontWeight: 500, color: C.forest, margin: '0 0 14px' }}>
+            Applications are now closed
+          </h1>
+          <p style={{ fontSize: 15, color: C.muted, lineHeight: 1.65, margin: '0 0 8px' }}>
+            Thank you for your interest in the Oakvale Summer Intensive 2026. We are no longer accepting new applications.
+          </p>
+          <p style={{ fontSize: 15, color: C.muted, lineHeight: 1.65, margin: '0 0 28px' }}>
+            If you have already applied and still need to complete your payment, please use the link in your confirmation email or contact{' '}
+            <a href="mailto:hello@oakvaleltd.com" style={{ color: C.forest, fontWeight: 500 }}>hello@oakvaleltd.com</a>.
+          </p>
+          <Link
+            href="/summer-intensive"
+            style={{ display: 'inline-block', padding: '12px 24px', borderRadius: 6, background: C.forest, color: '#fff', textDecoration: 'none', fontSize: 14, fontWeight: 500 }}
+          >
+            Back to programme overview
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   // ─── Success ───────────────────────────────────────────────────────────────

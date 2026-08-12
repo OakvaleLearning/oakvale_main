@@ -113,6 +113,12 @@ model Admin {
   createdAt    DateTime @default(now())
 }
 
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt @default(now())
+}
+
 model NewInstitutionRequest {
    id          String   @id @default(cuid())
   email        String   @unique

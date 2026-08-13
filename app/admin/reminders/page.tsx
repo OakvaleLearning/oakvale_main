@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import type { ReminderKind } from '@/lib/statusEmails';
 import { reminderWhere } from './audience';
 import ReminderButtons from './ReminderButtons';
 
@@ -17,25 +18,34 @@ export default async function RemindersPage() {
   const session = await auth();
   if (!session?.user) redirect('/admin/login');
 
-  const lastSentOf = (kind: 'not_paid' | 'part_payment') =>
+  const lastSentOf = (kind: ReminderKind) =>
     prisma.emailLog.findFirst({
       where: { type: `reminder_${kind}`, status: 'sent' },
       orderBy: { createdAt: 'desc' },
       select: { createdAt: true },
     });
 
-  const recipientsOf = (kind: 'not_paid' | 'part_payment') =>
+  const recipientsOf = (kind: ReminderKind) =>
     prisma.application.findMany({
       where: reminderWhere(kind),
       orderBy: { createdAt: 'desc' },
       select: { id: true, firstName: true, lastName: true, email: true, institution: true, trackFirst: true },
     });
 
-  const [notPaidRecipients, partPaymentRecipients, notPaidLast, partPaymentLast] = await Promise.all([
+  const [
+    notPaidRecipients,
+    partPaymentRecipients,
+    closingNoticeRecipients,
+    notPaidLast,
+    partPaymentLast,
+    closingNoticeLast,
+  ] = await Promise.all([
     recipientsOf('not_paid'),
     recipientsOf('part_payment'),
+    recipientsOf('closing_notice'),
     lastSentOf('not_paid'),
     lastSentOf('part_payment'),
+    lastSentOf('closing_notice'),
   ]);
 
   return (
@@ -45,14 +55,16 @@ export default async function RemindersPage() {
       </h1>
       <p style={{ fontSize: 13, color: C.muted, margin: '0 0 24px', maxWidth: 640, lineHeight: 1.6 }}>
         Send a one-off reminder email to applicants with an outstanding fee. Each email includes a fresh
-        Paystack payment button. Registration closes 15 July 2026.
+        Paystack payment button. Registration closes 14 August 2026.
       </p>
 
       <ReminderButtons
         notPaidRecipients={notPaidRecipients}
         partPaymentRecipients={partPaymentRecipients}
+        closingNoticeRecipients={closingNoticeRecipients}
         notPaidLastSent={notPaidLast?.createdAt.toISOString() ?? null}
         partPaymentLastSent={partPaymentLast?.createdAt.toISOString() ?? null}
+        closingNoticeLastSent={closingNoticeLast?.createdAt.toISOString() ?? null}
       />
 
       <div

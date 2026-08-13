@@ -60,19 +60,21 @@ async function deliverPaymentLink(
   resend: Resend
 ): Promise<'sent' | 'failed' | 'skipped'> {
   // ─── Work out how much to charge ───────────────────────────────
-  const paidKobo =
-    kind === 'part_payment'
-      ? applicant.amountPaidKobo ??
-        applicant.payments
-          .filter((p) => p.status === 'Success')
-          .reduce((sum, p) => sum + p.amount, 0)
-      : 0;
+  // `closing_notice` mixes fully-unpaid and part-paid applicants, so derive the
+  // amount already paid per applicant rather than from the kind alone.
+  const usesBalance = kind === 'part_payment' || kind === 'closing_notice';
+  const paidKobo = usesBalance
+    ? applicant.amountPaidKobo ??
+      applicant.payments
+        .filter((p) => p.status === 'Success')
+        .reduce((sum, p) => sum + p.amount, 0)
+    : 0;
   const amountKobo =
     kind === 'not_paid'
       ? APPLICATION_FEE_KOBO
       : Math.max(0, APPLICATION_FEE_KOBO - paidKobo);
 
-  if (kind === 'part_payment' && amountKobo <= 0) {
+  if (usesBalance && amountKobo <= 0) {
     return 'skipped';
   }
 

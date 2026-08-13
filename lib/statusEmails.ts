@@ -215,7 +215,7 @@ function paymentRejected({ firstName, applicationId }: ApplicantContext): Built 
 
 // ─── Bulk payment-reminder templates ───────────────────────────────
 
-export type ReminderKind = 'not_paid' | 'part_payment';
+export type ReminderKind = 'not_paid' | 'part_payment' | 'closing_notice';
 
 export type ReminderContext = {
   firstName: string;
@@ -295,9 +295,35 @@ function reminderPartPayment({ firstName, lastName, trackFirst, amountPaidNaira,
   };
 }
 
+/**
+ * Closing-eve reminder — a warm, personal nudge to anyone (fully unpaid or
+ * part-paid) who still owes their fee on the day before registration closes.
+ * Emphasises help and flexible payment rather than a hard deadline callout.
+ */
+function reminderClosingNotice({ firstName, lastName, paymentUrl }: ReminderContext): Built {
+  const fullName = `${firstName} ${lastName}`.trim();
+  const button = paymentUrl ? `<tr><td style="padding:4px 32px 24px;text-align:center;">
+    <a href="${paymentUrl}" style="display:inline-block;background:${C.forest};color:#ffffff;text-decoration:none;font-weight:500;font-size:14px;font-family:Arial,sans-serif;padding:13px 30px;border-radius:4px;">Complete My Payment</a>
+  </td></tr>` : '';
+  const body =
+    `<tr><td style="padding:26px 32px 16px;font-size:14px;color:${C.charcoal};line-height:1.7;font-family:Arial,sans-serif;">Dear ${fullName},</td></tr>` +
+    paragraph(`Thank you again for bringing such great energy to the opening ceremony. I am reaching out because registration closes tomorrow, <strong>August 14th</strong>, and we noticed you haven't been able to complete your payment step yet.`) +
+    paragraph(`I know things can get busy or overwhelming, so I just wanted to find out if there is anything we can do to help. If things are a bit tight financially right now, please reach out. We are more than happy to arrange an accommodating payment model so you don't miss out on the program.`) +
+    (paymentUrl ? paragraph(`If you're ready, you can complete your payment right away using the button below:`) : '') +
+    button +
+    (paymentUrl ? linkFreshnessNote() : '') +
+    paragraph(`We hope to hear from you soon!`) +
+    signoff();
+  return {
+    subject: 'Registration closes tomorrow — can we help you complete your payment?',
+    html: renderShell({ badge: 'Oakvale Learning · Summer Intensive 2026', heading: 'Registration closes tomorrow', accent: 'gold', bodyHtml: body }),
+  };
+}
+
 const REMINDER_TEMPLATES: Record<ReminderKind, (ctx: ReminderContext) => Built> = {
   not_paid: reminderNotPaid,
   part_payment: reminderPartPayment,
+  closing_notice: reminderClosingNotice,
 };
 
 /** Build a themed bulk-reminder email. `type` is the EmailLog key. */

@@ -10,5 +10,14 @@ export function reminderWhere(kind: ReminderKind): Prisma.ApplicationWhereInput 
     // Owes the full fee; exclude full-scholarship applicants (they owe nothing).
     return { paymentStatus: 'Pending', NOT: { needsAid: true, aidLevel: 'full' } };
   }
+  if (kind === 'closing_notice') {
+    // Anyone with an outstanding fee: fully unpaid (not full-scholarship) or part-paid.
+    return {
+      OR: [
+        { paymentStatus: 'Pending', NOT: { needsAid: true, aidLevel: 'full' } },
+        { paymentStatus: 'Partial' },
+      ],
+    };
+  }
   return { paymentStatus: 'Partial' };
 }

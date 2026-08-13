@@ -170,13 +170,17 @@ function ReminderCard({
 export default function ReminderButtons({
   notPaidRecipients,
   partPaymentRecipients,
+  closingNoticeRecipients,
   notPaidLastSent,
   partPaymentLastSent,
+  closingNoticeLastSent,
 }: {
   notPaidRecipients: Recipient[];
   partPaymentRecipients: Recipient[];
+  closingNoticeRecipients: Recipient[];
   notPaidLastSent: string | null;
   partPaymentLastSent: string | null;
+  closingNoticeLastSent: string | null;
 }) {
   return (
     <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
@@ -193,6 +197,13 @@ export default function ReminderButtons({
         description="Applicants who have paid part of the fee. Sends the “1 week left” email showing amount paid and balance remaining, with a Complete My Payment button for the outstanding balance."
         recipients={partPaymentRecipients}
         lastSent={partPaymentLastSent}
+      />
+      <ReminderCard
+        kind="closing_notice"
+        title="Closing-tomorrow notice"
+        description="Everyone with an outstanding fee — fully unpaid or part-paid. Sends the warm “Registration closes tomorrow (August 14th)” email offering help and a flexible payment model, with a Complete My Payment button for their outstanding balance."
+        recipients={closingNoticeRecipients}
+        lastSent={closingNoticeLastSent}
       />
     </div>
   );

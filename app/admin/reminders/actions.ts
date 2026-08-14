@@ -202,23 +202,20 @@ export async function sendPaymentLink(applicationId: string): Promise<ReminderRe
 
   const applicant = await prisma.application.findUnique({
     where: { id: applicationId },
-    select: { ...APPLICANT_SELECT, paymentStatus: true, needsAid: true, aidLevel: true },
+    select: { ...APPLICANT_SELECT, paymentStatus: true },
   });
   if (!applicant) {
     result.skipped += 1;
     return result;
   }
 
-  const isFullScholarship = applicant.needsAid && applicant.aidLevel === 'full';
-  let kind: ReminderKind;
-  if (applicant.paymentStatus === 'Pending' && !isFullScholarship) {
-    kind = 'not_paid';
-  } else if (applicant.paymentStatus === 'Partial') {
-    kind = 'part_payment';
-  } else {
+  // Only fee-waived applicants are skipped. Everyone else gets a link:
+  // part-payers get their outstanding balance, all others the full fee.
+  if (applicant.paymentStatus === 'Waived') {
     result.skipped += 1;
     return result;
   }
+  const kind: ReminderKind = applicant.paymentStatus === 'Partial' ? 'part_payment' : 'not_paid';
 
   const resend = new Resend(process.env.RESEND_KEY);
   result[await deliverPaymentLink(applicant, kind, resend)] += 1;

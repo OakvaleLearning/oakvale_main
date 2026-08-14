@@ -22,7 +22,7 @@ export default function ResendPaymentLink({ id }: { id: string }) {
         if (res.sent > 0) {
           toast.success('Payment link sent', { id: toastId });
         } else if (res.skipped > 0) {
-          toast.success('Nothing to send — applicant has no outstanding balance', { id: toastId });
+          toast.success('Nothing to send — this applicant’s fee is waived', { id: toastId });
         } else {
           toast.error('Couldn’t send the payment link. Please try again.', { id: toastId });
         }

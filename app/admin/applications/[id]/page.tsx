@@ -71,7 +71,6 @@ export default async function ApplicationDetail({ params }: { params: Promise<{ 
   }));
 
   const isFullScholarship = a.needsAid && a.aidLevel === 'full';
-  const owesBalance = (a.paymentStatus === 'Pending' && !isFullScholarship) || a.paymentStatus === 'Partial';
   const balanceNaira = Math.max(0, APPLICATION_FEE_KOBO / 100 - paidSoFarNaira);
   const ctx = { firstName: a.firstName, lastName: a.lastName, trackFirst: a.trackFirst, id: a.id };
 
@@ -132,11 +131,9 @@ export default async function ApplicationDetail({ params }: { params: Promise<{ 
 
       <Section title="Manage">
         <StatusControls id={id} initialPayment={a.paymentStatus} initialStatus={a.status} paidSoFarNaira={paidSoFarNaira} feeNaira={APPLICATION_FEE_NAIRA} />
-        {owesBalance && (
-          <div style={{ marginTop: 16, paddingTop: 16, borderTop: `1px solid ${C.border}` }}>
-            <ResendPaymentLink id={id} />
-          </div>
-        )}
+        <div style={{ marginTop: 16, paddingTop: 16, borderTop: `1px solid ${C.border}` }}>
+          <ResendPaymentLink id={id} />
+        </div>
       </Section>
 
       <Section title="Personal">

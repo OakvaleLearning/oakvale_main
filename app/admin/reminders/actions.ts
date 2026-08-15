@@ -113,6 +113,21 @@ async function deliverPaymentLink(
     } catch (err) {
       console.error(`[reminders] Paystack init failed for ${applicant.id}:`, err);
     }
+  } else {
+    console.error(
+      `[reminders] PAYSTACK_SECRET_KEY not configured — cannot generate a payment link for ${applicant.id}`
+    );
+  }
+
+  // A reminder without a working payment link is pointless (and misleading — the
+  // applicant would get an email telling them to reply for a link). Fail loudly
+  // so the admin sees an error rather than a false "sent", and no broken email
+  // goes out.
+  if (!paymentUrl) {
+    console.error(
+      `[reminders] no payment link for ${applicant.id} — not sending a link-less reminder`
+    );
+    return 'failed';
   }
 
   // ─── Build, send, log ──────────────────────────────────────────

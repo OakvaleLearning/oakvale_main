@@ -134,7 +134,7 @@ const STEPS = [
 const DETAILS: [string, string][] = [
   [
     "Open to",
-    "Penultimate and final-year students in Medicine, Pharmacy, Dentistry, Nursing, Lab Sciences, and Physiotherapy at CMUL, LASUCOM, and EkoUnimed.",
+    "Penultimate and final-year students in Medicine, Pharmacy, Dentistry, Nursing, Lab Sciences, Optometry, Physiotherapy and other health and allied health science disciplines at CMUL, LASUCOM, and EkoUnimed.",
   ],
   ["Applications open", "Tuesday 9 June, 2026"],
   ["Applications close", "Friday 14 August, 2026"],
@@ -164,7 +164,7 @@ const FAQS = [
   },
   {
     q: "I study Pharmacy, not Medicine. Can I apply?",
-    a: "Yes. The programme is open to all health sciences disciplines: Medicine, Pharmacy, Dentistry, Nursing, Laboratory Sciences, and Physiotherapy.",
+    a: "Yes. The programme is open to all health sciences disciplines: Medicine, Pharmacy, Dentistry, Nursing, Laboratory Sciences, Optometry, and Physiotherapy.",
   },
   {
     q: "What if I cannot pay the application fee?",

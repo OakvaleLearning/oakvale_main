@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import toast from 'react-hot-toast';
 
 const STATES = [
@@ -321,7 +322,10 @@ export default function RegisterInterestPage() {
                   <input type="checkbox" id="consent" checked={consent} onChange={(e) => { setConsent(e.target.checked); clearError('consent'); }} />
                   <label htmlFor="consent">
                     I am happy for Oakvale Learning to contact me about future editions of the programme. We will keep
-                    your details safe, use them only for this purpose, and remove them if you ask us to.
+                    your details safe, use them only for this purpose, and remove them if you ask us to. See our{' '}
+                    <Link href="/privacy-policy" target="_blank" style={{ color: 'var(--ri-green)', textDecoration: 'underline' }}>Privacy Policy</Link>{' '}
+                    and{' '}
+                    <Link href="/terms" target="_blank" style={{ color: 'var(--ri-green)', textDecoration: 'underline' }}>Terms &amp; Conditions</Link>.
                   </label>
                 </div>
                 <div className={`ri-error ${errors.consent ? 'show' : ''}`} style={{ marginTop: 8 }}>

@@ -970,6 +970,35 @@ export default function ApplicationFormPage({ closed = false }: { closed?: boole
               </label>
             ))}
 
+            <p
+              style={{
+                fontSize: 12.5,
+                color: C.muted,
+                marginTop: 4,
+                marginBottom: 4,
+                lineHeight: 1.5,
+                fontFamily: "DM Sans, sans-serif",
+              }}
+            >
+              By submitting this application you agree to our{" "}
+              <Link
+                href="/terms"
+                target="_blank"
+                style={{ color: C.forest, textDecoration: "underline" }}
+              >
+                Terms &amp; Conditions
+              </Link>{" "}
+              and{" "}
+              <Link
+                href="/privacy-policy"
+                target="_blank"
+                style={{ color: C.forest, textDecoration: "underline" }}
+              >
+                Privacy Policy
+              </Link>
+              .
+            </p>
+
             <button
               onClick={handleSubmit}
               disabled={submitting}

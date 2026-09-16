@@ -110,6 +110,7 @@ export default function Nav() {
             ))}
           </div>
         </li>
+        <li><a className={isActive('build-for-you') ? 'active' : ''} onClick={() => router.push('/build-for-you')} role="button" tabIndex={0}>Build For You</a></li>
         <li><a className={isActive('summer-intensive') ? 'active' : ''} onClick={() => router.push('/summer-intensive')} role="button" tabIndex={0}>Summer Intensive</a></li>
         <li><a className={`nav-cta ${isActive('contact') ? 'active' : ''}`} onClick={() => navigate('contact')} role="button" tabIndex={0}>Contact Us</a></li>
       </ul>

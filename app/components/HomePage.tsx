@@ -3,6 +3,7 @@
 import Hero from './sections/Hero';
 import Mission from './sections/Mission';
 import Services from './sections/Services';
+import BuildForYou from './sections/BuildForYou';
 import Audiences from './sections/Audiences';
 import Partners from './sections/Partners';
 import Why from './sections/Why';
@@ -23,6 +24,7 @@ export default function HomePage({ onNavigate }: HomePageProps) {
       <Hero onNavigate={onNavigate} />
       <Mission />
       <Services onNavigate={onNavigate} />
+      <BuildForYou />
       <Audiences onNavigate={onNavigate} />
       <Partners />
       <Why />

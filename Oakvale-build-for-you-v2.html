@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Build Your E-Learning | Oakvale Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --forest: #0A3D2B;
+  --forest-mid: #145C3F;
+  --gold: #C8881A;
+  --gold-light: #E8A832;
+  --cream: #F7F3EC;
+  --cream-warm: #EDE7DB;
+  --stone: #D4CFCA;
+  --mint: #A8D5B5;
+  --mint-light: #D6EDE0;
+  --slate: #4A5568;
+  --white: #FFFFFF;
+  --charcoal: #1C1C1C;
+  --mid-grey: #5A5A5A;
+  --light-grey: #E8E4DE;
+  --border: rgba(10, 61, 43, 0.12);
+  --warm-white: #F7F3EC;
+  --font-mark: 'Josefin Sans', sans-serif;
+  --font-serif: 'Cormorant Garamond', serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { font-family: 'DM Sans', sans-serif; color: var(--charcoal); background: var(--warm-white); line-height: 1.6; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(10,61,43,0.97);
+  backdrop-filter: blur(12px);
+  padding: 0 5%;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 70px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.nav-logo { font-family: var(--font-mark); font-size: 0.82rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.22em; color: #fff; text-decoration: none; }
+.nav-logo span { color: var(--gold-light); }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; }
+.nav-links a { color: rgba(255,255,255,0.78); text-decoration: none; font-size: 0.88rem; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--gold-light); }
+.nav-cta { background: var(--gold); color: #fff !important; padding: 0.5rem 1.2rem; border-radius: 3px; font-weight: 600 !important; }
+.nav-cta:hover { background: var(--gold-light) !important; color: var(--forest) !important; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 88vh;
+  background: var(--forest);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding-top: 70px;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 80% 50%, rgba(78,169,122,0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 20% 80%, rgba(200,136,26,0.06) 0%, transparent 50%);
+  pointer-events: none;
+}
+.hero-grid-overlay {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+.hero-content { padding: 8% 6% 8% 8%; position: relative; z-index: 2; }
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  color: var(--gold-light); font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1.8rem;
+}
+.hero-eyebrow::before { content: ''; width: 28px; height: 2px; background: var(--gold-light); }
+.hero h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2.8rem, 5vw, 4.2rem);
+  font-weight: 300; line-height: 1.12;
+  color: #fff; margin-bottom: 1.6rem; letter-spacing: -0.01em;
+}
+.hero h1 em { font-style: italic; color: var(--gold-light); }
+.hero-sub { color: rgba(255,255,255,0.65); font-size: 1.05rem; max-width: 480px; line-height: 1.7; margin-bottom: 2.8rem; font-weight: 300; }
+.hero-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+.btn-primary { background: var(--gold); color: #fff; padding: 0.85rem 2rem; border-radius: 3px; text-decoration: none; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.03em; transition: all 0.2s; display: inline-block; }
+.btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(200,136,26,0.3); }
+.btn-ghost { color: rgba(255,255,255,0.75); padding: 0.85rem 1.5rem; border-radius: 3px; border: 1px solid rgba(255,255,255,0.2); text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: all 0.2s; display: inline-block; }
+.btn-ghost:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
+
+/* ── HERO VISUAL ── */
+.hero-visual {
+  position: relative; height: 100%; min-height: 88vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 8% 8% 8% 4%;
+}
+.process-stack { position: relative; width: 100%; max-width: 380px; }
+.process-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 1.4rem 1.6rem;
+  backdrop-filter: blur(8px);
+  margin-bottom: 0.9rem;
+  display: flex; align-items: center; gap: 1.2rem;
+}
+.process-card:last-child { margin-bottom: 0; }
+.process-card.accent { background: rgba(20,92,63,0.6); border-color: rgba(168,213,181,0.25); }
+.process-step-num {
+  font-family: var(--font-serif);
+  font-size: 2rem; font-weight: 300;
+  color: var(--gold-light); line-height: 1;
+  min-width: 36px;
+}
+.process-step-label { color: rgba(255,255,255,0.85); font-size: 0.88rem; font-weight: 500; line-height: 1.4; }
+.process-step-sub { color: rgba(255,255,255,0.45); font-size: 0.75rem; margin-top: 0.15rem; }
+
+/* ── SECTIONS ── */
+section { padding: 6rem 8%; }
+.section-label {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  color: var(--gold-light); font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.25em; font-family: var(--font-body);
+  text-transform: uppercase; margin-bottom: 1.2rem;
+}
+.section-label::before { content: ''; width: 22px; height: 2px; background: var(--forest-mid); }
+.section-title { font-family: var(--font-serif); font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 300; line-height: 1.15; color: var(--forest); letter-spacing: -0.01em; }
+.section-title em { font-style: italic; color: var(--gold); }
+.section-body { color: var(--mid-grey); font-size: 1rem; line-height: 1.75; max-width: 600px; font-weight: 300; }
+
+/* ── WHO WE WORK WITH ── */
+.who { background: var(--cream); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.who-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+.who-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.who-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(10,61,43,0.1); }
+.who-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gold); }
+.who-icon { font-size: 1.6rem; margin-bottom: 1rem; }
+.who-title { font-family: var(--font-serif); font-size: 1.2rem; font-weight: 400; color: var(--forest); margin-bottom: 0.6rem; }
+.who-body { color: var(--mid-grey); font-size: 0.88rem; line-height: 1.65; }
+
+/* ── WHAT WE BUILD ── */
+.what-we-build { background: var(--warm-white); }
+.build-header { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; margin-bottom: 4rem; }
+.build-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--light-grey); border: 2px solid var(--light-grey); border-radius: 8px; overflow: hidden; }
+.build-card { background: var(--warm-white); padding: 2.5rem 2rem; transition: background 0.25s; position: relative; }
+.build-card:hover { background: var(--cream); }
+.build-number { font-family: var(--font-serif); font-size: 3.5rem; font-weight: 300; color: var(--mint); line-height: 1; margin-bottom: 1rem; }
+.build-title { font-family: var(--font-serif); font-size: 1.4rem; font-weight: 300; color: var(--forest); margin-bottom: 1rem; line-height: 1.25; }
+.build-body { color: var(--mid-grey); font-size: 0.88rem; line-height: 1.65; margin-bottom: 1.4rem; }
+.build-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.build-tag { background: var(--mint-light); color: var(--forest-mid); font-size: 0.7rem; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* ── HOW IT WORKS ── */
+.how { background: var(--forest); }
+.how-header { margin-bottom: 4rem; }
+.how-header .section-label::before { background: rgba(168,213,181,0.4); }
+.how-header .section-title { color: #fff; }
+.how-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; }
+.how-steps::before {
+  content: '';
+  position: absolute;
+  top: 2rem; left: 10%; right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(168,213,181,0.3) 20%, rgba(168,213,181,0.3) 80%, transparent);
+}
+.how-step { padding: 0 2rem; position: relative; }
+.step-dot {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--forest-mid);
+  border: 2px solid rgba(168,213,181,0.4);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1.8rem;
+  position: relative; z-index: 1;
+}
+.step-dot-inner { width: 10px; height: 10px; border-radius: 50%; background: var(--gold-light); }
+.step-num { font-family: var(--font-serif); font-size: 0.8rem; font-weight: 600; color: var(--gold-light); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.6rem; }
+.step-title { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 300; color: #fff; margin-bottom: 0.8rem; line-height: 1.2; }
+.step-body { color: rgba(255,255,255,0.55); font-size: 0.88rem; line-height: 1.65; }
+
+/* ── WHAT YOU BRING ── */
+.you-bring { background: var(--cream); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.bring-split { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+.bring-col h3 { font-family: var(--font-serif); font-size: 1.6rem; font-weight: 300; color: var(--forest); margin-bottom: 1.4rem; line-height: 1.2; }
+.bring-col h3 em { font-style: italic; color: var(--gold); }
+.bring-list { list-style: none; display: flex; flex-direction: column; gap: 0.9rem; }
+.bring-list li { display: flex; gap: 0.8rem; align-items: flex-start; font-size: 0.92rem; color: var(--mid-grey); line-height: 1.6; }
+.bring-list li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); margin-top: 0.5rem; flex-shrink: 0; }
+.bring-divider {
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--border) 20%, var(--border) 80%, transparent);
+  align-self: stretch;
+}
+
+/* ── FORMATS ── */
+.formats { background: var(--warm-white); }
+.formats-header { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; margin-bottom: 3rem; }
+.format-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+.format-card {
+  border: 1px solid var(--border);
+  border-radius: 8px; padding: 1.5rem;
+  background: var(--white);
+  transition: border-color 0.2s, transform 0.2s;
+}
+.format-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+.format-icon { font-size: 1.4rem; margin-bottom: 0.8rem; }
+.format-name { font-weight: 600; font-size: 0.9rem; color: var(--forest); margin-bottom: 0.4rem; }
+.format-desc { font-size: 0.8rem; color: var(--mid-grey); line-height: 1.55; }
+
+/* ── QUOTE STRIP ── */
+.quote-strip {
+  background: var(--cream);
+  padding: 5rem 8%;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.quote-inner { max-width: 800px; margin: 0 auto; text-align: center; }
+.quote-mark { font-family: var(--font-serif); font-size: 5rem; font-weight: 300; color: var(--mint); line-height: 0.5; margin-bottom: 1.5rem; display: block; }
+.quote-text { font-family: var(--font-serif); font-size: clamp(1.3rem, 2.2vw, 1.8rem); font-style: italic; font-weight: 300; color: var(--forest); line-height: 1.55; margin-bottom: 1.8rem; }
+.quote-attribution { font-size: 0.85rem; color: var(--mid-grey); font-weight: 500; letter-spacing: 0.04em; }
+.quote-attribution strong { color: var(--forest); }
+
+/* ── CTA SECTION ── */
+.cta-section {
+  background: var(--forest);
+  padding: 6rem 8%;
+  position: relative; overflow: hidden;
+}
+.cta-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(78,169,122,0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+.cta-inner { max-width: 700px; position: relative; z-index: 2; }
+.cta-section .section-label::before { background: rgba(168,213,181,0.4); }
+.cta-title { font-family: var(--font-serif); font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 300; color: #fff; line-height: 1.15; margin-bottom: 1.2rem; letter-spacing: -0.01em; }
+.cta-title em { font-style: italic; color: var(--gold-light); }
+.cta-body { color: rgba(255,255,255,0.6); font-size: 1rem; line-height: 1.75; margin-bottom: 2.4rem; font-weight: 300; max-width: 520px; }
+.cta-form { display: flex; flex-direction: column; gap: 1rem; max-width: 480px; }
+.cta-form input, .cta-form select, .cta-form textarea {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 4px;
+  padding: 0.85rem 1rem;
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  transition: border-color 0.2s;
+  outline: none;
+  width: 100%;
+}
+.cta-form input::placeholder, .cta-form textarea::placeholder { color: rgba(255,255,255,0.35); }
+.cta-form input:focus, .cta-form select:focus, .cta-form textarea:focus { border-color: rgba(168,213,181,0.5); }
+.cta-form select { color: rgba(255,255,255,0.75); }
+.cta-form select option { background: var(--forest); color: #fff; }
+.cta-form textarea { min-height: 100px; resize: vertical; }
+.cta-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+.form-submit { background: var(--gold); color: #fff; padding: 0.9rem 2rem; border: none; border-radius: 3px; font-family: var(--font-body); font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; align-self: flex-start; letter-spacing: 0.03em; }
+.form-submit:hover { background: var(--gold-light); transform: translateY(-1px); }
+.form-note { color: rgba(255,255,255,0.35); font-size: 0.78rem; }
+
+/* ── FOOTER ── */
+footer {
+  background: #080f0c;
+  padding: 4rem 8% 2.5rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 4rem; margin-bottom: 3.5rem; }
+.footer-brand p { color: rgba(255,255,255,0.4); font-size: 0.88rem; line-height: 1.7; margin-top: 1rem; max-width: 260px; font-weight: 300; }
+.footer-col h4 { color: rgba(255,255,255,0.5); font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; margin-bottom: 1.2rem; }
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+.footer-col ul li a { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 0.9rem; font-weight: 300; transition: color 0.2s; }
+.footer-col ul li a:hover { color: var(--gold-light); }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.06); padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; }
+.footer-bottom p { color: rgba(255,255,255,0.25); font-size: 0.82rem; }
+.footer-bottom-links { display: flex; gap: 1.5rem; }
+.footer-bottom-links a { color: rgba(255,255,255,0.3); text-decoration: none; font-size: 0.82rem; transition: color 0.2s; }
+.footer-bottom-links a:hover { color: rgba(255,255,255,0.6); }
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-visual { display: none; }
+  .build-header, .formats-header, .bring-split { grid-template-columns: 1fr; gap: 2rem; }
+  .how-steps { grid-template-columns: 1fr 1fr; }
+  .build-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+  .cta-row { grid-template-columns: 1fr; }
+  .bring-divider { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">Oakvale <span>Learning</span></a>
+  <ul class="nav-links">
+    <li><a href="/about">About</a></li>
+    <li><a href="/services">Services</a></li>
+    <li><a href="/build-for-you" class="active">Build For You</a></li>
+    <li><a href="/case-studies">Case Studies</a></li>
+    <li><a href="/sme-network">SME Network</a></li>
+    <li><a href="/contact" class="nav-cta">Work With Us</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">E-Learning Development</div>
+    <h1>You have the content.<br>We build the <em>learning.</em></h1>
+    <p class="hero-sub">Oakvale turns existing training content, curricula, scripts and subject matter expertise into professional, interactive e-learning - ready to deploy on any platform, to any workforce.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Send us your brief</a>
+      <a href="#how-it-works" class="btn-ghost">See how it works</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="process-stack">
+      <div class="process-card">
+        <div class="process-step-num">01</div>
+        <div>
+          <div class="process-step-label">Your Content In</div>
+          <div class="process-step-sub">Manuals, slides, scripts, video, expertise</div>
+        </div>
+      </div>
+      <div class="process-card accent">
+        <div class="process-step-num">02</div>
+        <div>
+          <div class="process-step-label">Oakvale Builds</div>
+          <div class="process-step-sub">Instructional design, production, QA</div>
+        </div>
+      </div>
+      <div class="process-card">
+        <div class="process-step-num">03</div>
+        <div>
+          <div class="process-step-label">Finished Modules Out</div>
+          <div class="process-step-sub">SCORM-ready, platform-agnostic, yours</div>
+        </div>
+      </div>
+      <div class="process-card">
+        <div class="process-step-num">04</div>
+        <div>
+          <div class="process-step-label">Deployed &amp; Tracked</div>
+          <div class="process-step-sub">LMS setup, analytics, learner data</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHO THIS IS FOR -->
+<section class="who">
+  <div class="section-label">Who this is for</div>
+  <h2 class="section-title" style="margin-bottom:1rem;">Built for organisations<br><em>with content to convert.</em></h2>
+  <p class="section-body" style="margin-bottom:3rem;">You do not need to start from scratch. If your organisation already has training materials, a defined curriculum, or subject matter expertise - we take what you have and build it into something your learners can actually use.</p>
+  <div class="who-grid">
+    <div class="who-card">
+      <div class="who-icon">🏛️</div>
+      <div class="who-title">Professional Associations & Membership Bodies</div>
+      <div class="who-body">You have standards, competency frameworks and training programmes. We convert them into scalable digital learning your members can access on demand - without you needing an in-house production team.</div>
+    </div>
+    <div class="who-card">
+      <div class="who-icon">🏥</div>
+      <div class="who-title">NHS Trusts & Health Bodies</div>
+      <div class="who-body">Training teams with existing content, induction programmes or mandatory learning that needs to be modernised, digitalised and deployed across dispersed workforces quickly and cost-effectively.</div>
+    </div>
+    <div class="who-card">
+      <div class="who-icon">🎓</div>
+      <div class="who-title">Academic Institutions & CPD Providers</div>
+      <div class="who-body">Course content, lecture materials or CPD programmes that need to move online. We handle the instructional redesign, interactive build and LMS deployment so your faculty can focus on the teaching.</div>
+    </div>
+    <div class="who-card">
+      <div class="who-icon">🌍</div>
+      <div class="who-title">Development Organisations & NGOs</div>
+      <div class="who-body">Field-tested training curricula that need to reach geographically dispersed workforces at scale. We build for low-bandwidth environments, mobile-first delivery and multilingual learner populations.</div>
+    </div>
+    <div class="who-card">
+      <div class="who-icon">🏢</div>
+      <div class="who-title">Corporates & L&D Teams</div>
+      <div class="who-body">Onboarding programmes, compliance training, product knowledge or leadership content that needs to be converted into professional digital learning without stretching an internal L&D team.</div>
+    </div>
+    <div class="who-card">
+      <div class="who-icon">📋</div>
+      <div class="who-title">Regulators & Standards Bodies</div>
+      <div class="who-body">Regulatory guidance, licensing requirements or sector standards that need to become accessible, assessable digital learning - with completion tracking and outcome evidence built in.</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT WE BUILD -->
+<section class="what-we-build">
+  <div class="build-header">
+    <div>
+      <div class="section-label">What we build</div>
+      <h2 class="section-title">Six types of<br><em>digital learning</em><br>we produce for you.</h2>
+    </div>
+    <div>
+      <p class="section-body">Every module we build is designed around how people actually learn - not how content is normally organised. We restructure, reframe and rewrite where needed. The subject matter expertise stays yours. The instructional design is ours.</p>
+    </div>
+  </div>
+  <div class="build-grid">
+    <div class="build-card">
+      <div class="build-number">01</div>
+      <div class="build-title">Interactive E-Learning Modules</div>
+      <div class="build-body">Scenario-based, branching modules with knowledge checks, reflection activities and summative assessment. Built in Articulate Rise or Storyline, or Genially for rapid development.</div>
+      <div class="build-tags"><span class="build-tag">Articulate</span><span class="build-tag">Genially</span><span class="build-tag">SCORM</span></div>
+    </div>
+    <div class="build-card">
+      <div class="build-number">02</div>
+      <div class="build-title">Animated Video & Explainer Content</div>
+      <div class="build-body">Scripted and produced animated videos for complex concepts, process walkthroughs or case-based learning. Voiceover in English and African languages where required.</div>
+      <div class="build-tags"><span class="build-tag">Animation</span><span class="build-tag">Voiceover</span><span class="build-tag">Multilingual</span></div>
+    </div>
+    <div class="build-card">
+      <div class="build-number">03</div>
+      <div class="build-title">Microlearning & Mobile-First Content</div>
+      <div class="build-body">Short-form modules optimised for smartphone access. Ideal for frontline workforces, just-in-time learning and reinforcement between formal training events.</div>
+      <div class="build-tags"><span class="build-tag">Mobile-First</span><span class="build-tag">Low Bandwidth</span><span class="build-tag">Bite-Size</span></div>
+    </div>
+    <div class="build-card">
+      <div class="build-number">04</div>
+      <div class="build-title">Blended Programme Design</div>
+      <div class="build-body">Where face-to-face or virtual facilitation remains essential, we design the digital components that sit alongside it - pre-work, application activities, and post-training reinforcement.</div>
+      <div class="build-tags"><span class="build-tag">Blended</span><span class="build-tag">Pre-Work</span><span class="build-tag">Facilitation Guides</span></div>
+    </div>
+    <div class="build-card">
+      <div class="build-number">05</div>
+      <div class="build-title">Assessment & Certification Modules</div>
+      <div class="build-body">Competency-based assessments, end-of-programme evaluations and certificate-generating modules aligned to your standards and qualification frameworks.</div>
+      <div class="build-tags"><span class="build-tag">Assessment</span><span class="build-tag">Certification</span><span class="build-tag">Competency</span></div>
+    </div>
+    <div class="build-card">
+      <div class="build-number">06</div>
+      <div class="build-title">LMS Setup & Deployment</div>
+      <div class="build-body">If you do not have a platform, we configure and deploy one. Moodle or TalentLMS on your infrastructure. Learner management, analytics dashboards and completion reporting included.</div>
+      <div class="build-tags"><span class="build-tag">Moodle</span><span class="build-tag">TalentLMS</span><span class="build-tag">Analytics</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how-it-works">
+  <div class="how-header">
+    <div class="section-label" style="color:var(--mint);">How it works</div>
+    <h2 class="section-title" style="color:#fff;margin-bottom:1rem;">From brief to <em>live modules</em><br>in as little as two weeks.</h2>
+    <p style="color:rgba(255,255,255,0.55);font-size:1rem;line-height:1.75;max-width:560px;font-weight:300;">Our production process is designed for speed without sacrificing quality. We can turn around a single module in five to seven working days. A full programme of eight to ten modules typically takes four to six weeks from brief to delivery.</p>
+  </div>
+  <div class="how-steps">
+    <div class="how-step">
+      <div class="step-dot"><div class="step-dot-inner"></div></div>
+      <div class="step-num">Step 01</div>
+      <div class="step-title">Brief & Scoping Call</div>
+      <div class="step-body">You send us your content, context and learning objectives. We review it and schedule a 45-minute scoping call to agree scope, format, timeline and deliverables. No lengthy discovery process - we move quickly.</div>
+    </div>
+    <div class="how-step">
+      <div class="step-dot"><div class="step-dot-inner"></div></div>
+      <div class="step-num">Step 02</div>
+      <div class="step-title">Instructional Design</div>
+      <div class="step-body">Our instructional designers restructure your content into a learning design that works digitally - sequencing, scenario design, knowledge check placement and assessment strategy. You review and approve before production begins.</div>
+    </div>
+    <div class="how-step">
+      <div class="step-dot"><div class="step-dot-inner"></div></div>
+      <div class="step-num">Step 03</div>
+      <div class="step-title">Build & Subject Review</div>
+      <div class="step-body">We build the modules and share a draft for your subject matter expert review. One round of structured feedback is built into every project. Additional rounds available on request. Your content accuracy is non-negotiable.</div>
+    </div>
+    <div class="how-step">
+      <div class="step-dot"><div class="step-dot-inner"></div></div>
+      <div class="step-num">Step 04</div>
+      <div class="step-title">Delivery & Handover</div>
+      <div class="step-body">Finished modules delivered as SCORM packages for upload to your existing LMS, or deployed directly to a platform we configure for you. Full handover documentation included. You own everything we build.</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT YOU BRING / WHAT WE BRING -->
+<section class="you-bring">
+  <div class="bring-split">
+    <div class="bring-col">
+      <div class="section-label">What you bring</div>
+      <h3>Your expertise.<br><em>Your content.</em><br>Your standards.</h3>
+      <ul class="bring-list" style="margin-top:1.5rem;">
+        <li>Existing training materials in any format - slides, Word documents, PDFs, videos, manuals</li>
+        <li>Subject matter experts available for a structured review session</li>
+        <li>Clear learning objectives, or willingness to develop them with us in the scoping call</li>
+        <li>Your branding, style guide or visual identity for us to apply</li>
+        <li>Access to your LMS for SCORM upload, or an indication that you need one set up</li>
+        <li>A designated point of contact for feedback and approval at each stage</li>
+      </ul>
+    </div>
+    <div class="bring-divider"></div>
+    <div class="bring-col">
+      <div class="section-label">What we bring</div>
+      <h3>Instructional design.<br><em>Production.</em><br>Speed.</h3>
+      <ul class="bring-list" style="margin-top:1.5rem;">
+        <li>Instructional designers who restructure content for how adults actually learn in digital environments</li>
+        <li>Rapid production in Articulate Rise, Articulate Storyline or Genially</li>
+        <li>Script writing and animation production for video content</li>
+        <li>Voiceover recording in English and African languages on request</li>
+        <li>Graphic design and illustration aligned to your brand</li>
+        <li>Quality assurance review by an independent reviewer before every delivery</li>
+        <li>SCORM packaging and LMS deployment support</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FORMATS -->
+<section class="formats">
+  <div class="formats-header">
+    <div>
+      <div class="section-label">Output formats</div>
+      <h2 class="section-title">Platform-agnostic.<br><em>Yours to own.</em></h2>
+    </div>
+    <p class="section-body">Every module we build is delivered as a SCORM 1.2 or xAPI package compatible with any modern LMS. If you have a platform, we upload to it. If you don't, we set one up.</p>
+  </div>
+  <div class="format-grid">
+    <div class="format-card">
+      <div class="format-icon">📦</div>
+      <div class="format-name">SCORM 1.2 / 2004</div>
+      <div class="format-desc">Compatible with Moodle, TalentLMS, Cornerstone, SAP SuccessFactors, Docebo and most enterprise LMS platforms.</div>
+    </div>
+    <div class="format-card">
+      <div class="format-icon">📊</div>
+      <div class="format-name">xAPI / Tin Can</div>
+      <div class="format-desc">For organisations requiring granular learner activity data beyond SCORM completion and score. Full activity stream reporting.</div>
+    </div>
+    <div class="format-card">
+      <div class="format-icon">📱</div>
+      <div class="format-name">Mobile-Responsive HTML5</div>
+      <div class="format-desc">Every module is built responsive by default. No app download required. Runs in any mobile browser, including offline-capable builds.</div>
+    </div>
+    <div class="format-card">
+      <div class="format-icon">🎬</div>
+      <div class="format-name">MP4 Video</div>
+      <div class="format-desc">Animated or recorded video assets delivered as standalone MP4 files or embedded within interactive modules.</div>
+    </div>
+    <div class="format-card">
+      <div class="format-icon">📄</div>
+      <div class="format-name">PDF Job Aids</div>
+      <div class="format-desc">Supporting reference materials, quick-reference guides and performance support tools delivered alongside modules.</div>
+    </div>
+    <div class="format-card">
+      <div class="format-icon">🔗</div>
+      <div class="format-name">Direct LMS Deployment</div>
+      <div class="format-desc">We upload, configure and test modules directly in your LMS or a platform we set up - so you receive a working course, not just files.</div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE STRIP -->
+<div class="quote-strip">
+  <div class="quote-inner">
+    <span class="quote-mark">"</span>
+    <p class="quote-text">We have the training content and she said they need someone to help them build it - someone who understands how to turn professional training material into something people can actually learn from digitally.</p>
+    <p class="quote-attribution"><strong>Context behind this page</strong> - A message from a colleague describing a real brief from an NHS partner. If this sounds like your situation, you are in the right place.</p>
+  </div>
+</div>
+
+<!-- CTA / CONTACT -->
+<section class="cta-section" id="contact">
+  <div class="cta-inner">
+    <div class="section-label" style="color:var(--mint);">Get started</div>
+    <h2 class="cta-title">Tell us what you<br><em>need built.</em></h2>
+    <p class="cta-body">Send us a brief outline of your project - what content you have, who it is for, and when you need it. We will come back to you within one working day with an initial response and a proposed next step.</p>
+    <form class="cta-form" onsubmit="return false;">
+      <div class="cta-row">
+        <input type="text" placeholder="Your name *" required>
+        <input type="text" placeholder="Organisation *" required>
+      </div>
+      <div class="cta-row">
+        <input type="email" placeholder="Email address *" required>
+        <input type="tel" placeholder="Phone / WhatsApp">
+      </div>
+      <select>
+        <option value="" disabled selected>Organisation type</option>
+        <option>NHS Trust or health body</option>
+        <option>Professional association or membership body</option>
+        <option>University or CPD provider</option>
+        <option>NGO or development organisation</option>
+        <option>Corporate / L&D team</option>
+        <option>Regulator or standards body</option>
+        <option>Other</option>
+      </select>
+      <select>
+        <option value="" disabled selected>Approximate number of modules needed</option>
+        <option>1–3 modules</option>
+        <option>4–8 modules</option>
+        <option>9–15 modules</option>
+        <option>Full programme (15+)</option>
+        <option>Not sure yet</option>
+      </select>
+      <textarea placeholder="Brief description of your project - what content you have, who it is for, and when you need it *" required></textarea>
+      <button type="submit" class="form-submit">Send brief →</button>
+      <p class="form-note">We respond within one working day. No commitment required at this stage.</p>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="nav-logo" style="display:inline-block;margin-bottom:0.5rem;">Oakvale <span>Learning</span></div>
+      <p>Changing lives through learning and self-discovery. Evidence-based workforce, leadership and organisational development for Africa.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="/services/corporates">For Corporates</a></li>
+        <li><a href="/services/academic">For Academic Institutions</a></li>
+        <li><a href="/services/donors">For Donor Agencies</a></li>
+        <li><a href="/services/government">For Government</a></li>
+        <li><a href="/build-for-you">Build For You</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Organisation</h4>
+      <ul>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/case-studies">Case Studies</a></li>
+        <li><a href="/sme-network">SME Network</a></li>
+        <li><a href="/contact">Work With Us</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="mailto:hello@oakvalelearning.com">hello@oakvalelearning.com</a></li>
+        <li><a href="/contact">Partnership Enquiries</a></li>
+        <li><a href="/build-for-you#contact">Build For You Brief</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Oakvale Learning Ltd. All rights reserved.</p>
+    <div class="footer-bottom-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

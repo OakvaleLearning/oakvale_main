@@ -25,9 +25,19 @@
   --font-serif: 'Cormorant Garamond', serif;
   --font-body:  'EB Garamond', serif;
   --font-lora:  'EB Garamond', serif;
+  /* This site is light-themed throughout. Without this, a browser on a dark OS
+     theme paints native form controls - including the <select> popup list - from
+     its own dark palette, which reads as a dark green box against our forest
+     sections. Declaring the scheme keeps those controls light everywhere. */
+  color-scheme: light;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* Selects sit on dark forest bands in several places (Build For You, Contact,
+   Register Interest). Pin the control and its option list to white so they never
+   inherit a section's background. */
+select, select option { background-color: #fff; color: var(--charcoal); }
 html { scroll-behavior: smooth; font-size: 16px;  }
 body { font-family: 'DM Sans', sans-serif; color: var(--charcoal); background: var(--warm-white); line-height: 1.6; }
 
@@ -239,6 +249,20 @@ section { padding: 6rem 8%; max-width: 74%; margin: 0 auto; }
 .focus-stat .num { font-family: 'Cormorant Garamond', serif; @apply text-4xl-responsive; font-weight: 300; color: var(--gold-light); line-height: 1; }
 .focus-stat .lbl { color: rgba(255,255,255,0.5); @apply text-xs-responsive; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.3rem; }
 
+/* BUILD FOR YOU STRIP — teaser for /build-for-you. Cream so it separates the
+   warm-white .services band above from the forest .audiences band below. Inner
+   column matches the 1100px rail used by nav, footer and .services-grid. */
+.build-strip { background: var(--cream); width: 100%; max-width: none; padding: 6rem 8%; border-top: 1px solid var(--border); }
+.build-strip-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; max-width: 1100px; margin: 0 auto; }
+.build-strip-copy .section-body { margin-top: 1.5rem; }
+.build-strip-link { margin-top: 2rem; }
+.build-strip-list { display: flex; flex-direction: column; gap: 1.5rem; }
+.build-strip-item { display: flex; gap: 1.2rem; align-items: flex-start; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+.build-strip-item:last-child { border-bottom: none; padding-bottom: 0; }
+.build-strip-num { font-family: 'Cormorant Garamond', serif; @apply text-2xl-responsive; font-weight: 300; color: var(--gold); line-height: 1; min-width: 2rem; }
+.build-strip-title { @apply text-sm-responsive; font-weight: 600; color: var(--forest); letter-spacing: 0.02em; margin-bottom: 0.35rem; }
+.build-strip-body { color: var(--mid-grey); @apply text-xs-responsive; line-height: 1.65; font-weight: 300; }
+
 .approach { background: var(--forest-mid); color: #fff; padding: 5rem 8%; text-align: center; width: 100%; max-width: none; }
 .approach h2 { font-family: 'Cormorant Garamond', serif; @apply text-3xl-responsive; font-weight: 300; color: #fff; max-width: 800px; margin: 0 auto 3rem; line-height: 1.3; }
 .approach h2 em { font-style: italic; color: var(--mint); }
@@ -335,6 +359,10 @@ footer > * { max-width: 1100px; margin: 0 auto; }
 .outcomes-list { list-style: none; margin-top: 1.5rem; }
 .outcomes-list li { display: flex; gap: 0.8rem; padding: 0.6rem 0; border-bottom: 1px solid var(--border); @apply text-sm-responsive; color: var(--charcoal); align-items: start; }
 .outcomes-list li::before { content: '→'; color: var(--sage); font-weight: 600; flex-shrink: 0; margin-top: 0.05rem; }
+/* Shown only on disciplines that have a page of their own. Sits under the
+   outcomes list, so it reads as the next step rather than a second CTA. */
+.service-detail-link { display: inline-flex; align-items: center; gap: 0.6rem; margin-top: 2rem; @apply text-sm-responsive; font-weight: 600; color: var(--forest); letter-spacing: 0.02em; border-bottom: 1px solid var(--gold); padding-bottom: 0.35rem; transition: color 0.2s ease, gap 0.2s ease; }
+.service-detail-link:hover { color: var(--gold); gap: 0.9rem; }
 .service-detail-visual { background: var(--forest); border-radius: 8px; padding: 3rem; color: #fff; position: sticky; top: 90px; }
 .service-detail-visual h3 { font-family: 'Cormorant Garamond', serif; @apply text-2xl-responsive; font-weight: 300; margin-bottom: 1rem; color: #fff; }
 .service-detail-visual p { color: rgba(255,255,255,0.6); @apply text-sm-responsive; line-height: 1.7; font-weight: 300; }
@@ -887,6 +915,12 @@ footer > * { max-width: 1100px; margin: 0 auto; }
 }
 @media (max-width: 768px) {
   section { max-width: none !important; padding: 3rem 4%; }
+}
+
+/* Build For You strip stacks below the two-column breakpoint used elsewhere */
+@media (max-width: 900px) {
+  .build-strip { padding: 4rem 5%; }
+  .build-strip-inner { grid-template-columns: 1fr; gap: 2.5rem; }
 }
 
 /* Fix service-detail max-width — 70% crushes content on tablet/mobile */

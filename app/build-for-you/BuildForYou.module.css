@@ -1,0 +1,337 @@
+/* Scoped styles for the Build For You landing page.
+   Class names are local to this module, so they do not collide with the
+   global .hero / .cta-inner / .section-* rules in globals.css. */
+
+.page {
+  /* Every band below bleeds edge to edge; this gutter holds their contents on
+     the same rail the site chrome uses — nav (globals.css:42) and footer
+     (globals.css:257) both centre a 1100px column, so matching that is what
+     puts the hero headline directly under the nav logo. The max() keeps the
+     gutter sane below 1100px, where the calc would go negative. Overrides the
+     global `section { max-width: 74% }` rule (globals.css:169), which would
+     otherwise clamp the band itself and box in its background. */
+  --gutter: max(5%, calc((100% - 1100px) / 2));
+  color: var(--charcoal);
+  background: var(--warm-white);
+}
+
+/* ── SHARED ── */
+.section { width: 100%; max-width: none; padding: 6rem var(--gutter); }
+
+.label {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  color: var(--gold-light); font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.25em; font-family: var(--font-body);
+  text-transform: uppercase; margin-bottom: 1.2rem;
+}
+.label::before { content: ''; width: 22px; height: 2px; background: var(--forest-mid); }
+.labelLight { color: var(--mint); }
+.labelLight::before { background: rgba(168, 213, 181, 0.4); }
+
+.title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 300; line-height: 1.15;
+  color: var(--forest); letter-spacing: -0.01em;
+  margin: 0;
+}
+.title em { font-style: italic; color: var(--gold); }
+
+.body { color: var(--mid-grey); font-size: 1rem; line-height: 1.75; max-width: 600px; font-weight: 300; }
+
+.btnPrimary {
+  background: var(--gold); color: #fff; padding: 0.85rem 2rem;
+  border-radius: 3px; text-decoration: none; font-weight: 600;
+  font-size: 0.9rem; letter-spacing: 0.03em; transition: all 0.2s;
+  display: inline-block;
+}
+.btnPrimary:hover { background: var(--gold-light); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(200, 136, 26, 0.3); }
+
+.btnGhost {
+  color: rgba(255, 255, 255, 0.75); padding: 0.85rem 1.5rem;
+  border-radius: 3px; border: 1px solid rgba(255, 255, 255, 0.2);
+  text-decoration: none; font-weight: 500; font-size: 0.9rem;
+  transition: all 0.2s; display: inline-block;
+}
+.btnGhost:hover { border-color: rgba(255, 255, 255, 0.5); color: #fff; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 88vh;
+  /* Overlay sits above the photo: a deep forest wash, weighted to the left so
+     the headline column stays legible while the visual column shows through. */
+  background-color: var(--forest);
+  background-image:
+    linear-gradient(100deg, rgba(0, 0, 0, 0.94) 0%, rgba(7, 41, 29, 0.475) 45%, rgba(6, 34, 24, 0.218) 100%),
+    url('/build-for-you/hero.png');
+  background-size: cover;
+  background-position: center right;
+  background-repeat: no-repeat;
+  display: grid;
+  /* Weighted toward the copy, not an even split. The headline is two lines by
+     design (one explicit <br>), and at the 4.2rem cap "We build the learning."
+     needs roughly 630px to stay on one line — an even split of the 1100px rail
+     gave the column only ~484px, so both lines wrapped and it read as four. */
+  grid-template-columns: 1.3fr 0.7fr;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding: 70px var(--gutter) 0;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 80% 50%, rgba(78, 169, 122, 0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 20% 80%, rgba(200, 136, 26, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+}
+.heroGridOverlay {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+.heroContent { padding: 8% 1.5rem 8% 0; position: relative; z-index: 2; }
+.heroEyebrow {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  color: var(--gold-light); font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1.8rem;
+}
+.heroEyebrow::before { content: ''; width: 28px; height: 2px; background: var(--gold-light); }
+.heroTitle {
+  font-family: var(--font-serif);
+  font-size: clamp(2.8rem, 5vw, 4.2rem);
+  font-weight: 300; line-height: 1.12;
+  color: #fff; margin-bottom: 1.6rem; letter-spacing: -0.01em;
+}
+.heroTitle em { font-style: italic; color: var(--gold-light); }
+.heroSub { color: rgba(255, 255, 255, 0.65); font-size: 1.05rem; max-width: 480px; line-height: 1.7; margin-bottom: 2.8rem; font-weight: 300; }
+.heroActions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+
+.heroVisual {
+  position: relative; height: 100%; min-height: 88vh;
+  display: flex; align-items: center; justify-content: flex-end;
+  padding: 8% 0 8% 2%;
+}
+.processStack { position: relative; width: 100%; max-width: 380px; }
+.processCard {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 1.4rem 1.6rem;
+  backdrop-filter: blur(8px);
+  margin-bottom: 0.9rem;
+  display: flex; align-items: center; gap: 1.2rem;
+}
+.processCard:last-child { margin-bottom: 0; }
+.processCardAccent { background: rgba(20, 92, 63, 0.6); border-color: rgba(168, 213, 181, 0.25); }
+.processStepNum {
+  font-family: var(--font-serif);
+  font-size: 2rem; font-weight: 300;
+  color: var(--gold-light); line-height: 1;
+  min-width: 36px;
+}
+.processStepLabel { color: rgba(255, 255, 255, 0.85); font-size: 0.88rem; font-weight: 500; line-height: 1.4; }
+.processStepSub { color: rgba(255, 255, 255, 0.45); font-size: 0.75rem; margin-top: 0.15rem; }
+
+/* ── WHO THIS IS FOR ── */
+.who { background: var(--cream); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.whoTitle { margin-bottom: 1rem; }
+.whoIntro { margin-bottom: 3rem; }
+.whoGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+.whoCard {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.whoCard:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(10, 61, 43, 0.1); }
+.whoCard::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gold); }
+.whoIcon { width: 1.7rem; height: 1.7rem; color: var(--gold); margin-bottom: 1rem; display: block; }
+.whoCardTitle { font-family: var(--font-serif); font-size: 1.2rem; font-weight: 400; color: var(--forest); margin-bottom: 0.6rem; }
+.whoBody { color: var(--mid-grey); font-size: 0.88rem; line-height: 1.65; }
+
+/* ── WHAT WE BUILD ── */
+.whatWeBuild { background: var(--warm-white); }
+.buildHeader { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; margin-bottom: 4rem; }
+.buildGrid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+  background: var(--light-grey); border: 2px solid var(--light-grey);
+  border-radius: 8px; overflow: hidden;
+}
+.buildCard { background: var(--warm-white); padding: 2.5rem 2rem; transition: background 0.25s; position: relative; }
+.buildCard:hover { background: var(--cream); }
+.buildNumber { font-family: var(--font-serif); font-size: 3.5rem; font-weight: 300; color: var(--mint); line-height: 1; margin-bottom: 1rem; }
+.buildTitle { font-family: var(--font-serif); font-size: 1.4rem; font-weight: 300; color: var(--forest); margin-bottom: 1rem; line-height: 1.25; }
+.buildBody { color: var(--mid-grey); font-size: 0.88rem; line-height: 1.65; margin-bottom: 1.4rem; }
+.buildTags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.buildTag {
+  background: var(--mint-light); color: var(--forest-mid);
+  font-size: 0.7rem; font-weight: 600; padding: 0.2rem 0.6rem;
+  border-radius: 3px; text-transform: uppercase; letter-spacing: 0.06em;
+}
+
+/* ── HOW IT WORKS ── */
+.how {
+  background-color: var(--forest);
+  background-image:
+    linear-gradient(180deg, rgba(5, 31, 22, 0.793) 0%, rgba(5, 34, 24, 0.695) 50%, rgba(6, 39, 27, 0.626) 100%),
+    url('/build-for-you/how-it-works.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.howHeader { margin-bottom: 4rem; }
+.howTitle { color: #fff; margin-bottom: 1rem; }
+.howTitle em { color: var(--gold-light); }
+.howIntro { color: rgba(255, 255, 255, 0.55); font-size: 1rem; line-height: 1.75; max-width: 560px; font-weight: 300; }
+.howSteps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; }
+.howSteps::before {
+  content: '';
+  position: absolute;
+  top: 2rem; left: 10%; right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(168, 213, 181, 0.3) 20%, rgba(168, 213, 181, 0.3) 80%, transparent);
+}
+.howStep { padding: 0 2rem; position: relative; }
+.stepDot {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--forest-mid);
+  border: 2px solid rgba(168, 213, 181, 0.4);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1.8rem;
+  position: relative; z-index: 1;
+}
+.stepDotInner { width: 10px; height: 10px; border-radius: 50%; background: var(--gold-light); }
+.stepNum { font-family: var(--font-serif); font-size: 0.8rem; font-weight: 600; color: var(--gold-light); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.6rem; }
+.stepTitle { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 300; color: #fff; margin-bottom: 0.8rem; line-height: 1.2; }
+.stepBody { color: rgba(255, 255, 255, 0.55); font-size: 0.88rem; line-height: 1.65; }
+
+/* ── WHAT YOU BRING / WHAT WE BRING ── */
+.youBring { background: var(--cream); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.bringSplit { display: grid; grid-template-columns: 1fr auto 1fr; gap: 5rem; align-items: start; }
+.bringCol h3 { font-family: var(--font-serif); font-size: 1.6rem; font-weight: 300; color: var(--forest); margin-bottom: 1.4rem; line-height: 1.2; }
+.bringCol h3 em { font-style: italic; color: var(--gold); }
+.bringList { list-style: none; display: flex; flex-direction: column; gap: 0.9rem; margin-top: 1.5rem; padding: 0; }
+.bringList li { display: flex; gap: 0.8rem; align-items: flex-start; font-size: 0.92rem; color: var(--mid-grey); line-height: 1.6; }
+.bringList li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); margin-top: 0.5rem; flex-shrink: 0; }
+.bringDivider {
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--border) 20%, var(--border) 80%, transparent);
+  align-self: stretch;
+}
+
+/* ── FORMATS ── */
+.formats { background: var(--warm-white); }
+.formatsHeader { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; margin-bottom: 3rem; }
+.formatGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+.formatCard {
+  border: 1px solid var(--border);
+  border-radius: 8px; padding: 1.5rem;
+  background: var(--white);
+  transition: border-color 0.2s, transform 0.2s;
+}
+.formatCard:hover { border-color: var(--gold); transform: translateY(-2px); }
+.formatIcon { width: 1.4rem; height: 1.4rem; color: var(--gold); margin-bottom: 0.8rem; display: block; }
+.formatName { font-weight: 600; font-size: 0.9rem; color: var(--forest); margin-bottom: 0.4rem; }
+.formatDesc { font-size: 0.8rem; color: var(--mid-grey); line-height: 1.55; }
+
+/* ── QUOTE STRIP ── */
+.quoteStrip {
+  background: var(--cream);
+  width: 100%; max-width: none;
+  padding: 5rem var(--gutter);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.quoteInner { max-width: 800px; margin: 0 auto; text-align: center; }
+.quoteMark { width: 3rem; height: 3rem; color: var(--mint); margin: 0 auto 1.5rem; display: block; }
+.quoteText {
+  font-family: var(--font-serif); font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+  font-style: italic; font-weight: 300; color: var(--forest);
+  line-height: 1.55; margin-bottom: 1.8rem;
+}
+.quoteAttribution { font-size: 0.85rem; color: var(--mid-grey); font-weight: 500; letter-spacing: 0.04em; }
+.quoteAttribution strong { color: var(--forest); }
+
+/* ── CTA / CONTACT ── */
+.ctaSection {
+  background-color: var(--forest);
+  background-image:
+    linear-gradient(90deg, rgba(6, 37, 27, 0.724) 0%, rgba(7, 39, 28, 0.606) 55%, rgba(6, 34, 24, 0.466) 100%),
+    url('/build-for-you/get-started.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%; max-width: none;
+  padding: 6rem var(--gutter);
+  position: relative; overflow: hidden;
+}
+.ctaSection::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(78, 169, 122, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+.ctaInner { max-width: 700px; position: relative; z-index: 2; }
+.ctaTitle {
+  font-family: var(--font-serif); font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 300; color: #fff; line-height: 1.15;
+  margin-bottom: 1.2rem; letter-spacing: -0.01em;
+}
+.ctaTitle em { font-style: italic; color: var(--gold-light); }
+.ctaBody { color: rgba(255, 255, 255, 0.6); font-size: 1rem; line-height: 1.75; margin-bottom: 2.4rem; font-weight: 300; max-width: 520px; }
+.ctaForm { display: flex; flex-direction: column; gap: 1rem; max-width: 480px; }
+.ctaForm input, .ctaForm select, .ctaForm textarea {
+  background: rgb(255, 255, 255);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  padding: 0.85rem 1rem;
+  color: #292929;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  transition: border-color 0.2s;
+  outline: none;
+  width: 100%;
+}
+.ctaForm input::placeholder, .ctaForm textarea::placeholder { color: rgba(50, 50, 50, 0.865); }
+.ctaForm input:focus, .ctaForm select:focus, .ctaForm textarea:focus { border-color: rgba(168, 213, 181, 0.5); }
+.ctaForm select { color: rgba(39, 39, 39, 0.75); }
+.ctaForm select option { background: #fff; color: #292929; }
+.ctaForm textarea { min-height: 100px; resize: vertical; }
+.ctaRow { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+.formSubmit {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: var(--gold); color: #fff; padding: 0.9rem 2rem;
+  border: none; border-radius: 3px; font-family: var(--font-body);
+  font-size: 0.9rem; font-weight: 600; cursor: pointer;
+  transition: all 0.2s; align-self: flex-start; letter-spacing: 0.03em;
+}
+.formSubmit:hover:not(:disabled) { background: var(--gold-light); transform: translateY(-1px); }
+.formSubmit:disabled { opacity: 0.6; cursor: not-allowed; }
+.submitIcon { width: 1rem; height: 1rem; transition: transform 0.2s; }
+.formSubmit:hover:not(:disabled) .submitIcon { transform: translateX(3px); }
+.formNote { color: rgba(255, 255, 255, 0.35); font-size: 0.78rem; }
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; }
+  .heroContent { padding-right: 0; }
+  .heroVisual { display: none; }
+  .buildHeader, .formatsHeader { grid-template-columns: 1fr; gap: 2rem; }
+  .bringSplit { grid-template-columns: 1fr; gap: 2rem; }
+  .howSteps { grid-template-columns: 1fr 1fr; row-gap: 3rem; }
+  .howSteps::before { display: none; }
+  .buildGrid { grid-template-columns: 1fr; }
+  .ctaRow { grid-template-columns: 1fr; }
+  .bringDivider { display: none; }
+}
+
+@media (max-width: 560px) {
+  .howSteps { grid-template-columns: 1fr; }
+  .howStep { padding: 0; }
+}

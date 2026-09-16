@@ -1,5 +1,6 @@
 "use client";
  
+import Link from "next/link";
 import {
   Building,
   GraduationCap,
@@ -22,7 +23,23 @@ interface ServicesPageProps {
   onNavigate: (page: Page) => void;
 }
 
-const services = [
+interface Service {
+  num: string;
+  title: string;
+  body1: string;
+  body2: string;
+  outcomes: string[];
+  /// Set where a discipline has a dedicated page of its own. Only
+  /// Technology-Enabled Learning has one so far (/build-for-you).
+  link?: { href: string; label: string };
+  visual: {
+    title: string;
+    body: string;
+    ideal: string[];
+  };
+}
+
+const services: Service[] = [
   {
     num: "01",
     title: "Capacity Building & Workforce Development",
@@ -84,6 +101,10 @@ const services = [
       "Real-time analytics for monitoring and evaluation",
       "Infrastructure that your organisation owns and can build on",
     ],
+    link: {
+      href: "/build-for-you",
+      label: "Learn more",
+    },
     visual: {
       title: "Built for African Infrastructure",
       body: "Digital learning systems designed for low-bandwidth, mobile-first contexts. Consistent delivery, real-time analytics, national scale.",
@@ -141,6 +162,12 @@ export default function ServicesPage({ onNavigate }: ServicesPageProps) {
                 <li key={j}>{o}</li>
               ))}
             </ul>
+            {s.link && (
+              <Link href={s.link.href} className="service-detail-link">
+                {s.link.label}
+                <ArrowRight size={16} />
+              </Link>
+            )}
           </div>
           <div>
             <div className="service-detail-visual">

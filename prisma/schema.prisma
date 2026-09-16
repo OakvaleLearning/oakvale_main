@@ -147,3 +147,21 @@ model InterestEnquiry {
   @@index([createdAt])
   @@index([interest])
 }
+
+/// A submission from the "Build For You" e-learning development form.
+/// Persisted before the admin notification is sent, so a mail failure
+/// never loses the lead.
+model BuildBrief {
+  id               String   @id @default(cuid())
+  name             String
+  organisation     String
+  email            String
+  phone            String?
+  organisationType String?
+  moduleCount      String?
+  description      String
+  createdAt        DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([email])
+}

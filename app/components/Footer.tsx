@@ -64,6 +64,9 @@ export default function Footer() {
             <li>
               <a onClick={() => onNavigate("government")}>For Government</a>
             </li>
+            <li>
+              <a onClick={() => onNavigate("build-for-you")}>Build For You</a>
+            </li>
           </ul>
         </div>
         <div className="footer-col">

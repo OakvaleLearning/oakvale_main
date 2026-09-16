@@ -109,7 +109,7 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
         </div>
       </section>
 
-      <div className="people">
+      {/* <div className="people">
         <div>
           <div className="section-label">Our Team</div>
           <h2 className="section-title">
@@ -183,19 +183,18 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
                   alt="photo"
                   fill
                   style={{ objectFit: 'cover' }}
-                />
-                {/* <div className="person-photo-label">Photo Coming Soon</div> */}
+                /> 
               </div>
               <div className="person-info">
                 <div className="person-name">{p.name}</div>
                 <div className="person-title">{p.title}</div>
-                {/* <div className="person-bio">{p.bio}</div> */}
-                {/* <a className="person-link placeholder">LinkedIn →</a> */}
+                {/* <div className="person-bio">{p.bio}</div> 
+                {/* <a className="person-link placeholder">LinkedIn →</a> 
               </div>
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
 
       <div className="advisory">
         <div className="">

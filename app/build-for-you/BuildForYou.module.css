@@ -139,7 +139,7 @@
 .who { background: var(--cream); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .whoTitle { margin-bottom: 1rem; }
 .whoIntro { margin-bottom: 3rem; }
-.whoGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+.whoGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
 .whoCard {
   background: var(--white);
   border: 1px solid var(--border);
@@ -229,7 +229,7 @@
 /* ── FORMATS ── */
 .formats { background: var(--warm-white); }
 .formatsHeader { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; margin-bottom: 3rem; }
-.formatGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+.formatGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
 .formatCard {
   border: 1px solid var(--border);
   border-radius: 8px; padding: 1.5rem;
@@ -327,11 +327,15 @@
   .howSteps { grid-template-columns: 1fr 1fr; row-gap: 3rem; }
   .howSteps::before { display: none; }
   .buildGrid { grid-template-columns: 1fr; }
+  .whoGrid { grid-template-columns: 1fr 1fr; }
+  .formatGrid { grid-template-columns: 1fr 1fr; }
   .ctaRow { grid-template-columns: 1fr; }
   .bringDivider { display: none; }
 }
 
 @media (max-width: 560px) {
   .howSteps { grid-template-columns: 1fr; }
+  .whoGrid { grid-template-columns: 1fr; }
+  .formatGrid { grid-template-columns: 1fr; }
   .howStep { padding: 0; }
 }

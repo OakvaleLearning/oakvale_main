@@ -424,23 +424,7 @@ export default function BuildForYouPage() {
           ))}
         </div>
       </section>
-
-      {/* QUOTE STRIP */}
-      <div className={styles.quoteStrip}>
-        <div className={styles.quoteInner}>
-          <Quote className={styles.quoteMark} strokeWidth={1} aria-hidden="true" />
-          <p className={styles.quoteText}>
-            We have the training content and she said they need someone to help them build it - someone who
-            understands how to turn professional training material into something people can actually learn from
-            digitally.
-          </p>
-          {/* <p className={styles.quoteAttribution}>
-            <strong>Context behind this page</strong> - A message from a colleague describing a real brief from an NHS
-            partner. If this sounds like your situation, you are in the right place.
-          </p> */}
-        </div>
-      </div>
-
+ 
       {/* CTA / CONTACT */}
       <section className={styles.ctaSection} id="contact">
         <div className={styles.ctaInner}>

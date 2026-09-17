@@ -18,23 +18,26 @@ interface AboutPageProps {
 
 export default function AboutPage({ onNavigate }: AboutPageProps) {
   return (
-        <div className="mt-[2.5rem]">
-      <div className="about-hero relative w-full" style={{
-      backgroundImage: 'url(/about-hero.png)',
+    <div className="mt-[2.5rem]">
+      <div
+        className="about-hero relative w-full"
+        style={{
+          backgroundImage: "url(/about-hero.png)",
 
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center',
-      backgroundSize: 'cover',
-    }}>
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black bg-opacity-70 z-5" />
-      
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+        }}
+      >
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black bg-opacity-70 z-5" />
+
         <div className="about-hero-inner relative z-10">
           <div className="section-label" style={{ color: "var(--mint)" }}>
             About Oakvale Learning
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-            We exist to change lives through{" "}<br/>
+            We exist to change lives through <br />
             <em style={{ fontStyle: "italic", color: "var(--mint)" }}>
               learning and self-discovery.
             </em>
@@ -52,7 +55,7 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
         <div
           className="about-story"
           style={{
-            display: "flex", 
+            display: "flex",
             gap: "4rem",
             alignItems: "start",
             flexWrap: "wrap",
@@ -61,7 +64,8 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
           <div style={{ flex: "1 1 320px", minWidth: 0 }}>
             <div className="section-label">Our Story</div>
             <h2 className="section-title">
-              Born in health and social care. <br/> <em>Built for everywhere.</em>
+              Born in health and social care. <br />{" "}
+              <em>Built for everywhere.</em>
             </h2>
             <div
               style={{
@@ -87,7 +91,7 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
                 passed for &ldquo;training&rdquo; was generic, extractive and
                 disconnected from real-world application.
               </p>
-              <p>
+              <p style={{ marginBottom: "1.5rem" }}>
                 We set out to do something different: high-quality, globally
                 relevant learning, designed from the ground up for African
                 realities, delivered with the rigour of the sectors where the
@@ -95,17 +99,32 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
               </p>
             </div>
           </div>
-          <div 
-          className="about-story-image" 
-          style={{
-            flex: "0 1 355px", 
-            width: "100%", 
-            height: "100%",  
-            minHeight: "400px", 
-            background: "url(/WATERMARK.png) no-repeat right/cover",
-            opacity: 0.1,
-            }}>
-          </div>
+          <div
+            className="about-story-image"
+            style={{
+              flex: "0 1 355px",
+              width: "100%",
+              height: "100%",
+              minHeight: "400px",
+              background: "url(/WATERMARK.png) no-repeat right/cover",
+              opacity: 0.1,
+            }}
+          ></div>
+        </div>
+        <div style={{ color: "var(--mid-grey)", marginTop: "1rem", lineHeight: "2", fontWeight: 300, fontSize: ".9rem" }}>
+          <p>
+            We now bring that experience to organisations across sectors. The
+            rigour developed through our work in health and social care, where
+            learning must translate into capability and performance in
+            real-world settings, now informs how we design learning for
+            institutions investing in their people.
+          </p>
+          <p style={{ marginBottom: "1.5rem" }}>
+            Our approach is consistent: learning is purposefully designed around
+            the outcomes an organisation needs to achieve, grounded in its
+            operating context, informed by evidence and structured to build
+            capability beyond the training event itself.
+          </p>
         </div>
       </section>
 
@@ -208,16 +227,16 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
             {
               name: "Prof Marisa Miraldo",
               title: "Professor of Health Economics & Health Policy",
-              image: "/board/Prof Marisa.png", 
+              image: "/board/Prof Marisa.png",
               bio: `A Professor of Health Economics and Health Policy at Imperial College Business School, where she serves as Co-Director of the Centre for Health Policy and Co-Director of the School of Convergence Science in Health and Technology. She is the Academic Director of the MSc in International Health Management and a Fellow of Imperial's Data Science Institute. Her research spans the economics of healthcare innovation, the impact of policy on organisational performance, and the behavioural determinants of health decision-making. 
                   A member of the World Economic Forum's Expert Network on the Future of Health and Healthcare, Professor Miraldo brings world-class health economics expertise and a direct understanding of the Nigerian health system context to the Oakvale Advisory Board.`,
             },
             {
               name: "Mary Akangbe",
               title: "Specialist Practitioner in Invasive Surgery & Robotics",
-              image: "/board/Mary FAPH.png", 
+              image: "/board/Mary FAPH.png",
               bio: "A Specialist Practitioner in Minimally Invasive Surgery and Robotics at King's College Hospital NHS Foundation Trust, with over three decades of clinical practice. She is Founder and President of Zenith Global Health, through which she leads one of Africa's most prominent health leadership platforms - the Africa Healthcare Awards and Summit - and the Not Just a Nurse initiative, a training and mentoring hub supporting nurses and allied health professionals in career development, entrepreneurship, and professional progression. A Fellow of the Association of Public Health, Mary brings extensive networks across health institutions in the UK and Africa and a practitioner's authority on the workforce development and leadership challenges that sit at the heart of Oakvale's mission.",
-            }
+            },
           ].map((a, i) => (
             <div className="advisor-card max-w-sm" key={i}>
               <div className="advisor-photo">
@@ -226,7 +245,7 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
                   src={a.image || ""}
                   alt={`${a.name} photo`}
                   fill
-                  style={{ objectFit: 'cover', borderRadius: '6px' }}
+                  style={{ objectFit: "cover", borderRadius: "6px" }}
                 />
                 {/* <div className="advisor-photo-label">Photo Coming Soon</div> */}
               </div>
@@ -264,7 +283,6 @@ export default function AboutPage({ onNavigate }: AboutPageProps) {
           </div>
         </div>
       </div>
- 
     </div>
   );
 }
